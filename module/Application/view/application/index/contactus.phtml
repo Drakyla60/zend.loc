@@ -1,0 +1,30 @@
+<h1>Contact Us</h1>
+
+<p>
+    Пожалуйста, заполните следующую форму для связи с нами.
+    Мы высоко ценим ваши отзывы.
+</p>
+
+<form name="contact-form" action="/contactus" method="post">
+
+    <div class="form-group">
+        <label for="email">Your E-mail</label>
+        <input name="email" type="text" class="form-control"
+               placeholder="name@example.com">
+    </div>
+
+    <div class="form-group">
+        <label for="subject">Subject</label>
+        <input name="subject" type="text" class="form-control"
+               placeholder="Type subject here">
+    </div>
+
+    <div class="form-group">
+        <label for="body">Message Body</label>
+        <textarea name="body" class="form-control" rows="6"
+                  placeholder="Type message text here"></textarea>
+    </div>
+
+    <input name="submit" type="submit"
+           class="btn btn-primary" value="Submit">
+</form>

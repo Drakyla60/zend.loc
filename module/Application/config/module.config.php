@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Application;
 
-use Application\Route\StaticRoute;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
 use Laminas\Router\Http\Segment;
@@ -30,6 +29,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'about',
+                    ],
+                ],
+            ],
+            'contactus' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/contactus',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'contactus',
                     ],
                 ],
             ],
@@ -64,18 +73,6 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action' => 'barcode',
-                    ],
-                ],
-            ],
-            'static' => [
-                'type' => StaticRoute::class,
-                'options' => [
-                    'dir_name'         => __DIR__ . '/../view',
-                    'template_prefix'  => 'application/index/static',
-                    'filename_pattern' => '/[a-z0-9_\-]+/',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'static',
                     ],
                 ],
             ],

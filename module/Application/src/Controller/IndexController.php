@@ -29,6 +29,27 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    // Это действие отображает форму обратной связи
+    public function contactUsAction()
+    {
+        // Проверяем, отправил ли пользователь форму
+        if($this->getRequest()->isPost()) {
+
+            // Извлекаем данные формы из переменных POST
+            $data = $this->params()->fromPost();
+
+            // ... Какие-то действия с данными ...
+            var_dump($data);
+        }
+
+        // Передаем переменную формы представлению
+        return new ViewModel(
+            [
+            'form' => $data
+        ]
+        );
+    }
+
     // Действие "barcode"
     public function barcodeAction()
     {
