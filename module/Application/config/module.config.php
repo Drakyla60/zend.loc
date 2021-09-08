@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Application\Route\StaticRoute;
 use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Regex;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
@@ -19,6 +21,73 @@ return [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
                     ],
+                ],
+            ],
+            'about' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/about',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'about',
+                    ],
+                ],
+            ],
+            'my' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my',
+                    'defaults' => [
+                        'controller' => Controller\MyController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'myGetJson' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/getJson',
+                    'defaults' => [
+                        'controller' => Controller\MyController::class,
+                        'action'     => 'getJson',
+                    ],
+                ],
+            ],
+            'barcode' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/barcode[/:type/:label]',
+                    'constraints' => [
+                        'type' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'label' => '[a-zA-Z0-9_-]*'
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'barcode',
+                    ],
+                ],
+            ],
+            'static' => [
+                'type' => StaticRoute::class,
+                'options' => [
+                    'dir_name'         => __DIR__ . '/../view',
+                    'template_prefix'  => 'application/index/static',
+                    'filename_pattern' => '/[a-z0-9_\-]+/',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'static',
+                    ],
+                ],
+            ],
+            'doc' => [
+                'type' => Regex::class,
+                'options' => [
+                    'regex'    => '/doc(?<page>\/[a-zA-Z0-9_\-]+)\.html',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'doc',
+                    ],
+                    'spec'=>'/doc/%page%.html'
                 ],
             ],
             'application' => [
@@ -36,6 +105,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\MyController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
@@ -49,6 +119,9 @@ return [
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+        ],
+        'strategies' => [
+            'ViewJsonStrategy',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
