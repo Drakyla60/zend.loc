@@ -1,4 +1,4 @@
-FROM php:7.3-apache
+FROM php:7.4-apache
 
 LABEL maintainer="getlaminas.org" \
     org.label-schema.docker.dockerfile="/Dockerfile" \
@@ -15,7 +15,7 @@ RUN a2enmod rewrite \
     && mv /var/www/html /var/www/public
 
 RUN apt-get update && apt-get install -y wget git unzip \
-    && pecl install xdebug-2.7.1 \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 ADD ./php.ini /usr/local/etc/php/php.ini
@@ -36,10 +36,10 @@ RUN apt-get install --yes libicu-dev \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
 	
-RUN apt-get update && \
-apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
-docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
-docker-php-ext-install gd
+#RUN apt-get update && \
+#apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
+#docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+#docker-php-ext-install gd
 
 ###
 ## Optional PHP extensions 

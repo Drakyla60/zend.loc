@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Application\Controller\IndexControllerFactory;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
 use Laminas\Router\Http\Segment;
@@ -101,8 +102,14 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+//            Controller\IndexController::class => InvokableFactory::class,
             Controller\MyController::class => InvokableFactory::class,
+            Controller\IndexController::class => IndexControllerFactory::class,
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            Service\MailSender::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

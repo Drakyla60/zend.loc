@@ -11,6 +11,14 @@ use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+
+    protected $mailSender;
+
+    public function __construct($mailSender)
+    {
+        $this->mailSender = $mailSender;
+    }
+
     public function indexAction()
     {
         return new ViewModel();
@@ -41,9 +49,13 @@ class IndexController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
+                $email = $data['email'];
+                $subject = $data['subject'];
+                $body = $data['body'];
 
-                var_dump($data);
-                //TODO Save data
+                if(!$this->mailSender->sendMail('Drakyla60@gmail.com', $email, $subject, $body)) {
+                    return $this->redirect()->toRoute('application', ['action'=>'sendError']);
+                }
 
                 return $this->redirect()->toRoute('application', ['action' => 'thankYou']);
             } else {
@@ -51,11 +63,21 @@ class IndexController extends AbstractActionController
             }
         }
 
-        return new ViewModel(
-            [
-                'form' => $form
-            ]
-        );
+        return new ViewModel([
+            'form' => $form
+        ]);
+    }
+
+    public function thankYouAction()
+    {
+        return 'thankYou';
+//        return new ViewModel();
+    }
+
+    public function sendErrorAction()
+    {
+        return 'sendError';
+//        return new ViewModel();
     }
 
     public function barcodeAction()
@@ -74,37 +96,4 @@ class IndexController extends AbstractActionController
         return $this->getResponse();
     }
 
-    public function docAction()
-    {
-        $pageTemplate = 'application/index/doc' .
-            $this->params()->fromRoute('page', 'documentation.phtml');
-
-        $filePath = __DIR__ . '/../../view/' . $pageTemplate . '.phtml';
-        if (!file_exists($filePath) || !is_readable($filePath)) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
-        }
-
-        $viewModel = new ViewModel([
-            'page' => $pageTemplate
-        ]);
-        $viewModel->setTemplate($pageTemplate);
-
-        return $viewModel;
-    }
-
-    public function staticAction()
-    {
-        $pageTemplate = $this->params()->fromRoute('page', null);
-        if ($pageTemplate == null) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
-        }
-
-        $viewModel = new ViewModel([
-            'page' => $pageTemplate
-        ]);
-        $viewModel->setTemplate($pageTemplate);
-        return $viewModel;
-    }
 }
