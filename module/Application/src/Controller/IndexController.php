@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Application\Form\ContactForm;
 use Laminas\Barcode\Barcode;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -29,63 +29,64 @@ class IndexController extends AbstractActionController
         ]);
     }
 
-    // Это действие отображает форму обратной связи
     public function contactUsAction()
     {
-        // Проверяем, отправил ли пользователь форму
-        if($this->getRequest()->isPost()) {
+        $form = new ContactForm();
 
-            // Извлекаем данные формы из переменных POST
+        if ($this->getRequest()->isPost()) {
+
             $data = $this->params()->fromPost();
 
-            // ... Какие-то действия с данными ...
-            var_dump($data);
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                var_dump($data);
+                //TODO Save data
+
+                return $this->redirect()->toRoute('application', ['action' => 'thankYou']);
+            } else {
+                echo 'Error';
+            }
         }
 
-        // Передаем переменную формы представлению
         return new ViewModel(
             [
-            'form' => $data
-        ]
+                'form' => $form
+            ]
         );
     }
 
-    // Действие "barcode"
     public function barcodeAction()
     {
-        // Получаем параметры от маршрута.
         $type = $this->params()->fromRoute('type', 'code39');
         $label = $this->params()->fromRoute('label', 'HELLO-WORLD');
 
-        // Устанавливаем опции штрих-кода.
         $barcodeOptions = ['text' => $label];
         $rendererOptions = [];
 
-        // Создаем объект штрих-кода.
         $barcode = Barcode::factory($type, 'image',
             $barcodeOptions, $rendererOptions);
 
-        // Строка ниже выведет изображение штрих-кода в
-        // стандартный поток вывода.
         $barcode->render();
 
-        // Возвращаем объект Response, чтобы отключить визуализацию стандартного представления.
         return $this->getResponse();
     }
 
     public function docAction()
     {
-        $pageTemplate = 'application/index/doc'.
+        $pageTemplate = 'application/index/doc' .
             $this->params()->fromRoute('page', 'documentation.phtml');
 
-        $filePath = __DIR__.'/../../view/'.$pageTemplate.'.phtml';
-        if(!file_exists($filePath) || !is_readable($filePath)) {
+        $filePath = __DIR__ . '/../../view/' . $pageTemplate . '.phtml';
+        if (!file_exists($filePath) || !is_readable($filePath)) {
             $this->getResponse()->setStatusCode(404);
-            return;
+            return false;
         }
 
         $viewModel = new ViewModel([
-            'page'=>$pageTemplate
+            'page' => $pageTemplate
         ]);
         $viewModel->setTemplate($pageTemplate);
 
@@ -94,16 +95,14 @@ class IndexController extends AbstractActionController
 
     public function staticAction()
     {
-        // Получаем путь к шаблону представления от параметров маршрута
         $pageTemplate = $this->params()->fromRoute('page', null);
-        if($pageTemplate==null) {
+        if ($pageTemplate == null) {
             $this->getResponse()->setStatusCode(404);
-            return;
+            return false;
         }
 
-        // Визуализируем страницу
         $viewModel = new ViewModel([
-            'page'=>$pageTemplate
+            'page' => $pageTemplate
         ]);
         $viewModel->setTemplate($pageTemplate);
         return $viewModel;

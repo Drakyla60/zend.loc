@@ -35,10 +35,10 @@ return [
             'contactus' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route'    => '/contactus',
+                    'route'    => '/contact-us',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'contactus',
+                        'action'     => 'contactUs',
                     ],
                 ],
             ],
