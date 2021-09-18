@@ -14,6 +14,11 @@ RUN a2enmod rewrite \
     && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
     && mv /var/www/html /var/www/public
 
+RUN apt-get update && apt-get install -y wget git unzip \
+    && pecl install xdebug-2.7.1 \
+    && docker-php-ext-enable xdebug
+
+ADD ./php.ini /usr/local/etc/php/php.ini
 ## Install Composer
 RUN curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
