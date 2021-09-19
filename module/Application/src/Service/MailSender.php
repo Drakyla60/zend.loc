@@ -25,10 +25,8 @@ class MailSender
             $transport = new InMemory();
             $transport->send($mail);
 
-// Verify the message:
             $received = $transport->getLastMessage();
 
-//            var_dump($received);
             $result = true;
         } catch (\Exception $e) {
             $result = false;
