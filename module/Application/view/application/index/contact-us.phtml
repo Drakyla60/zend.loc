@@ -1,81 +1,47 @@
 <?php
-use Laminas\Form\Element;
-use Laminas\Form\Form;
-
-
-$email = new Element\Email('email');
-$email->setLabel('Set Email');
-//$text->setValue('Set Label  d');
-$email->setAttributes([
-    'class' => 'form-control',
-    'placeholder' => 'name@example.com'
-]);
-
-$textarea = new Element\Textarea('body');
-$textarea->setLabel('Enter a description');
-$textarea->setAttributes([
-    'class' => 'form-control',
-    'rows'  => '5',
-    'placeholder' => 'Type message text here !'
-]);
-
-$text = new Element\Text('subject');
-$text->setLabel('Set Subject');
-//$text->setValue('Set Label  d');
-$text->setAttributes([
-    'class' => 'form-control',
-    'size'  => '30',
-    'placeholder' => 'Type subject here'
-]);
-
-// Create a submit button:
-$send = new Element\Button('submit');
-$send->setLabel('My Button');
-//$send->setValue('Submit');
-$send->setAttributes([
-    'type' => 'submit',
-    'class' => 'btn btn-primary'
-]);
-
-$form = new Form('contact-form');
-$form->setAttribute('method', 'POST');
-$form->setAttribute('action', $this->url('contactus'));
-
-
-//$form->add($email);
-//$form->add($text);
-//$form->add($textarea);
-//$form->add($send);
-
+/** @var \Application\Form\ContactForm $form */
 ?>
-<h1>Contact Us</h1>
-<p>
-    Пожалуйста, заполните следующую форму для связи с нами.
-    Мы высоко ценим ваши отзывы.
-</p>
-<!--<form name="contact-form" action="--><?//= $this->url('contactus') ?><!--" method="post">-->
+<h1>Форма зворотнього звязку</h1>
+
 <?= $this->form()->openTag($form);?>
     <div class="form-group">
-        <label for="email">Your E-mail</label>
-        <?php echo $this->formEmail($email);?>
-<!--        <input name="email" type="text" class="form-control" placeholder="name@example.com">-->
+        <label for="email">
+            <?= $this->formLabel($form->get('email'));?>
+            <span class="text-danger">*</span>
+        </label>
+        <?= $this->formElement($form->get('email'));?>
+        <?= $this->formElementErrors($form->get('email'));?>
+
     </div>
 
     <div class="form-group">
-
-        <label for="subject">Subject</label>
-        <?php echo $this->formText($text);?>
-<!--        <input name="subject" type="text" class="form-control" placeholder="Type subject here">-->
+        <label for="phone">
+            <?= $this->formLabel($form->get('phone'));?>
+        </label>
+        <?= $this->formElement($form->get('phone'));?>
+        <?= $this->formElementErrors($form->get('phone'));?>
     </div>
 
     <div class="form-group">
-        <label for="body">Message Body</label>
-        <?php echo $this->formTextarea($textarea);?>
-        <!--        <textarea name="body" class="form-control" rows="6" placeholder="Type message text here"></textarea>-->
+        <label for="subject">
+            <?= $this->formLabel($form->get('subject'));?>
+            <span class="text-danger">*</span>
+        </label>
+
+        <?= $this->formElement($form->get('subject'));?>
+        <?= $this->formElementErrors($form->get('subject'));?>
     </div>
 
-<!--    <input name="submit" type="submit" class="btn btn-primary" value="Submit">-->
-    <?php echo $this->formButton($send);?>
+    <div class="form-group">
+        <label for="body">
+            <?= $this->formLabel($form->get('body'));?>
+            <span class="text-danger">*</span>
+        </label>
+
+        <?= $this->formElement($form->get('body'));?>
+        <?= $this->formElementErrors($form->get('body'));?>
+    </div>
+
+<?= $this->formElement($form->get('submit'));?>
 
 <?=  $this->form()->closeTag();?>
-<!--</form>-->
