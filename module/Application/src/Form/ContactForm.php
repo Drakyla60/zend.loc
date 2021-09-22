@@ -3,6 +3,7 @@
 namespace Application\Form;
 
 use Application\Filter\PhoneFilter;
+use Application\Validator\PhoneValidator;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
@@ -18,8 +19,6 @@ use Laminas\Validator\StringLength;
 
 class ContactForm extends Form
 {
-
-
     public function __construct()
     {
         parent::__construct('contact-form');
@@ -31,7 +30,6 @@ class ContactForm extends Form
 
         $this->addInputFilter();
     }
-
 
     private function addInputFilter(): void
     {
@@ -66,15 +64,12 @@ class ContactForm extends Form
 //            ],
             'validators' => [
                 [
-                    'name' => 'Callback',
-                    'options' => [
-                        'callback' => [$this, 'validatePhone'],
-                        'callbackOptions' => [
-                            'format' => 'local'
+                        'name' => PhoneValidator::class,
+                        'options' => [
+                            'format' => PhoneValidator::PHONE_FORMAT_INTL
                         ]
-                    ]
-                ]
-            ]
+                ],
+            ],
         ]);
 
 
@@ -161,7 +156,7 @@ class ContactForm extends Form
             'name' => 'phone',
             'attributes' => [
                 'class' => 'form-control',
-                'placeholder' => '+ 0 (000) 00 - 00 - 00',
+                'placeholder' => '+00 (000) 000-0000',
             ],
             'options' => [
                 'label' => 'Ваш номер телефону',
@@ -180,29 +175,5 @@ class ContactForm extends Form
             ],
         ]);
 
-
-    }
-
-    public function validatePhone($value, $context, $format)
-    {
-        $w = $value;
-        // Определяем корректную длину и шаблон телефонного номера
-        // в зависимости от формата.
-        if($format == 'intl') {
-            $correctLength = 16;
-            $pattern = '/^\d\ (\d{3}\) \d{3}-\d{4}$/';
-        } else { // 'local'
-            $correctLength = 8;
-            $pattern = '/^\d{3}-\d{4}$/';
-        }
-
-        // Проверяем длину номера.
-        if(strlen($value)!=$correctLength)
-            return false;
-
-        // Проверяем, соответствует ли значение шаблону.
-        $matchCount = preg_match($pattern, $value);
-
-        return ($matchCount!=0)?true:false;
     }
 }
