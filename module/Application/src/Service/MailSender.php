@@ -4,7 +4,6 @@ namespace Application\Service;
 
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\InMemory;
-use Laminas\Mail\Transport\Sendmail;
 
 class MailSender
 {
@@ -19,13 +18,8 @@ class MailSender
             $mail->setSubject($subject);
             $mail->setBody($text);
 
-//            $transport = new Sendmail();
-//            $transport->send($mail);
-
             $transport = new InMemory();
             $transport->send($mail);
-
-            $received = $transport->getLastMessage();
 
             $result = true;
         } catch (\Exception $e) {

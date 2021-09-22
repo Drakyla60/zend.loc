@@ -9,21 +9,36 @@ use Laminas\Barcode\Barcode;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
+/**
+ *
+ */
 class IndexController extends AbstractActionController
 {
 
+    /**
+     * @var
+     */
     protected $mailSender;
 
+    /**
+     * @param $mailSender
+     */
     public function __construct($mailSender)
     {
         $this->mailSender = $mailSender;
     }
 
+    /**
+     * @return ViewModel
+     */
     public function indexAction()
     {
         return new ViewModel();
     }
 
+    /**
+     * @return ViewModel
+     */
     public function aboutAction()
     {
         $meta = [
@@ -37,49 +52,60 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    /**
+     * @return \Laminas\Http\Response|ViewModel
+     */
     public function contactUsAction()
     {
         $form = new ContactForm();
 
         if ($this->getRequest()->isPost()) {
 
-            $data = $this->params()->fromPost();
-
-            $form->setData($data);
+            $formData = $this->params()->fromPost();
+            $form->setData($formData);
 
             if ($form->isValid()) {
-                $data = $form->getData();
-                $email = $data['email'];
-                $subject = $data['subject'];
-                $body = $data['body'];
 
-                if(!$this->mailSender->sendMail('Drakyla60@gmail.com', $email, $subject, $body)) {
+                $formData = $form->getData();
+
+                if(!$this->mailSender
+                    ->sendMail('Drakyla60@gmail.com', $formData['email'], $formData['subject'], $formData['body'])) {
                     return $this->redirect()->toRoute('application', ['action'=>'sendError']);
                 }
 
                 return $this->redirect()->toRoute('application', ['action' => 'thankYou']);
             } else {
-                echo 'Error';
+
+                return new ViewModel([
+                    'form' => $form,
+                ]);
             }
         }
 
         return new ViewModel([
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
+    /**
+     * @return ViewModel
+     */
     public function thankYouAction()
     {
-        return 'thankYou';
-//        return new ViewModel();
+        return new ViewModel();
     }
 
+    /**
+     * @return ViewModel
+     */
     public function sendErrorAction()
     {
-        return 'sendError';
-//        return new ViewModel();
+        return new ViewModel();
     }
 
+    /**
+     * @return \Laminas\Http\PhpEnvironment\Response|\Laminas\Stdlib\ResponseInterface
+     */
     public function barcodeAction()
     {
         $type = $this->params()->fromRoute('type', 'code39');
