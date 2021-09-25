@@ -42,6 +42,22 @@
         <?= $this->formElementErrors($form->get('body'));?>
     </div>
 
+    <div class="form-group">
+        <label for="body">
+            <?= $this->formLabel($form->get('file'));?>
+        </label>
+
+        <?= $this->formElement($form->get('file'));?>
+        <?= $this->formElementErrors($form->get('file'));?>
+    </div>
+
+<!--    <div class="form-group inputDnD">-->
+<!--        <input type="file"-->
+<!--               class="form-control-file text-secondary font-weight-bold"-->
+<!--               id="inputFile" onchange="readUrl(this)"-->
+<!--               data-title="Drag and drop a file">-->
+<!--    </div>-->
+
 <?= $this->formElement($form->get('submit'));?>
 
 <?=  $this->form()->closeTag();?>

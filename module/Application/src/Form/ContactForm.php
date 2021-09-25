@@ -7,12 +7,14 @@ use Application\Validator\PhoneValidator;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
-use Laminas\Form\Element;
+use Laminas\Form\Element\Button;
 use Laminas\Form\Element\Email;
+use Laminas\Form\Element\File;
 use Laminas\Form\Element\Tel;
 use Laminas\Form\Element\Text;
 use Laminas\Form\Element\Textarea;
 use Laminas\Form\Form;
+use Laminas\InputFilter\FileInput;
 use Laminas\Validator\EmailAddress;
 use Laminas\Validator\Hostname;
 use Laminas\Validator\StringLength;
@@ -108,6 +110,14 @@ class ContactForm extends Form
                 ],
             ],
         ]);
+
+        $inputFilter->add([
+            'type'     => FileInput::class,
+            'name'     => 'file',
+            'required' => false,
+            'filters'  => [],
+            'validators' => []
+        ]);
     }
 
     private function addElements(): void
@@ -164,7 +174,23 @@ class ContactForm extends Form
         ]);
 
         $this->add([
-            'type' => Element\Button::class,
+            'type'  => File::class,
+            'name' => 'file',
+            'attributes' => [
+//                'id' => 'input-file-now',
+                'data-title' => 'Drag and drop a file',
+                //@TODO  Проблема з відображенням при генеруванні класи кодуються і не відображається правильно шаблон
+                'class' => 'form-control file text-danger font-weight-bold',
+                'onchange' => 'readUrl(this)'
+            ],
+            'options' => [
+                'label' => 'Upload file',
+
+            ],
+        ]);
+
+        $this->add([
+            'type' => Button::class,
             'name' => 'submit',
             'attributes' => [
                 'type' => 'submit',
