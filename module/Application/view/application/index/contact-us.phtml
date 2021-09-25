@@ -11,7 +11,6 @@
         </label>
         <?= $this->formElement($form->get('email'));?>
         <?= $this->formElementErrors($form->get('email'));?>
-
     </div>
 
     <div class="form-group">
@@ -27,7 +26,6 @@
             <?= $this->formLabel($form->get('subject'));?>
             <span class="text-danger">*</span>
         </label>
-
         <?= $this->formElement($form->get('subject'));?>
         <?= $this->formElementErrors($form->get('subject'));?>
     </div>
@@ -42,8 +40,8 @@
         <?= $this->formElementErrors($form->get('body'));?>
     </div>
 
-    <div class="form-group">
-        <label for="body">
+    <div class="form-group inputDnD">
+        <label for="file">
             <?= $this->formLabel($form->get('file'));?>
         </label>
 
@@ -51,12 +49,6 @@
         <?= $this->formElementErrors($form->get('file'));?>
     </div>
 
-<!--    <div class="form-group inputDnD">-->
-<!--        <input type="file"-->
-<!--               class="form-control-file text-secondary font-weight-bold"-->
-<!--               id="inputFile" onchange="readUrl(this)"-->
-<!--               data-title="Drag and drop a file">-->
-<!--    </div>-->
 
 <?= $this->formElement($form->get('submit'));?>
 

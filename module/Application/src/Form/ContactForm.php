@@ -2,7 +2,6 @@
 
 namespace Application\Form;
 
-use Application\Filter\PhoneFilter;
 use Application\Validator\PhoneValidator;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
@@ -38,24 +37,24 @@ class ContactForm extends Form
         $inputFilter = $this->getInputFilter();
 
         $inputFilter->add([
-            'name' => 'email',
-            'required' => true,
-            'filters' => [
+            'name'       => 'email',
+            'required'   => true,
+            'filters'    => [
                 ['name' => StringTrim::class],
             ],
             'validators' => [
                 [
-                    'name' => EmailAddress::class,
+                    'name'    => EmailAddress::class,
                     'options' => [
-                        'allow' => Hostname::ALLOW_DNS,
+                        'allow'      => Hostname::ALLOW_DNS,
                         'useMxCheck' => false,
                     ],
                 ],
             ],
         ]);
         $inputFilter->add([
-            'name' => 'phone',
-            'required' => false,
+            'name'       => 'phone',
+            'required'   => false,
 //            'filters' => [
 //                [
 //                    'name' => PhoneFilter::class,
@@ -66,7 +65,7 @@ class ContactForm extends Form
 //            ],
             'validators' => [
                 [
-                        'name' => PhoneValidator::class,
+                        'name'    => PhoneValidator::class,
                         'options' => [
                             'format' => PhoneValidator::PHONE_FORMAT_INTL
                         ]
@@ -76,16 +75,16 @@ class ContactForm extends Form
 
 
         $inputFilter->add([
-            'name' => 'subject',
-            'required' => true,
-            'filters' => [
+            'name'       => 'subject',
+            'required'   => true,
+            'filters'    => [
                 ['name' => StringTrim::class],
                 ['name' => StripTags::class],
                 ['name' => StripNewlines::class],
             ],
             'validators' => [
                 [
-                    'name' => StringLength::class,
+                    'name'    => StringLength::class,
                     'options' => [
                         'min' => 1,
                         'max' => 128
@@ -95,14 +94,14 @@ class ContactForm extends Form
         ]);
 
         $inputFilter->add([
-            'name' => 'body',
-            'required' => true,
-            'filters' => [
+            'name'       => 'body',
+            'required'   => true,
+            'filters'    => [
                 ['name' => StripTags::class],
             ],
             'validators' => [
                 [
-                    'name' => StringLength::class,
+                    'name'    => StringLength::class,
                     'options' => [
                         'min' => 1,
                         'max' => 4096
@@ -112,10 +111,10 @@ class ContactForm extends Form
         ]);
 
         $inputFilter->add([
-            'type'     => FileInput::class,
-            'name'     => 'file',
-            'required' => false,
-            'filters'  => [],
+            'type'       => FileInput::class,
+            'name'       => 'file',
+            'required'   => false,
+            'filters'    => [],
             'validators' => []
         ]);
     }
@@ -123,83 +122,79 @@ class ContactForm extends Form
     private function addElements(): void
     {
         $this->add([
-            'type' => Email::class,
-            'name' => 'email',
+            'type'       => Email::class,
+            'name'       => 'email',
             'attributes' => [
-                'class' => 'form-control',
+                'class'       => 'form-control',
                 'placeholder' => 'name@example.com',
             ],
-            'options' => [
+            'options'    => [
                 'label' => 'Ваш Email ',
             ],
         ]);
 
         $this->add([
-            'type' => Text::class,
-            'name' => 'subject',
+            'type'       => Text::class,
+            'name'       => 'subject',
             'attributes' => [
-                'class' => 'form-control',
-                'size' => '30',
-                'minlength' => '6',
+                'class'       => 'form-control',
+                'size'        => '30',
+                'minlength'   => '6',
                 'placeholder' => 'Type subject here'
             ],
-            'options' => [
+            'options'    => [
                 'label' => 'Введіть тему повідомлення',
             ],
         ]);
 
         $this->add([
-            'type' => Textarea::class,
-            'name' => 'body',
+            'type'       => Textarea::class,
+            'name'       => 'body',
             'attributes' => [
-                'class' => 'form-control',
-                'rows' => '3',
+                'class'       => 'form-control',
+                'rows'        => '3',
                 'placeholder' => 'Type message text here !'
             ],
-            'options' => [
+            'options'    => [
                 'label' => 'Введіть текст повідомлення',
             ],
         ]);
 
         $this->add([
-            'type' => Tel::class,
-            'name' => 'phone',
+            'type'       => Tel::class,
+            'name'       => 'phone',
             'attributes' => [
-                'class' => 'form-control',
+                'class'       => 'form-control',
                 'placeholder' => '+00 (000) 000-0000',
             ],
-            'options' => [
+            'options'    => [
                 'label' => 'Ваш номер телефону',
             ],
         ]);
 
         $this->add([
-            'type'  => File::class,
-            'name' => 'file',
+            'type'       => File::class,
+            'name'       => 'file',
             'attributes' => [
-//                'id' => 'input-file-now',
-                'data-title' => 'Drag and drop a file',
-                //@TODO  Проблема з відображенням при генеруванні класи кодуються і не відображається правильно шаблон
-                'class' => 'form-control file text-danger font-weight-bold',
-                'onchange' => 'readUrl(this)'
+                'data-title' => 'Сюди можна перенести файл з комп\'ютера',
+                'class'      => 'form-control-file text-secondary font-weight-bold',
+                'onchange'   => 'readUrl(this)'
             ],
-            'options' => [
-                'label' => 'Upload file',
-
+            'options'    => [
+                'label' => 'Виберіть файл',
             ],
         ]);
 
         $this->add([
-            'type' => Button::class,
-            'name' => 'submit',
+            'type'       => Button::class,
+            'name'       => 'submit',
             'attributes' => [
-                'type' => 'submit',
+                'type'  => 'submit',
                 'class' => 'btn btn-success'
             ],
-            'options' => [
+            'options'    => [
                 'label' => 'Відправити',
             ],
         ]);
-
     }
 }
