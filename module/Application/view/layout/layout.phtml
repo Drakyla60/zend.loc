@@ -64,6 +64,11 @@
                                 Contact <span class="sr-only">(current)</span>
                             </a>
                         </li>
+                        <li class="nav-item <?=$this->url() === '/images' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?= $this->url('images', ['action' => 'index']); ?>">
+                                Gallery
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link"  href="<?= $this->url('barcode', [
                                 'type' => 'code39', 'label' => 'HELLO-WORLD']); ?>" >
