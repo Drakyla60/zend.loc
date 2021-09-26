@@ -1,7 +1,8 @@
 <?php
 
-namespace Application\Controller;
+namespace Application\Controller\Factory;
 
+use Application\Controller\IndexController;
 use Application\Service\MailSender;
 use Interop\Container\ContainerInterface;
 
