@@ -1,0 +1,32 @@
+<h1>Image Gallery</h1>
+<p> Эта страница отображает список выгруженных изображений. </p>
+
+<p>
+    <a href="<?= $this->url('images', ['action' => 'upload']); ?>"
+       class="btn btn-primary" role="button">Загрузити ще...</a>
+</p>
+<hr/>
+<?php /** @var \Application\Controller\IndexController $files */
+if (count($files) == 0): ?>
+    <p> <i>Нет файлов для отображения.</i> </p>
+<?php else: ?>
+    <div class="row">
+        <div class="col-sm-6 col-md-12">
+            <?php foreach ($files as $file): ?>
+                <div class="img-thumbnail">
+                    <img src="<?= $this->url('images', ['action' => 'file'],
+                        ['query' => ['name' => $file, 'thumbnail' => true]]); ?>">
+                    <div class="caption">
+                        <h5><?php echo $file; ?></h5>
+                        <p>
+                            <a target="_blank" href="<?= $this->url('images', ['action' => 'file'],
+                                ['query' => ['name' => $file]]); ?>"
+                               class="btn btn-default" role="button">Показати в повну величину >></a>
+                        </p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
+<hr/>
