@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Application;
 
-use Application\Controller\IndexControllerFactory;
+use Application\Controller\Factory\ImageControllerFactory;
+use Application\Controller\Factory\IndexControllerFactory;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
 use Laminas\Router\Http\Segment;
@@ -34,12 +35,25 @@ return [
                 ],
             ],
             'contactus' => [
-                'type' => Literal::class,
+                'type'    => Literal::class,
                 'options' => [
                     'route'    => '/contact-us',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'contactUs',
+                    ],
+                ],
+            ],
+            'images' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/images[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\ImageController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],
@@ -64,16 +78,16 @@ return [
                 ],
             ],
             'barcode' => [
-                'type' => Segment::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route' => '/barcode[/:type/:label]',
+                    'route'    => '/barcode[/:type/:label]',
                     'constraints' => [
-                        'type' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'type'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'label' => '[a-zA-Z0-9_-]*'
                     ],
-                    'defaults' => [
+                    'defaults'    => [
                         'controller' => Controller\IndexController::class,
-                        'action' => 'barcode',
+                        'action'     => 'barcode',
                     ],
                 ],
             ],
@@ -85,7 +99,7 @@ return [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'doc',
                     ],
-                    'spec'=>'/doc/%page%.html'
+                    'spec'     => '/doc/%page%.html'
                 ],
             ],
             'application' => [
@@ -102,14 +116,15 @@ return [
     ],
     'controllers' => [
         'factories' => [
-//            Controller\IndexController::class => InvokableFactory::class,
-            Controller\MyController::class => InvokableFactory::class,
+            Controller\MyController::class    => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\ImageController::class => ImageControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
-            Service\MailSender::class => InvokableFactory::class,
+            Service\MailSender::class   => InvokableFactory::class,
+            Service\ImageManager::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
