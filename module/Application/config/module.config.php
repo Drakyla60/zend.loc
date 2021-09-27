@@ -6,6 +6,7 @@ namespace Application;
 
 use Application\Controller\Factory\ImageControllerFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\RegistrationControllerFactory;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
 use Laminas\Router\Http\Segment;
@@ -57,6 +58,19 @@ return [
                     ],
                 ],
             ],
+            'registration' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/registration[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\RegistrationController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
             'my' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -80,7 +94,7 @@ return [
             'barcode' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/barcode[/:type/:label]',
+                    'route'       => '/barcode[/:type/:label]',
                     'constraints' => [
                         'type'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'label' => '[a-zA-Z0-9_-]*'
@@ -92,7 +106,7 @@ return [
                 ],
             ],
             'doc' => [
-                'type' => Regex::class,
+                'type'    => Regex::class,
                 'options' => [
                     'regex'    => '/doc(?<page>\/[a-zA-Z0-9_\-]+)\.html',
                     'defaults' => [
@@ -116,9 +130,10 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\MyController::class    => InvokableFactory::class,
-            Controller\IndexController::class => IndexControllerFactory::class,
-            Controller\ImageController::class => ImageControllerFactory::class,
+            Controller\MyController::class           => InvokableFactory::class,
+            Controller\IndexController::class        => IndexControllerFactory::class,
+            Controller\ImageController::class        => ImageControllerFactory::class,
+            Controller\RegistrationController::class => RegistrationControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -145,5 +160,8 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+    ],
+    'session_containers' => [
+        'UserRegistration'
     ],
 ];
