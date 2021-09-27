@@ -1,0 +1,52 @@
+<h1>Регистрация пользователя - Шаг 2 - Персональная информация</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= /** @var  $form */
+        $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('phone')); ?>
+            <?= $this->formElement($form->get('phone')); ?>
+            <?= $this->formElementErrors($form->get('phone')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('street_address')); ?>
+            <?= $this->formElement($form->get('street_address')); ?>
+            <?= $this->formElementErrors($form->get('street_address')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('city')); ?>
+            <?= $this->formElement($form->get('city')); ?>
+            <?= $this->formElementErrors($form->get('city')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('state')); ?>
+            <?= $this->formElement($form->get('state')); ?>
+            <?= $this->formElementErrors($form->get('state')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('post_code')); ?>
+            <?= $this->formElement($form->get('post_code')); ?>
+            <?= $this->formElementErrors($form->get('post_code')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('country')); ?>
+            <?= $this->formElement($form->get('country')); ?>
+            <?= $this->formElementErrors($form->get('country')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formElement($form->get('submit')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('csrf')); ?>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
