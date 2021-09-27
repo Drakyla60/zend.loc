@@ -4,59 +4,49 @@
 <h1>Форма зворотнього звязку</h1>
 
 <?= $this->form()->openTag($form);?>
+
     <div class="form-group">
-        <label for="email">
-            <?= $this->formLabel($form->get('email'));?>
-            <span class="text-danger">*</span>
-        </label>
+        <?= $this->formLabel($form->get('email'));?>
+        <span class="text-danger">*</span>
         <?= $this->formElement($form->get('email'));?>
         <?= $this->formElementErrors($form->get('email'));?>
     </div>
 
     <div class="form-group">
-        <label for="phone">
-            <?= $this->formLabel($form->get('phone'));?>
-        </label>
+        <?= $this->formLabel($form->get('phone'));?>
         <?= $this->formElement($form->get('phone'));?>
         <?= $this->formElementErrors($form->get('phone'));?>
     </div>
 
     <div class="form-group">
-        <label for="subject">
-            <?= $this->formLabel($form->get('subject'));?>
-            <span class="text-danger">*</span>
-        </label>
+        <?= $this->formLabel($form->get('subject'));?>
+        <span class="text-danger">*</span>
         <?= $this->formElement($form->get('subject'));?>
         <?= $this->formElementErrors($form->get('subject'));?>
     </div>
 
     <div class="form-group">
-        <label for="body">
-            <?= $this->formLabel($form->get('body'));?>
-            <span class="text-danger">*</span>
-        </label>
-
+        <?= $this->formLabel($form->get('body'));?>
+        <span class="text-danger">*</span>
         <?= $this->formElement($form->get('body'));?>
         <?= $this->formElementErrors($form->get('body'));?>
     </div>
 
     <div class="form-group inputDnD">
-        <label for="file">
-            <?= $this->formLabel($form->get('file'));?>
-        </label>
-
+        <?= $this->formLabel($form->get('file'));?>
         <?= $this->formElement($form->get('file'));?>
         <?= $this->formElementErrors($form->get('file'));?>
     </div>
 
     <div class="form-group">
-        <?= $this->formLabel($form->get('captcha')); ?>
+        <?= $this->formLabel($form->get('captcha'));?>
         <?= $this->formElement($form->get('captcha')); ?>
         <?= $this->formElementErrors($form->get('captcha')); ?>
         <p class="help-block">Введіть символи які зображено на картинці.<p>
     </div>
 
+    <?= $this->formElement($form->get('csrf')); ?>
 
-<?= $this->formElement($form->get('submit'));?>
+    <?= $this->formElement($form->get('submit'));?>
 
 <?=  $this->form()->closeTag();?>

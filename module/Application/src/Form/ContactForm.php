@@ -3,6 +3,7 @@
 namespace Application\Form;
 
 use Application\Validator\PhoneValidator;
+use Laminas\Captcha\Figlet;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
@@ -36,6 +37,16 @@ class ContactForm extends Form
     private function addInputFilter(): void
     {
         $inputFilter = $this->getInputFilter();
+
+        $this->add([
+            'type'  => 'csrf',
+            'name' => 'csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => 600
+                ]
+            ],
+        ]);
 
         $inputFilter->add([
             'name'       => 'email',
@@ -194,20 +205,28 @@ class ContactForm extends Form
             'options' => [
                 'label' => 'Human check',
                 'captcha' => [
-                    'class' => 'Image',
-                    'imgDir' => 'public/img/captcha',
-                    'suffix' => '.png',
-                    'imgUrl' => '/img/captcha/',
-                    'imgAlt' => 'CAPTCHA Image',
-                    'font'   => './data/font/thorne_shaded.ttf',
-                    'fsize'  => 24,
-                    'width'  => 350,
-                    'height' => 100,
+                    'class' => Figlet::class,
+                    'wordLen' => 6,
                     'expiration' => 600,
-                    'dotNoiseLevel' => 40,
-                    'lineNoiseLevel' => 3
                 ],
             ],
+//            'options' => [
+//                'label' => 'Human check',
+//                'captcha' => [
+//                    'class' => 'Image',
+//                    'imgDir' => 'public/img/captcha',
+//                    'suffix' => '.png',
+//                    'imgUrl' => '/img/captcha/',
+//                    'imgAlt' => 'CAPTCHA Image',
+//                    'font'   => './data/font/thorne_shaded.ttf',
+//                    'fsize'  => 24,
+//                    'width'  => 350,
+//                    'height' => 100,
+//                    'expiration' => 600,
+//                    'dotNoiseLevel' => 40,
+//                    'lineNoiseLevel' => 3
+//                ],
+//            ],
         ]);
 
         $this->add([

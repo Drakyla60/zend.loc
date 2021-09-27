@@ -24,7 +24,8 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "laminas/laminas-captcha": "^2.10",
-        "laminas/laminas-session": "^2.12"
+        "laminas/laminas-session": "^2.12",
+        "laminas/laminas-text": "^2.9"
     },
     "autoload": {
         "psr-4": {
