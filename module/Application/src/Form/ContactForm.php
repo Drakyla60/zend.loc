@@ -9,6 +9,7 @@ use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
 use Laminas\Form\Element\Button;
 use Laminas\Form\Element\Captcha;
+use Laminas\Form\Element\Csrf;
 use Laminas\Form\Element\Email;
 use Laminas\Form\Element\File;
 use Laminas\Form\Element\Tel;
@@ -37,16 +38,6 @@ class ContactForm extends Form
     private function addInputFilter(): void
     {
         $inputFilter = $this->getInputFilter();
-
-        $this->add([
-            'type'  => 'csrf',
-            'name' => 'csrf',
-            'options' => [
-                'csrf_options' => [
-                    'timeout' => 600
-                ]
-            ],
-        ]);
 
         $inputFilter->add([
             'name'       => 'email',
@@ -133,6 +124,17 @@ class ContactForm extends Form
 
     private function addElements(): void
     {
+
+        $this->add([
+            'type'  => Csrf::class,
+            'name' => 'csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => 600
+                ]
+            ],
+        ]);
+
         $this->add([
             'type'       => Email::class,
             'name'       => 'email',
