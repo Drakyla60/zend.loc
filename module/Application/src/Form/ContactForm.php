@@ -7,6 +7,7 @@ use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
 use Laminas\Form\Element\Button;
+use Laminas\Form\Element\Captcha;
 use Laminas\Form\Element\Email;
 use Laminas\Form\Element\File;
 use Laminas\Form\Element\Tel;
@@ -67,7 +68,7 @@ class ContactForm extends Form
                 [
                         'name'    => PhoneValidator::class,
                         'options' => [
-                            'format' => PhoneValidator::PHONE_FORMAT_INTL
+                            'format' => PhoneValidator::PHONE_FORMAT_INTL //+00 (000) 000-0000
                         ]
                 ],
             ],
@@ -182,6 +183,30 @@ class ContactForm extends Form
             ],
             'options'    => [
                 'label' => 'Виберіть файл',
+            ],
+        ]);
+
+        $this->add([
+            'type'  => Captcha::class,
+            'name' => 'captcha',
+            'attributes' => [
+            ],
+            'options' => [
+                'label' => 'Human check',
+                'captcha' => [
+                    'class' => 'Image',
+                    'imgDir' => 'public/img/captcha',
+                    'suffix' => '.png',
+                    'imgUrl' => '/img/captcha/',
+                    'imgAlt' => 'CAPTCHA Image',
+                    'font'   => './data/font/thorne_shaded.ttf',
+                    'fsize'  => 24,
+                    'width'  => 350,
+                    'height' => 100,
+                    'expiration' => 600,
+                    'dotNoiseLevel' => 40,
+                    'lineNoiseLevel' => 3
+                ],
             ],
         ]);
 

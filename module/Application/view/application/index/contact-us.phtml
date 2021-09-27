@@ -49,6 +49,13 @@
         <?= $this->formElementErrors($form->get('file'));?>
     </div>
 
+    <div class="form-group">
+        <?= $this->formLabel($form->get('captcha')); ?>
+        <?= $this->formElement($form->get('captcha')); ?>
+        <?= $this->formElementErrors($form->get('captcha')); ?>
+        <p class="help-block">Введіть символи які зображено на картинці.<p>
+    </div>
+
 
 <?= $this->formElement($form->get('submit'));?>
 

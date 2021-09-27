@@ -22,7 +22,9 @@
         "laminas/laminas-i18n": "^2.11",
         "ext-fileinfo": "*",
         "ext-gd": "*",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "laminas/laminas-captcha": "^2.10",
+        "laminas/laminas-session": "^2.12"
     },
     "autoload": {
         "psr-4": {
