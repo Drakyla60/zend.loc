@@ -11,7 +11,8 @@ class IndexControllerFactory
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): IndexController
     {
         $mailSender = $container->get(MailSender::class);
+        $entityManager = $container->get('doctrine.entitymanager.orm_default');
 
-        return new IndexController($mailSender);
+        return new IndexController($mailSender, $entityManager);
     }
 }
