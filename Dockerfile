@@ -30,18 +30,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd
 
 ###
-## Optional PHP extensions 
-###
-
-## mbstring for i18n string support
-# RUN docker-php-ext-install mbstring
-
-###
 ## Some laminas/laminas-db supported PDO extensions
 ###
 
 ## MySQL PDO support
-# RUN docker-php-ext-install pdo_mysql
+ RUN docker-php-ext-install pdo_mysql
 
 ## PostgreSQL PDO support
 # RUN apt-get install --yes libpq-dev \
