@@ -6,6 +6,8 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'Laminas\Cache',
+    'Laminas\Paginator',
     'Laminas\Session',
     'Laminas\I18n',
     'Laminas\Mail',
@@ -16,5 +18,7 @@ return [
     'Laminas\Router',
     'Laminas\Validator',
     'Application',
-    'Laminas\DeveloperTools'
+    'Laminas\DeveloperTools',
+    'DoctrineModule',
+    'DoctrineORMModule'
 ];
