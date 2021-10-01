@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Application\Entity\Post;
 use Application\Form\ContactForm;
+use Doctrine\ORM\EntityManager;
 use Laminas\Barcode\Barcode;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -19,21 +21,32 @@ class IndexController extends AbstractActionController
      * @var
      */
     protected $mailSender;
+    /**
+     * Менеджер сущностей.
+     * @var EntityManager
+     */
+    private $entityManager;
+
 
     /**
      * @param $mailSender
      */
-    public function __construct($mailSender)
+    public function __construct($mailSender, $entityManager)
     {
         $this->mailSender = $mailSender;
+        $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return ViewModel
-     */
     public function indexAction()
     {
-        return new ViewModel();
+        // Отримуємо останні пости.
+        $posts = $this->entityManager->getRepository(Post::class)
+            ->findBy(['status'=>Post::STATUS_PUBLISHED],
+                ['dateCreated'=>'DESC']);
+
+        return new ViewModel([
+            'posts' => $posts
+        ]);
     }
 
     /**
