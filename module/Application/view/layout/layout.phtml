@@ -69,10 +69,15 @@
                                 Gallery
                             </a>
                         </li>
+                        <li class="nav-item <?=$this->url() === '/registration' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?= $this->url('registration', ['action' => 'index']); ?>">
+                                Registration
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link"  href="<?= $this->url('barcode', [
                                 'type' => 'code39', 'label' => 'HELLO-WORLD']); ?>" >
-                                Barcode image </a>
+                                Barcode </a>
                         </li>
                     </ul>
                 </div>
