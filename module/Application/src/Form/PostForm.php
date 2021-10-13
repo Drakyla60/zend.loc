@@ -41,10 +41,11 @@ class PostForm extends Form
             'type'  => Text::class,
             'name' => 'title',
             'attributes' => [
-                'id' => 'title'
+                'id'    => 'title',
+                'class' =>'form-control',
             ],
             'options' => [
-                'label' => 'Title',
+                'label' => 'Enter post title here',
             ],
         ]);
 
@@ -53,10 +54,11 @@ class PostForm extends Form
             'type'  => Textarea::class,
             'name' => 'content',
             'attributes' => [
-                'id' => 'content'
+                'id' => 'content',
+                'class'=>'form-control',
             ],
             'options' => [
-                'label' => 'Content',
+                'label' => 'Type content here',
             ],
         ]);
 
@@ -65,10 +67,11 @@ class PostForm extends Form
             'type'  => Text::class,
             'name' => 'tags',
             'attributes' => [
-                'id' => 'tags'
+                'id' => 'tags',
+                'class'=>'form-control',
             ],
             'options' => [
-                'label' => 'Tags',
+                'label' => 'comma, separated, list, of, tags',
             ],
         ]);
 
@@ -77,7 +80,8 @@ class PostForm extends Form
             'type'  => Select::class,
             'name' => 'status',
             'attributes' => [
-                'id' => 'status'
+                'id' => 'status',
+                'class'=>'form-control',
             ],
             'options' => [
                 'label' => 'Status',
@@ -94,6 +98,7 @@ class PostForm extends Form
             'name' => 'submit',
             'attributes' => [
                 'value' => 'Create',
+                'class'=>'btn btn-primary',
                 'id' => 'submitbutton',
             ],
         ]);
