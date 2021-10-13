@@ -2,11 +2,13 @@
 
 namespace Application\Controller;
 
+use Application\Entity\Post;
 use Application\Form\PostForm;
 use Application\Service\PostManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -49,4 +51,59 @@ class PostController extends AbstractActionController
             'form' => $form
         ]);
     }
+
+    /**
+     * @return Response|ViewModel|void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function editAction()
+    {
+        $form = new PostForm();
+
+        $postId = $this
+            ->params()
+            ->fromRoute('id', -1);
+
+        $post = $this
+            ->entityManager
+            ->getRepository(Post::class)
+            ->findOneById($postId);
+
+        if ($post == null) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->postManager->updatePost($post, $data);
+
+                return $this
+                    ->redirect()
+                    ->toRoute('posts', [
+                        'action' => 'admin'
+                    ]);
+            }
+        } else {
+            $data = [
+                'title' => $post->getTitle(),
+                'content' => $post->getContent(),
+                'tags' => $this->postManager->convertTagsToString($post),
+                'status' => $post->getStatus()
+            ];
+
+            $form->setData($data);
+        }
+
+        return new ViewModel([
+            'form' => $form,
+            'post' => $post
+        ]);
+    }
+
 }
