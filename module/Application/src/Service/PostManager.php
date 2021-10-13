@@ -40,6 +40,21 @@ class PostManager
     }
 
     /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function updatePost($post, $data)
+    {
+        $post->setTitle($data['title']);
+        $post->setContent($data['content']);
+        $post->setStatus($data['status']);
+
+        $this->addTagsToPost($data['tags'], $post);
+
+        $this->entityManager->flush();
+    }
+
+    /**
      * @throws ORMException
      */
     private function addTagsToPost(string $tagsStr, Post $post)
@@ -70,5 +85,26 @@ class PostManager
 
             $post->addTag($tag);
         }
+    }
+
+
+    /**
+     * @param $post
+     * @return string
+     */
+    public function convertTagsToString($post): string
+    {
+        $tags = $post->getTags();
+        $tagCount = count($tags);
+        $tagsStr = '';
+        $i = 0;
+        foreach ($tags as $tag) {
+            $i ++;
+            $tagsStr .= $tag->getName();
+            if ($i < $tagCount)
+                $tagsStr .= ', ';
+        }
+
+        return $tagsStr;
     }
 }
