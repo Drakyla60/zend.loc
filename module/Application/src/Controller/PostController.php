@@ -106,4 +106,26 @@ class PostController extends AbstractActionController
         ]);
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function deleteAction()
+    {
+        $postId = $this->params()->fromRoute('id', -1);
+
+        $post = $this
+            ->entityManager
+            ->getRepository(Post::class)
+            ->findOneById($postId);
+        
+        if ($post == null) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        $this->postManager->removePost($post);
+
+        return $this->redirect()->toRoute('posts', ['action'=>'admin']);
+    }
 }
