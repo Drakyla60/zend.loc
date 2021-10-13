@@ -26,6 +26,20 @@ return [
                     ],
                 ],
             ],
+            'posts' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/posts[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\PostController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
             'about' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -135,12 +149,14 @@ return [
             Controller\IndexController::class        => IndexControllerFactory::class,
             Controller\ImageController::class        => ImageControllerFactory::class,
             Controller\RegistrationController::class => RegistrationControllerFactory::class,
+            Controller\PostController::class         => Controller\Factory\PostControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             Service\MailSender::class   => InvokableFactory::class,
             Service\ImageManager::class => InvokableFactory::class,
+            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
         ],
     ],
     'view_manager' => [
