@@ -55,6 +55,27 @@ class PostManager
     }
 
     /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function removePost($post)
+    {
+        $comments = $post->getComments();
+        foreach ($comments as $comment) {
+            $this->entityManager->remove($comment);
+        }
+
+        $tags = $post->getTags();
+        foreach ($tags as $tag) {
+            $post->removeTagAssociation($tag);
+        }
+
+        $this->entityManager->remove($post);
+
+        $this->entityManager->flush();
+    }
+
+    /**
      * @throws ORMException
      */
     private function addTagsToPost(string $tagsStr, Post $post)
@@ -107,4 +128,6 @@ class PostManager
 
         return $tagsStr;
     }
+
+
 }

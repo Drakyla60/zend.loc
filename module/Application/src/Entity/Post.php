@@ -3,6 +3,7 @@ namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  *  Пост в блозі.
@@ -62,7 +63,7 @@ class Post
         $this->tags = new ArrayCollection();
     }
 
-    public function getComments(): ArrayCollection
+    public function getComments(): object
     {
         return $this->comments;
     }
@@ -72,7 +73,7 @@ class Post
         $this->comments[] = $comment;
     }
 
-    public function getTags(): ArrayCollection
+    public function getTags(): object
     {
         return $this->tags;
     }
