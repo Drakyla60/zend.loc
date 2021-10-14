@@ -8,6 +8,7 @@ use Doctrine\ORM\PersistentCollection;
 /**
  *  Пост в блозі.
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Application\Repository\PostRepository")
  * @ORM\Table(name="post")
  */
 class Post
