@@ -2,6 +2,7 @@
 
 namespace Application\Service;
 
+use Application\Entity\Comment;
 use Application\Entity\Post;
 use Application\Entity\Tag;
 use Doctrine\ORM\EntityManager;
@@ -108,6 +109,24 @@ class PostManager
         }
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function addCommentToPost($post, $data)
+    {
+        $comment = new Comment();
+        $comment->setPost($post);
+        $comment->setAuthor($data['author']);
+        $comment->setContent($data['comment']);
+        $currentDate = date('Y-m-d H:i:s');
+        $comment->setDateCreated($currentDate);
+
+        $this->entityManager->persist($comment);
+
+        $this->entityManager->flush();
+    }
+
 
     /**
      * @param $post
@@ -129,5 +148,19 @@ class PostManager
         return $tagsStr;
     }
 
+    /**
+     * @param $post
+     * @return string
+     */
+    public function getCommentCountStr($post): string
+    {
+        $commentCount = count($post->getComments());
+        if ($commentCount == 0)
+            return 'No comments';
+        else if ($commentCount == 1)
+            return '1 comment';
+        else
+            return $commentCount . ' comments';
+    }
 
 }
