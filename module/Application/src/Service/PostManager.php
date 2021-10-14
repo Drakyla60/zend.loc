@@ -104,7 +104,6 @@ class PostManager
             $tag->addPost($post);
 
             $this->entityManager->persist($tag);
-
             $post->addTag($tag);
         }
     }
@@ -123,7 +122,6 @@ class PostManager
         $comment->setDateCreated($currentDate);
 
         $this->entityManager->persist($comment);
-
         $this->entityManager->flush();
     }
 
@@ -176,4 +174,51 @@ class PostManager
 
         return 'Unknown';
     }
+
+    public function getTagCloud(): array
+    {
+        $tagCloud = [];
+        $posts = $this
+            ->entityManager
+            ->getRepository(Post::class)
+            ->findPostsHavingAnyTag();
+
+        $totalPostCount = count($posts);
+
+        $tags = $this
+            ->entityManager
+            ->getRepository(Tag::class)
+            ->findAll();
+
+        foreach ($tags as $tag) {
+
+            $postsByTag = $this
+                ->entityManager
+                ->getRepository(Post::class)
+                ->findPostsByTag($tag->getName());
+
+            $postCount = count($postsByTag);
+            if ($postCount > 0) {
+                $tagCloud[$tag->getName()] = $postCount;
+            }
+        }
+        $normalizedTagCloud = [];
+
+        foreach ($tagCloud as $name => $postCount) {
+            $normalizedTagCloud[$name] =  $postCount / $totalPostCount;
+        }
+
+        return $normalizedTagCloud;
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
