@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Entity\Post;
+use Application\Form\CommentForm;
 use Application\Form\PostForm;
 use Application\Service\PostManager;
 use Doctrine\ORM\EntityManager;
@@ -33,14 +34,11 @@ class PostController extends AbstractActionController
         $form = new PostForm();
 
         if ($this->getRequest()->isPost()) {
-
             $data = $this->params()->fromPost();
-
             $form->setData($data);
+
             if ($form->isValid()) {
-
                 $data = $form->getData();
-
                 $this->postManager->addNewPost($data);
 
                 return $this->redirect()->toRoute('application');
@@ -49,6 +47,47 @@ class PostController extends AbstractActionController
 
         return new ViewModel([
             'form' => $form
+        ]);
+    }
+
+    public function viewAction()
+    {
+        $postId = $this->params()->fromRoute('id', -1);
+
+        $post = $this
+            ->entityManager
+            ->getRepository(Post::class)
+            ->findOneById($postId);
+
+        if ($post == null) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        $commentCount = $this->postManager->getCommentCountStr($post);
+        $form = new CommentForm();
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $this->postManager->addCommentToPost($post, $data);
+
+                return $this->redirect()->toRoute('posts',
+                    [
+                        'action' => 'view',
+                        'id'     => $postId
+                    ]);
+            }
+        }
+
+        return new ViewModel([
+            'post'         => $post,
+            'commentCount' => $commentCount,
+            'form'         => $form,
+            'postManager'  => $this->postManager
         ]);
     }
 
@@ -91,10 +130,10 @@ class PostController extends AbstractActionController
             }
         } else {
             $data = [
-                'title' => $post->getTitle(),
+                'title'   => $post->getTitle(),
                 'content' => $post->getContent(),
-                'tags' => $this->postManager->convertTagsToString($post),
-                'status' => $post->getStatus()
+                'tags'    => $this->postManager->convertTagsToString($post),
+                'status'  => $post->getStatus()
             ];
 
             $form->setData($data);
@@ -118,7 +157,7 @@ class PostController extends AbstractActionController
             ->entityManager
             ->getRepository(Post::class)
             ->findOneById($postId);
-        
+
         if ($post == null) {
             $this->getResponse()->setStatusCode(404);
             return false;
@@ -126,6 +165,6 @@ class PostController extends AbstractActionController
 
         $this->postManager->removePost($post);
 
-        return $this->redirect()->toRoute('posts', ['action'=>'admin']);
+        return $this->redirect()->toRoute('posts', ['action' => 'admin']);
     }
 }
