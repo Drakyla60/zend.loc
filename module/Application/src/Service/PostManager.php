@@ -181,7 +181,7 @@ class PostManager
         $posts = $this
             ->entityManager
             ->getRepository(Post::class)
-            ->findPostsHavingAnyTag();
+            ->findPostsHavingAnyTagArray();
 
         $totalPostCount = count($posts);
 
@@ -195,9 +195,10 @@ class PostManager
             $postsByTag = $this
                 ->entityManager
                 ->getRepository(Post::class)
-                ->findPostsByTag($tag->getName());
+                ->findPostsByTagArray($tag->getName());
 
             $postCount = count($postsByTag);
+
             if ($postCount > 0) {
                 $tagCloud[$tag->getName()] = $postCount;
             }
