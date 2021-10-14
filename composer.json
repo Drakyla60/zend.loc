@@ -26,7 +26,8 @@
         "laminas/laminas-captcha": "^2.10",
         "laminas/laminas-session": "^2.12",
         "laminas/laminas-text": "^2.9",
-        "doctrine/doctrine-orm-module": "^4.0"
+        "doctrine/doctrine-orm-module": "^4.0",
+        "laminas/laminas-paginator": "^2.11"
     },
     "autoload": {
         "psr-4": {
