@@ -27,7 +27,8 @@
         "laminas/laminas-session": "^2.12",
         "laminas/laminas-text": "^2.9",
         "doctrine/doctrine-orm-module": "^4.0",
-        "laminas/laminas-paginator": "^2.11"
+        "laminas/laminas-paginator": "^2.11",
+        "doctrine/migrations": "^3.2"
     },
     "autoload": {
         "psr-4": {
