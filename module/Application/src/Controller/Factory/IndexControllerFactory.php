@@ -4,6 +4,7 @@ namespace Application\Controller\Factory;
 
 use Application\Controller\IndexController;
 use Application\Service\MailSender;
+use Application\Service\PostManager;
 use Interop\Container\ContainerInterface;
 
 class IndexControllerFactory
@@ -12,7 +13,8 @@ class IndexControllerFactory
     {
         $mailSender = $container->get(MailSender::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        $postManager = $container->get(PostManager::class);
 
-        return new IndexController($mailSender, $entityManager);
+        return new IndexController($mailSender, $entityManager, $postManager);
     }
 }

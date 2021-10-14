@@ -6,6 +6,8 @@ namespace Application\Controller;
 
 use Application\Entity\Post;
 use Application\Form\ContactForm;
+use Application\Service\MailSender;
+use Application\Service\PostManager;
 use Doctrine\ORM\EntityManager;
 use Laminas\Barcode\Barcode;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -17,35 +19,41 @@ use Laminas\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
 
-    /**
-     * @var
-     */
-    protected $mailSender;
-    /**
-     * Менеджер сущностей.
-     * @var EntityManager
-     */
-    private $entityManager;
+    private MailSender $mailSender;
+    private EntityManager $entityManager;
+    private PostManager $postManager;
 
-
-    /**
-     * @param $mailSender
-     */
-    public function __construct($mailSender, $entityManager)
+    public function __construct($mailSender, $entityManager, $postManager)
     {
         $this->mailSender = $mailSender;
         $this->entityManager = $entityManager;
+        $this->postManager = $postManager;
     }
 
     public function indexAction()
     {
-        // Отримуємо останні пости.
-        $posts = $this->entityManager->getRepository(Post::class)
-            ->findBy(['status'=>Post::STATUS_PUBLISHED],
-                ['dateCreated'=>'DESC']);
+        $tagFilter = $this->params()->fromQuery('tag', null);
+
+        if ($tagFilter) {
+
+            $posts = $this
+                ->entityManager
+                ->getRepository(Post::class)
+                ->findPostsByTag($tagFilter);
+
+        } else {
+            $posts = $this
+                ->entityManager
+                ->getRepository(Post::class)
+                ->findBy(['status'=>Post::STATUS_PUBLISHED], ['dateCreated'=>'DESC']);
+        }
+
+        $tagCloud = $this->postManager->getTagCloud();
 
         return new ViewModel([
-            'posts' => $posts
+            'posts'       => $posts,
+            'postManager' => $this->postManager,
+            'tagCloud'    => $tagCloud
         ]);
     }
 
