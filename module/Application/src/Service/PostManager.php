@@ -163,4 +163,17 @@ class PostManager
             return $commentCount . ' comments';
     }
 
+    /**
+     * @param $post
+     * @return string
+     */
+    public function getPostStatusAsString($post): string
+    {
+        switch ($post->getStatus()) {
+            case Post::STATUS_DRAFT: return 'Draft';
+            case Post::STATUS_PUBLISHED: return 'Published';
+        }
+
+        return 'Unknown';
+    }
 }
