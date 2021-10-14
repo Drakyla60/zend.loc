@@ -9,8 +9,11 @@ use Application\Form\ContactForm;
 use Application\Service\MailSender;
 use Application\Service\PostManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Paginator\Paginator;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -32,26 +35,33 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
 
         if ($tagFilter) {
 
-            $posts = $this
+            $query = $this
                 ->entityManager
                 ->getRepository(Post::class)
                 ->findPostsByTag($tagFilter);
 
         } else {
-            $posts = $this
+            $query = $this
                 ->entityManager
                 ->getRepository(Post::class)
-                ->findBy(['status'=>Post::STATUS_PUBLISHED], ['dateCreated'=>'DESC']);
+                ->findPublishedPosts();
         }
+
+        $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
+        $paginator = new Paginator($doctrinePaginator);
+
+        $paginator->setDefaultItemCountPerPage(2);
+        $paginator->setCurrentPageNumber($page);
 
         $tagCloud = $this->postManager->getTagCloud();
 
         return new ViewModel([
-            'posts'       => $posts,
+            'posts'       => $paginator,
             'postManager' => $this->postManager,
             'tagCloud'    => $tagCloud
         ]);
