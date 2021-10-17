@@ -61,6 +61,19 @@ CREATE TABLE `post_tag` (
   `tag_id` int(11) NOT NULL
 );
 
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(128) NOT NULL,
+  `full_name` varchar(512) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `status` int(11) NOT NULL,
+  `date_created` datetime NOT NULL,
+  `pwd_reset_token` varchar(32) DEFAULT NULL,
+  `pwd_reset_token_creation_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_idx` (`email`)
+);
+
 #DUMP
 INSERT INTO tag(`name`) VALUES('ZF3');
 INSERT INTO tag(`name`) VALUES('book');

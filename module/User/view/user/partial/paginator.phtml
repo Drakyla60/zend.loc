@@ -1,0 +1,51 @@
+<?php if ($this->pageCount): ?>
+
+    <nav>
+        <ul class="pagination">
+
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <li class="page-item">
+                    <a href="<?= $this->url($this->route, [],
+                        ['query'=>['page'=>$this->previous]]); ?>" aria-label="Previous" class="page-link">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <span aria-hidden="true" class="page-link">&laquo;</span>
+                </li>
+            <?php endif; ?>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <li class="page-item">
+                        <a href="<?= $this->url($this->route, [], ['query'=>['page'=>$page]]); ?>" class="page-link">
+                            <?= $this->escapeHtml($page); ?>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="page-item">
+                        <span aria-hidden="true">
+                            <b class="page-link"><?= $this->escapeHtml($page); ?></b>
+                        </span>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <li class="page-item">
+                    <a href="<?php echo $this->url($this->route, [], ['query'=>['page'=>$this->next]]); ?>" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <span aria-hidden="true" class="page-link">&raquo;</span>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+<?php endif; ?>

@@ -17,6 +17,7 @@ return [
     'Laminas\Filter',
     'Laminas\Router',
     'Laminas\Validator',
+    'User',
     'Admin',
     'Application',
     'Laminas\DeveloperTools',
