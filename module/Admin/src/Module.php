@@ -6,6 +6,7 @@ namespace Admin;
 
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Session\SessionManager;
 
 class Module
 {
@@ -39,6 +40,14 @@ class Module
             $viewModel = $event->getViewModel();
             $viewModel->setTemplate('layout/admin_layout');
         }
+    }
+
+    public function onBootstrap(MvcEvent $event)
+    {
+        $application = $event->getApplication();
+        $serviceManager = $application->getServiceManager();
+
+        $sessionManager = $serviceManager->get(SessionManager::class);
     }
 
 }

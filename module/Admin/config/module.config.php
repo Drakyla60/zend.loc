@@ -66,7 +66,8 @@ return [
         ],
     ],
     'session_containers' => [
-        'UserRegistration'
+        'UserRegistration',
+        'ContainerNamespace',
     ],
 
     'doctrine' => [

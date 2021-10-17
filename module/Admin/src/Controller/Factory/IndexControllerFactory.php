@@ -12,8 +12,9 @@ class IndexControllerFactory
 //        $mailSender = $container->get(MailSender::class);
 //        $entityManager = $container->get('doctrine.entitymanager.orm_default');
 //        $postManager = $container->get(PostManager::class);
+        $sessionContainer = $container->get('ContainerNamespace');
 
 //        return new IndexController($mailSender, $entityManager, $postManager);
-        return new IndexController();
+        return new IndexController($sessionContainer);
     }
 }
