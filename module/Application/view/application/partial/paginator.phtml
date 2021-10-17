@@ -13,7 +13,7 @@
                 </li>
             <?php else: ?>
                 <li class="page-item">
-                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true" class="page-link">&laquo;</span>
                 </li>
             <?php endif; ?>
 
@@ -22,11 +22,14 @@
                 <?php if ($page != $this->current): ?>
                     <li class="page-item">
                         <a href="<?= $this->url($this->route, [], ['query'=>['page'=>$page]]); ?>" class="page-link">
-                            <?= $this->escapeHtml($page); ?></a>
+                            <?= $this->escapeHtml($page); ?>
+                        </a>
                     </li>
                 <?php else: ?>
                     <li class="page-item">
-                        <span aria-hidden="true"><b class="page-link"><?= $this->escapeHtml($page); ?></b></span>
+                        <span aria-hidden="true">
+                            <b class="page-link"><?= $this->escapeHtml($page); ?></b>
+                        </span>
                     </li>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -40,7 +43,7 @@
                 </li>
             <?php else: ?>
                 <li class="page-item">
-                    <span aria-hidden="true">&raquo;</span>
+                    <span aria-hidden="true" class="page-link">&raquo;</span>
                 </li>
             <?php endif; ?>
         </ul>

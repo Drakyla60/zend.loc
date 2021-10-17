@@ -15,6 +15,7 @@
 use Laminas\Session\Storage\SessionArrayStorage;
 use Laminas\Session\Validator\HttpUserAgent;
 use Laminas\Session\Validator\RemoteAddr;
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver as PDOMySqlDriver;
 
 return [
     // Налаштування сеcії.
@@ -34,5 +35,28 @@ return [
     // Налаштування де зберігається сесія.
     'session_storage' => [
         'type' => SessionArrayStorage::class
+    ],
+
+    'doctrine' => [
+        'migrations_configuration' => [
+            'orm_default' => [
+                'table_storage' => [
+                    'table_name' => 'DoctrineMigrationVersions',
+                    'version_column_name' => 'version',
+                    'version_column_length' => 1024,
+                    'executed_at_column_name' => 'executedAt',
+                    'execution_time_column_name' => 'executionTime',
+                ],
+                'migrations_paths' => [
+                    'Migrations' => './data/Migrations'
+                ], // an array of namespace => path
+                'migrations' => [], // an array of fully qualified migrations
+                'all_or_nothing' => false,
+                'check_database_platform' => true,
+                'organize_migrations' => 'year', // year or year_and_month
+                'custom_template' => null,
+            ],
+            'orm_other' => [],
+        ],
     ],
 ];
