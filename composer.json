@@ -30,7 +30,9 @@
         "laminas/laminas-paginator": "^2.11",
         "doctrine/migrations": "^3.2",
         "doctrine/orm": "^2.10",
-        "psr/log": "^1.1.4"
+        "psr/log": "^1.1.4",
+        "laminas/laminas-crypt": "^3.4",
+        "laminas/laminas-authentication": "^2.8"
     },
     "autoload": {
         "psr-4": {

@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace User;
 
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
 use User\Controller\Factory\IndexControllerFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
+use User\Service\AuthAdapter;
+use User\Service\AuthManager;
+use User\Service\Factory\AuthServiceFactory;
+use User\Service\UserManager;
+use User\Service\Factory\AuthManagerFactory;
+use User\Service\Factory\UserManagerFactory;
 
 return [
     'router' => [
@@ -41,8 +48,11 @@ return [
     ],
     'service_manager' => [
         'factories' => [
+            AuthenticationService::class  => Service\Factory\AuthServiceFactory::class,
+            UserManager::class => UserManagerFactory::class,
+            AuthManager::class => AuthManagerFactory::class,
+            AuthAdapter::class => AuthServiceFactory::class
 //            Service\MailSender::class   => InvokableFactory::class,
-//            Service\ImageManager::class => InvokableFactory::class,
 //            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
         ],
     ],
@@ -67,7 +77,6 @@ return [
     ],
     'session_containers' => [
         'UserRegistration',
-        'ContainerNamespace',
     ],
 
     'doctrine' => [
@@ -83,5 +92,26 @@ return [
                 ]
             ]
         ]
-    ]
+    ],
+    // Ключ 'access_filter' используется модулем User, чтобы разрешить или запретить доступ к
+// определенным действиям контроллера для не вошедших на сайт пользователей.
+    'access_filter' => [
+        'options' => [
+            // Фильтр доступа может работать в 'ограничительном' (рекомендуется) или 'разрешающем'
+            // режиме. В ограничительном режиме все действия контроллера должны быть явно перечислены
+            // под ключом конфигурации 'access_filter', а доступ к любому не перечисленному действию
+            // для неавторизованных пользователей запрещен. В разрешающем режиме, даже если действие не
+            // указано под ключом 'access_filter', доступ к нему разрешен для всех (даже для
+            // неавторизованных пользователей. Рекомендуется использовать более безопасный ограничительный режим.
+            'mode' => 'restrictive'
+        ],
+        'controllers' => [
+            Controller\IndexController::class => [
+                // Позволяем всем обращаться к действиям "index" и "about".
+                ['actions' => ['index', 'about'], 'allow' => '*'],
+                // Позволяем вошедшим на сайт пользователям обращаться к действию "settings".
+                ['actions' => ['settings'], 'allow' => '@']
+            ],
+        ]
+    ],
 ];

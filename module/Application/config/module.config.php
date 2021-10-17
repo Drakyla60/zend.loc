@@ -179,7 +179,7 @@ return [
         ],
     ],
     'session_containers' => [
-        'UserRegistration'
+        'UserRegistrations'
     ],
 
     'doctrine' => [

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace User;
 
 use Laminas\ModuleManager\ModuleManager;
+use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\SessionManager;
+use User\Controller\AuthController;
+use User\Service\AuthManager;
 
 class Module
 {
@@ -27,18 +30,50 @@ class Module
         $sharedEventManager->attach(__NAMESPACE__, 'dispatch',
             [$this, 'onDispatch'], 100);
 
+//        $sharedEventManager->attach(AbstractActionController::class,
+//            MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 100);
+
     }
 
-    // Через обробник подій переоприділяємо головний layout
+    /**
+     * Метод-обработчик для события 'Dispatch'. Мы обрабатываем событие Dispatch
+     * для вызова фильтра доступа. Фильтр доступа позволяет определить,
+     * может ли пользователь просматривать страницу. Если пользователь не
+     * авторизован, и у него нет прав для просмотра, мы перенаправляем его
+     * на страницу входа на сайт.
+     */
     public function onDispatch(MvcEvent $event)
     {
+        // Получаем контроллер и действие, которому был отправлен HTTP-запрос.
         $controller = $event->getTarget();
-        $controllerClass = get_class($controller);
-        $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
+        $controllerName = $event->getRouteMatch()->getParam('controller', null);
+        $actionName = $event->getRouteMatch()->getParam('action', null);
 
-        if ($moduleNamespace == __NAMESPACE__) {
-            $viewModel = $event->getViewModel();
-            $viewModel->setTemplate('layout/layout');
+        // Конвертируем имя действия с пунктирами в имя в верблюжьем регистре.
+        $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
+
+        // Получаем экземпляр сервиса AuthManager.
+        $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
+
+        // Выполняем фильтр доступа для каждого контроллера кроме AuthController
+        // (чтобы избежать бесконечного перенаправления).
+        if ($controllerName!=AuthController::class &&
+            !$authManager->filterAccess($controllerName, $actionName)) {
+
+            // Запоминаем URL страницы, к которой пытался обратиться пользователь. Мы перенаправим пользователя
+            // на этот URL после успешной авторизации.
+            $uri = $event->getApplication()->getRequest()->getUri();
+            // Делаем URL относительным (убираем схему, информацию о пользователе, имя хоста и порт),
+            // чтобы избежать перенаправления на другой домен недоброжелателем.
+            $uri->setScheme(null)
+                ->setHost(null)
+                ->setPort(null)
+                ->setUserInfo(null);
+            $redirectUrl = $uri->toString();
+
+            // Перенаправляем пользователя на страницу "Login".
+            return $controller->redirect()->toRoute('login', [],
+                ['query'=>['redirectUrl'=>$redirectUrl]]);
         }
     }
 
