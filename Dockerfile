@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 ###
 
 ## MySQL PDO support
- RUN docker-php-ext-install pdo_mysql
+ RUN docker-php-ext-install pdo pdo_mysql
 
 ## PostgreSQL PDO support
 # RUN apt-get install --yes libpq-dev \
