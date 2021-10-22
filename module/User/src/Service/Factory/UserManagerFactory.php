@@ -12,9 +12,7 @@ class UserManagerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): UserManager
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
-        $viewRenderer = $container->get(ViewModel::class);
-
-        // Инстанцируем сервис и внедряем зависимости.
-        return new UserManager($entityManager, $viewRenderer);
+       // $viewRenderer = $container->get('ViewRenderer');
+        return new UserManager($entityManager);
     }
 }
