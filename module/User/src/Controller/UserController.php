@@ -7,6 +7,8 @@ namespace User\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use User\Entity\User;
+use User\Form\PasswordChangeForm;
+use User\Form\PasswordResetForm;
 use User\Form\UserForm;
 
 /**
@@ -65,7 +67,7 @@ class UserController extends AbstractActionController
     public function viewAction()
     {
         $id = (int)$this->params()->fromRoute('id', -1);
-        if ($id<1) {
+        if ($id < 1) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
@@ -87,12 +89,14 @@ class UserController extends AbstractActionController
     public function editAction()
     {
         $id = (int)$this->params()->fromRoute('id', -1);
-        if ($id<1) {
+        if ($id < 1) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
 
-        $user = $this->entityManager->getRepository(User::class)
+        $user = $this
+            ->entityManager
+            ->getRepository(User::class)
             ->find($id);
 
         if ($user == null) {
@@ -106,19 +110,19 @@ class UserController extends AbstractActionController
             $data = $this->params()->fromPost();
             $form->setData($data);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $data = $form->getData();
                 $this->userManager->updateUser($user, $data);
 
                 return $this->redirect()->toRoute('users',
-                    ['action'=>'view', 'id'=>$user->getId()]);
+                    ['action' => 'view', 'id' => $user->getId()]);
             }
         } else {
 
             $form->setData([
-                'full_name'=>$user->getFullName(),
-                'email'=>$user->getEmail(),
-                'status'=>$user->getStatus(),
+                'full_name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+                'status' => $user->getStatus(),
             ]);
         }
 
@@ -126,6 +130,156 @@ class UserController extends AbstractActionController
             'user' => $user,
             'form' => $form
         ));
+    }
+
+//    public function changePasswordAction()
+//    {
+//        $id = (int)$this->params()->fromRoute('id', -1);
+//        if ($id<1) {
+//            $this->getResponse()->setStatusCode(404);
+//            return false;
+//        }
+//
+//        $user = $this->entityManager->getRepository(User::class)
+//            ->find($id);
+//
+//        if ($user == null) {
+//            $this->getResponse()->setStatusCode(404);
+//            return false;
+//        }
+//
+//        // Create "change password" form
+//        $form = new PasswordChangeForm('change');
+//
+//        // Check if user has submitted the form
+//        if ($this->getRequest()->isPost()) {
+//
+//            // Fill in the form with POST data
+//            $data = $this->params()->fromPost();
+//
+//            $form->setData($data);
+//
+//            // Validate form
+//            if($form->isValid()) {
+//
+//                // Get filtered and validated data
+//                $data = $form->getData();
+//
+//                // Try to change password.
+//                if (!$this->userManager->changePassword($user, $data)) {
+//                    $this->flashMessenger()->addErrorMessage(
+//                        'Sorry, the old password is incorrect. Could not set the new password.');
+//                } else {
+//                    $this->flashMessenger()->addSuccessMessage(
+//                        'Changed the password successfully.');
+//                }
+//
+//                // Redirect to "view" page
+//                return $this->redirect()->toRoute('users',
+//                    ['action'=>'view', 'id'=>$user->getId()]);
+//            }
+//        }
+//
+//        return new ViewModel([
+//            'user' => $user,
+//            'form' => $form
+//        ]);
+//    }
+
+    public function resetPasswordAction()
+    {
+        $form = new PasswordResetForm();
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $user = $this
+                    ->entityManager
+                    ->getRepository(User::class)
+                    ->findOneByEmail($data['email']);
+
+                if ($user != null && $user->getStatus() == User::STATUS_ACTIVE) {
+                    $this->userManager->generatePasswordResetToken($user);
+                    return $this->redirect()->toRoute('users',
+                        ['action' => 'message', 'id' => 'sent']);
+                } else {
+                    return $this->redirect()->toRoute('users',
+                        ['action' => 'message', 'id' => 'invalid-email']);
+                }
+            }
+        }
+
+        return new ViewModel([
+            'form' => $form
+        ]);
+    }
+
+    public function setPasswordAction()
+    {
+        $email = $this->params()->fromQuery('email', null);
+        $token = $this->params()->fromQuery('token', null);
+
+        // Validate token length
+        if ($token != null && (!is_string($token) || strlen($token) != 32)) {
+            throw new \Exception('Invalid token type or length');
+        }
+
+        if ($token === null ||
+            !$this->userManager->validatePasswordResetToken($email, $token)) {
+            return $this->redirect()->toRoute('users',
+                ['action' => 'message', 'id' => 'failed']);
+        }
+
+        // Create form
+        $form = new PasswordChangeForm('reset');
+
+        // Check if user has submitted the form
+        if ($this->getRequest()->isPost()) {
+
+            // Fill in the form with POST data
+            $data = $this->params()->fromPost();
+
+            $form->setData($data);
+
+            // Validate form
+            if ($form->isValid()) {
+
+                $data = $form->getData();
+
+                // Set new password for the user.
+                if ($this->userManager->setNewPasswordByToken($email, $token, $data['new_password'])) {
+
+                    // Redirect to "message" page
+                    return $this->redirect()->toRoute('users',
+                        ['action' => 'message', 'id' => 'set']);
+                } else {
+                    // Redirect to "message" page
+                    return $this->redirect()->toRoute('users',
+                        ['action' => 'message', 'id' => 'failed']);
+                }
+            }
+        }
+
+        return new ViewModel([
+            'form' => $form
+        ]);
+    }
+
+    public function messageAction(): ViewModel
+    {
+        // Get message ID from route.
+        $id = (string)$this->params()->fromRoute('id');
+
+        // Validate input argument.
+        if ($id != 'invalid-email' && $id != 'sent' && $id != 'set' && $id != 'failed') {
+            throw new \Exception('Invalid message ID specified');
+        }
+
+        return new ViewModel([
+            'id' => $id
+        ]);
     }
 
 }
