@@ -32,7 +32,8 @@
         "doctrine/orm": "^2.10",
         "psr/log": "^1.1.4",
         "laminas/laminas-crypt": "^3.4",
-        "laminas/laminas-authentication": "^2.8"
+        "laminas/laminas-authentication": "^2.8",
+        "phpmailer/phpmailer": "^6.5"
     },
     "autoload": {
         "psr-4": {

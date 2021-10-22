@@ -68,7 +68,7 @@ CREATE TABLE `user` (
   `password` varchar(256) NOT NULL,
   `status` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
-  `pwd_reset_token` varchar(32) DEFAULT NULL,
+  `pwd_reset_token` varchar(100) DEFAULT NULL,
   `pwd_reset_token_creation_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_idx` (`email`)
