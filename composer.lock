@@ -400,16 +400,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "3.1.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "a036d90c303f3163b5be8b8fde9b6755b2be4a3a"
+                "reference": "6d970a11479275300b5144e9373ce5feacfa9b91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/a036d90c303f3163b5be8b8fde9b6755b2be4a3a",
-                "reference": "a036d90c303f3163b5be8b8fde9b6755b2be4a3a",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/6d970a11479275300b5144e9373ce5feacfa9b91",
+                "reference": "6d970a11479275300b5144e9373ce5feacfa9b91",
                 "shasum": ""
             },
             "require": {
@@ -470,7 +470,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/common/issues",
-                "source": "https://github.com/doctrine/common/tree/3.1.2"
+                "source": "https://github.com/doctrine/common/tree/3.2.0"
             },
             "funding": [
                 {
@@ -486,7 +486,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-10T20:18:51+00:00"
+            "time": "2021-10-19T06:47:22+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -642,37 +642,36 @@
         },
         {
             "name": "doctrine/doctrine-laminas-hydrator",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine-laminas-hydrator.git",
-                "reference": "aae72d294087bb5ca454ea212517d8e54797635e"
+                "reference": "346e511ed0c42b00963715585111eab760ffd025"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine-laminas-hydrator/zipball/aae72d294087bb5ca454ea212517d8e54797635e",
-                "reference": "aae72d294087bb5ca454ea212517d8e54797635e",
+                "url": "https://api.github.com/repos/doctrine/doctrine-laminas-hydrator/zipball/346e511ed0c42b00963715585111eab760ffd025",
+                "reference": "346e511ed0c42b00963715585111eab760ffd025",
                 "shasum": ""
             },
             "require": {
-                "doctrine/collections": "^1.6.5",
-                "doctrine/inflector": "^1.4.3 || ^2.0.3",
-                "doctrine/persistence": "^1.3.7 || ^2.0",
+                "doctrine/collections": "^1.6.8",
+                "doctrine/inflector": "^1.4.4 || ^2.0.3",
+                "doctrine/persistence": "^1.3.8 || ^2.2.2",
                 "ext-ctype": "*",
-                "laminas/laminas-hydrator": "^3.0.2 || ^4.0",
-                "laminas/laminas-stdlib": "^3.2.1",
-                "php": "^7.2 || ~8.0.0"
+                "laminas/laminas-hydrator": "^3.2.1 || ^4.3.1",
+                "laminas/laminas-stdlib": "^3.6.0",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "^2.0",
-                "phpunit/phpunit": "^8.5"
+                "jangregor/phpstan-prophecy": "^0.8.1",
+                "laminas/laminas-coding-standard": "^2.3.0",
+                "phpspec/prophecy-phpunit": "^2.0.1",
+                "phpstan/phpstan": "^0.12.99",
+                "phpunit/phpunit": "^9.5.10",
+                "vimeo/psalm": "^4.10.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Laminas\\Hydrator\\": "src/"
@@ -708,20 +707,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-24T04:22:30+00:00"
+            "time": "2021-10-17T12:48:44+00:00"
         },
         {
             "name": "doctrine/doctrine-module",
-            "version": "4.1.2",
+            "version": "4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineModule.git",
-                "reference": "b2ab0f53d5de185e436b623b519bd91c95190fda"
+                "reference": "662362af298d25a305d62e96931c0a3608078b40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineModule/zipball/b2ab0f53d5de185e436b623b519bd91c95190fda",
-                "reference": "b2ab0f53d5de185e436b623b519bd91c95190fda",
+                "url": "https://api.github.com/repos/doctrine/DoctrineModule/zipball/662362af298d25a305d62e96931c0a3608078b40",
+                "reference": "662362af298d25a305d62e96931c0a3608078b40",
                 "shasum": ""
             },
             "require": {
@@ -745,6 +744,7 @@
             },
             "require-dev": {
                 "doctrine/coding-standard": "^8.2",
+                "doctrine/orm": "^2.9",
                 "laminas/laminas-i18n": "^2.7",
                 "laminas/laminas-log": "^2.9",
                 "laminas/laminas-modulemanager": "^2.8",
@@ -817,7 +817,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineModule/issues",
-                "source": "https://github.com/doctrine/DoctrineModule/tree/4.1.2"
+                "source": "https://github.com/doctrine/DoctrineModule/tree/4.1.3"
             },
             "funding": [
                 {
@@ -833,20 +833,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-19T20:03:47+00:00"
+            "time": "2021-10-18T19:22:32+00:00"
         },
         {
             "name": "doctrine/doctrine-orm-module",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineORMModule.git",
-                "reference": "cd309adebed24f40f62006fa95fe9bbf2ce43ff0"
+                "reference": "2da90be662cffb23ac3970bf2b933a06b8745f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/cd309adebed24f40f62006fa95fe9bbf2ce43ff0",
-                "reference": "cd309adebed24f40f62006fa95fe9bbf2ce43ff0",
+                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/2da90be662cffb23ac3970bf2b933a06b8745f1b",
+                "reference": "2da90be662cffb23ac3970bf2b933a06b8745f1b",
                 "shasum": ""
             },
             "require": {
@@ -935,7 +935,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineORMModule/issues",
-                "source": "https://github.com/doctrine/DoctrineORMModule/tree/4.0.1"
+                "source": "https://github.com/doctrine/DoctrineORMModule/tree/4.0.2"
             },
             "funding": [
                 {
@@ -951,7 +951,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-05T19:25:16+00:00"
+            "time": "2021-10-18T17:01:29+00:00"
         },
         {
             "name": "doctrine/event-manager",

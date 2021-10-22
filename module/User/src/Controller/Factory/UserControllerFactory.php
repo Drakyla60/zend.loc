@@ -12,7 +12,8 @@ class UserControllerFactory
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $userManager = $container->get(UserManager::class);
+        $sessionContainer = $container->get('UserSessionContainer');
 
-        return new UserController($entityManager, $userManager);
+        return new UserController($entityManager, $userManager, $sessionContainer);
     }
 }

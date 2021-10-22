@@ -6,7 +6,7 @@ namespace User;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
-use User\Controller\Factory\IndexControllerFactory;
+use User\Controller\Factory\UserControllerFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use User\Service\AuthAdapter;
@@ -22,20 +22,24 @@ return [
             'home_user' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/user',
+                    'route'    => '/users/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\UserController::class,
                         'action'     => 'index',
                     ],
                 ],
             ],
-            'user' => [
+            'users' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/user[/:action]',
+                    'route'    => '/users[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller'    => Controller\UserController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],
@@ -43,17 +47,12 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
-            AuthenticationService::class  => Service\Factory\AuthServiceFactory::class,
             UserManager::class => UserManagerFactory::class,
-            AuthManager::class => AuthManagerFactory::class,
-            AuthAdapter::class => AuthServiceFactory::class
-//            Service\MailSender::class   => InvokableFactory::class,
-//            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -76,7 +75,7 @@ return [
         ],
     ],
     'session_containers' => [
-        'UserRegistration',
+        'UserSessionContainer',
     ],
 
     'doctrine' => [
@@ -93,25 +92,25 @@ return [
             ]
         ]
     ],
-    // Ключ 'access_filter' используется модулем User, чтобы разрешить или запретить доступ к
-// определенным действиям контроллера для не вошедших на сайт пользователей.
-    'access_filter' => [
-        'options' => [
-            // Фильтр доступа может работать в 'ограничительном' (рекомендуется) или 'разрешающем'
-            // режиме. В ограничительном режиме все действия контроллера должны быть явно перечислены
-            // под ключом конфигурации 'access_filter', а доступ к любому не перечисленному действию
-            // для неавторизованных пользователей запрещен. В разрешающем режиме, даже если действие не
-            // указано под ключом 'access_filter', доступ к нему разрешен для всех (даже для
-            // неавторизованных пользователей. Рекомендуется использовать более безопасный ограничительный режим.
-            'mode' => 'restrictive'
-        ],
-        'controllers' => [
-            Controller\IndexController::class => [
-                // Позволяем всем обращаться к действиям "index" и "about".
-                ['actions' => ['index', 'about'], 'allow' => '*'],
-                // Позволяем вошедшим на сайт пользователям обращаться к действию "settings".
-                ['actions' => ['settings'], 'allow' => '@']
-            ],
-        ]
-    ],
+//    // Ключ 'access_filter' используется модулем User, чтобы разрешить или запретить доступ к
+//// определенным действиям контроллера для не вошедших на сайт пользователей.
+//    'access_filter' => [
+//        'options' => [
+//            // Фильтр доступа может работать в 'ограничительном' (рекомендуется) или 'разрешающем'
+//            // режиме. В ограничительном режиме все действия контроллера должны быть явно перечислены
+//            // под ключом конфигурации 'access_filter', а доступ к любому не перечисленному действию
+//            // для неавторизованных пользователей запрещен. В разрешающем режиме, даже если действие не
+//            // указано под ключом 'access_filter', доступ к нему разрешен для всех (даже для
+//            // неавторизованных пользователей. Рекомендуется использовать более безопасный ограничительный режим.
+//            'mode' => 'restrictive'
+//        ],
+//        'controllers' => [
+//            Controller\UserController::class => [
+//                // Позволяем всем обращаться к действиям "index" и "about".
+//                ['actions' => ['index', 'about'], 'allow' => '*'],
+//                // Позволяем вошедшим на сайт пользователям обращаться к действию "settings".
+//                ['actions' => ['settings'], 'allow' => '@']
+//            ],
+//        ]
+//    ],
 ];

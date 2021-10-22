@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace User\Controller;
 
-
-use Doctrine\ORM\EntityManager;
-use Exception;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use User\Entity\User;
 use User\Form\UserForm;
-use User\Service\UserManager;
 
 /**
  *
  */
 class UserController extends AbstractActionController
 {
-    private EntityManager $entityManager;
-    private UserManager $userManager;
+    private $entityManager;
+    private $userManager;
+    private $sessionContainer;
 
-    public function __construct($entityManager, $userManager)
+    public function __construct($entityManager, $userManager, $sessionContainer)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
+        $this->sessionContainer = $sessionContainer;
     }
 
     public function indexAction(): ViewModel
@@ -35,6 +33,7 @@ class UserController extends AbstractActionController
             ->findAll();
 //            ->findAllUsers();
 
+        $this->sessionContainer['container22'] = $query;
         return new ViewModel([
             'users' => $query
         ]);
