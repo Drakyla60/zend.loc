@@ -25,18 +25,22 @@ class IndexController extends AbstractActionController
     private MailSender $mailSender;
     private EntityManager $entityManager;
     private PostManager $postManager;
+    private $authService;
 
-    public function __construct($mailSender, $entityManager, $postManager)
+    public function __construct($mailSender, $entityManager, $postManager, $authService)
     {
         $this->mailSender = $mailSender;
         $this->entityManager = $entityManager;
         $this->postManager = $postManager;
+        $this->authService = $authService;
     }
 
     public function indexAction()
     {
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
+
+        $name = $this->authService->getIdentity();
 
         if ($tagFilter) {
 
@@ -63,7 +67,8 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'posts'       => $paginator,
             'postManager' => $this->postManager,
-            'tagCloud'    => $tagCloud
+            'tagCloud'    => $tagCloud,
+            'loginName' => $name,
         ]);
     }
 

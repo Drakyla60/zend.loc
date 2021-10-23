@@ -35,7 +35,7 @@ class UserController extends AbstractActionController
             ->findAll();
 //            ->findAllUsers();
 
-        $this->sessionContainer['container22'] = $query;
+        $this->sessionContainer->name = $query;
         return new ViewModel([
             'users' => $query
         ]);
