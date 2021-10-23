@@ -6,15 +6,17 @@ namespace User;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
-use User\Controller\Factory\UserControllerFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
-use User\Service\AuthAdapter;
-use User\Service\AuthManager;
-use User\Service\Factory\AuthServiceFactory;
-use User\Service\UserManager;
+use User\Controller\Factory\AuthControllerFactory;
+use User\Service\Factory\AuthAdapterFactory;
 use User\Service\Factory\AuthManagerFactory;
 use User\Service\Factory\UserManagerFactory;
+use User\Service\Factory\AuthenticationServiceFactory;
+use User\Service\AuthAdapter;
+use User\Service\AuthManager;
+use User\Service\UserManager;
 
 return [
     'router' => [
@@ -92,6 +94,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
+            AuthenticationService::class => AuthenticationServiceFactory::class,
+            AuthAdapter::class => AuthAdapterFactory::class,
             UserManager::class => UserManagerFactory::class,
         ],
     ],
