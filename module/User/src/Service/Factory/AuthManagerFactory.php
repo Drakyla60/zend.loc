@@ -16,7 +16,13 @@ class AuthManagerFactory implements FactoryInterface
         $authService = $container->get(AuthenticationService::class);
         $sessionManager = $container->get(SessionManager::class);
 
-        return new AuthManager($authService, $sessionManager);
+        // Get contents of 'access_filter' config key (the AuthManager service
+        // will use this data to determine whether to allow currently logged in user
+        // to execute the controller action or not.
+        $config = $container->get('Config');
+        $config = $config['access_filter'] ?? [];
+
+        return new AuthManager($authService, $sessionManager, $config);
 
     }
 }
