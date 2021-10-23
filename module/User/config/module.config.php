@@ -90,6 +90,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
+            Controller\AuthController::class => AuthControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -97,6 +98,7 @@ return [
             AuthenticationService::class => AuthenticationServiceFactory::class,
             AuthAdapter::class => AuthAdapterFactory::class,
             UserManager::class => UserManagerFactory::class,
+            AuthManager::class => AuthManagerFactory::class,
         ],
     ],
     'view_manager' => [
