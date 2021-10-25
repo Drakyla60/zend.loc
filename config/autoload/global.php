@@ -37,26 +37,43 @@ return [
         'type' => SessionArrayStorage::class
     ],
 
-    'doctrine' => [
-        'migrations_configuration' => [
-            'orm_default' => [
-                'table_storage' => [
-                    'table_name' => 'DoctrineMigrationVersions',
-                    'version_column_name' => 'version',
-                    'version_column_length' => 1024,
-                    'executed_at_column_name' => 'executedAt',
-                    'execution_time_column_name' => 'executionTime',
-                ],
-                'migrations_paths' => [
-                    'Migrations' => './data/Migrations'
-                ], // an array of namespace => path
-                'migrations' => [], // an array of fully qualified migrations
-                'all_or_nothing' => false,
-                'check_database_platform' => true,
-                'organize_migrations' => 'year', // year or year_and_month
-                'custom_template' => null,
-            ],
-            'orm_other' => [],
-        ],
-    ],
+//    'doctrine' => [
+//        'connection' => [
+//            'orm_default' => [
+//                'params' => [
+//                    'driver'   => 'mysql',
+//                    'host'     => 'db',
+//                    'port'     => '3306',
+//                    'user'     => 'root',
+//                    'password' => 'root',
+//                    'dbname'   => 'laminas_blog',
+//                    'driverOptions' => [
+//                        1002   => 'SET NAMES utf8',
+//                    ],
+//                ],
+//            ],
+//        ],
+//        'migrations_configuration' => [
+//            'orm_default' => [
+//                'table_storage' => [
+//                    'table_name' => 'doctrine_migration_versions',
+//                    'version_column_name' => 'version',
+//                    'version_column_length' => 1024,
+//                    'executed_at_column_name' => 'executed_at',
+//                    'execution_time_column_name' => 'execution_time',
+//                ],
+//                'migrations_paths' => [
+//                    'Migrations' => './data/Migrations'
+//                ],
+//
+//                'organize_migrations' => 'year', // year or year_and_month
+//                'custom_template' => null,
+//                'all_or_nothing' => true,
+//                'transactional' => true,
+//                'check_database_platform' => true,
+//                'connection' => null,
+//                'em' => null,
+//            ],
+//        ],
+//    ],
 ];

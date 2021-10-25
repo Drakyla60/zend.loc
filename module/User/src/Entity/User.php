@@ -2,6 +2,7 @@
 
 namespace User\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +57,23 @@ class User
      * @ORM\Column(name="pwd_reset_token_creation_date")
      */
     protected string $passwordResetTokenCreationDate;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User\Entity\Role")
+     * @ORM\JoinTable(name="user_role",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     *      )
+     */
+    private $roles;
+
+    /**
+     * Конструктор.
+     */
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * @return integer
@@ -206,5 +224,34 @@ class User
     public function setPasswordResetTokenCreationDate(string $date)
     {
         $this->passwordResetTokenCreationDate = $date;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function getRolesAsString()
+    {
+        $roleList = '';
+
+        $count = count($this->roles);
+        $i = 0;
+        foreach ($this->roles as $role) {
+            $roleList .= $role->getName();
+            if ($i < $count - 1)
+                $roleList .= ', ';
+            $i++;
+        }
+
+        return $roleList;
+    }
+
+    /**
+     * Присваивает пользователю роль.
+     */
+    public function addRole($role)
+    {
+        $this->roles->add($role);
     }
 }

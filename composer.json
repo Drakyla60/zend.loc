@@ -29,13 +29,11 @@
         "doctrine/doctrine-orm-module": "^4.0",
         "laminas/laminas-paginator": "^2.11",
         "doctrine/migrations": "^3.3",
-        "doctrine/orm": "^2.10",
         "psr/log": "^1.1.4",
         "laminas/laminas-crypt": "^3.4",
         "laminas/laminas-authentication": "^2.8",
         "phpmailer/phpmailer": "^6.5",
-        "laminas/laminas-permissions-rbac": "^3.2",
-        "doctrine/doctrine-module": "^4.1"
+        "laminas/laminas-permissions-rbac": "^3.2"
     },
     "autoload": {
         "psr-4": {

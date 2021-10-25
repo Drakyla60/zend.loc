@@ -34,7 +34,9 @@ RUN apt-get update && apt-get install -y \
 ###
 
 ## MySQL PDO support
- RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update \
+ && apt-get install -y git zlib1g-dev \
+ && docker-php-ext-install pdo pdo_mysql mysqli zip
 
 ## PostgreSQL PDO support
 # RUN apt-get install --yes libpq-dev \
