@@ -12,6 +12,8 @@
  * file.
  */
 
+use Application\Service\RbacAssertionManager;
+use Laminas\Cache\Storage\Adapter\Filesystem;
 use Laminas\Session\Storage\SessionArrayStorage;
 use Laminas\Session\Validator\HttpUserAgent;
 use Laminas\Session\Validator\RemoteAddr;
@@ -37,43 +39,27 @@ return [
         'type' => SessionArrayStorage::class
     ],
 
-//    'doctrine' => [
-//        'connection' => [
-//            'orm_default' => [
-//                'params' => [
-//                    'driver'   => 'mysql',
-//                    'host'     => 'db',
-//                    'port'     => '3306',
-//                    'user'     => 'root',
-//                    'password' => 'root',
-//                    'dbname'   => 'laminas_blog',
-//                    'driverOptions' => [
-//                        1002   => 'SET NAMES utf8',
-//                    ],
-//                ],
-//            ],
-//        ],
-//        'migrations_configuration' => [
-//            'orm_default' => [
-//                'table_storage' => [
-//                    'table_name' => 'doctrine_migration_versions',
-//                    'version_column_name' => 'version',
-//                    'version_column_length' => 1024,
-//                    'executed_at_column_name' => 'executed_at',
-//                    'execution_time_column_name' => 'execution_time',
-//                ],
-//                'migrations_paths' => [
-//                    'Migrations' => './data/Migrations'
-//                ],
-//
-//                'organize_migrations' => 'year', // year or year_and_month
-//                'custom_template' => null,
-//                'all_or_nothing' => true,
-//                'transactional' => true,
-//                'check_database_platform' => true,
-//                'connection' => null,
-//                'em' => null,
-//            ],
-//        ],
-//    ],
+    'caches' => [
+        'FilesystemCache' => [
+            'adapter' => [
+                'name'    => Filesystem::class,
+                'options' => [
+                    // Store cached data in this directory.
+                    'cache_dir' => './data/cache',
+                    // Store cached data for 1 hour.
+                    'ttl' => 60*60*1
+                ],
+            ],
+            'plugins' => [
+                [
+                    'name'    => 'serializer',
+                    'options' => [],
+                ],
+            ],
+        ],
+    ],
+    'rbac_manager' => [
+        'assertions' => [RbacAssertionManager::class],
+    ],
+
 ];
