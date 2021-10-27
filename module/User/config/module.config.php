@@ -158,6 +158,25 @@ return [
             AuthAdapter::class           => AuthAdapterFactory::class,
             UserManager::class           => UserManagerFactory::class,
             AuthManager::class           => AuthManagerFactory::class,
+            RoleManager::class           => RoleManagerFactory::class,
+            RbacManager::class           => RbacManagerFactory::class,
+            PermissionManager::class     => PermissionManagerFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
+            AccessPlugin::class => AccessPluginFactory::class,
+        ],
+        'aliases' => [
+            'access' => AccessPlugin::class,
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            Access::class => AccessFactory::class,
+        ],
+        'aliases' => [
+            'access' => Access::class,
         ],
     ],
     'view_manager'       => [
