@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace User\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Exception;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use User\Entity\Role;
 use User\Entity\User;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
 use User\Form\UserForm;
+use User\Service\UserManager;
 
 /**
  *
  */
 class UserController extends AbstractActionController
 {
-    private $entityManager;
-    private $userManager;
+    private EntityManager $entityManager;
+    private UserManager $userManager;
     private $sessionContainer;
 
     public function __construct($entityManager, $userManager, $sessionContainer)
@@ -43,7 +47,16 @@ class UserController extends AbstractActionController
 
     public function addAction()
     {
-        $form = new UserForm('create');
+        $form = new UserForm('create', $this->entityManager);
+        // Get the list of all available roles (sorted by name).
+        $allRoles = $this->entityManager->getRepository(Role::class)
+            ->findBy([], ['name'=>'ASC']);
+        $roleList = [];
+        foreach ($allRoles as $role) {
+            $roleList[$role->getId()] = $role->getName();
+        }
+
+        $form->get('roles')->setValueOptions($roleList);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -104,7 +117,7 @@ class UserController extends AbstractActionController
             return false;
         }
 
-        $form = new UserForm('update', $user);
+        $form = new UserForm('update', $this->entityManager, $user);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
@@ -223,7 +236,7 @@ class UserController extends AbstractActionController
 
         // Validate token length
         if ($token != null && (!is_string($token) || strlen($token) != 32)) {
-            throw new \Exception('Invalid token type or length');
+            throw new Exception('Invalid token type or length');
         }
 
         if ($token === null ||
@@ -274,7 +287,7 @@ class UserController extends AbstractActionController
 
         // Validate input argument.
         if ($id != 'invalid-email' && $id != 'sent' && $id != 'set' && $id != 'failed') {
-            throw new \Exception('Invalid message ID specified');
+            throw new Exception('Invalid message ID specified');
         }
 
         return new ViewModel([
