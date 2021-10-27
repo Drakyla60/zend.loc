@@ -6,22 +6,34 @@ use Exception;
 use Laminas\Crypt\Password\Bcrypt;
 use Laminas\Math\Rand;
 use PHPMailer\PHPMailer\PHPMailer;
+use User\Entity\Role;
 use User\Entity\User;
 
 class UserManager
 {
 
     private $entityManager;
+    private $roleManager;
+    private $permissionManager;
     private $viewRenderer;
+    private $config;
 
-    public function __construct($entityManager, $viewRenderer)
+    public function __construct($entityManager, $roleManager, $permissionManager, $viewRenderer, $config)
     {
         $this->entityManager = $entityManager;
         $this->viewRenderer = $viewRenderer;
+        $this->roleManager = $roleManager;
+        $this->permissionManager = $permissionManager;
+        $this->config = $config;
     }
 
     public function addUser($data): User
     {
+        // Do not allow several users with the same email address.
+        if($this->checkUserExists($data['email'])) {
+            throw new \Exception("User with email address " . $data['$email'] . " already exists");
+        }
+
         $user = new User();
         $user->setEmail($data['email']);
         $user->setFullName($data['full_name']);
@@ -33,22 +45,57 @@ class UserManager
         $currentDate = date('Y-m-d H:i:s');
         $user->setDateCreated($currentDate);
 
+        $this->assignRoles($user, $data['roles']);
+
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $user;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateUser(User $user, $data): User
     {
+
+        // Do not allow to change user email if another user with such email already exits.
+        if($user->getEmail()!=$data['email'] && $this->checkUserExists($data['email'])) {
+            throw new \Exception("Another user with email address " . $data['email'] . " already exists");
+        }
+
         $user->setEmail($data['email']);
         $user->setFullName($data['full_name']);
         $user->setStatus($data['status']);
+
+        $this->assignRoles($user, $data['roles']);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    /**
+     * A helper method which assigns new roles to the user.
+     */
+    private function assignRoles($user, $roleIds)
+    {
+        // Remove old user role(s).
+        $user->getRoles()->clear();
+
+        // Assign new role(s).
+        foreach ($roleIds as $roleId) {
+            $role = $this->entityManager
+                ->getRepository(Role::class)
+                ->find($roleId);
+            if ($role==null) {
+                throw new \Exception('Not found role by ID');
+            }
+
+            $user->addRole($role);
+        }
     }
 
     public function validatePassword($user, $password): bool
@@ -63,10 +110,18 @@ class UserManager
         return false;
     }
 
+    /**
+     * This method checks if at least one user presents, and if not, creates
+     * 'Admin' user with email 'admin@example.com' and password 'Secur1ty'.
+     */
     public function createAdminUserIfNotExists()
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy([]);
         if ($user==null) {
+
+            $this->permissionManager->createDefaultPermissionsIfNotExist();
+            $this->roleManager->createDefaultRolesIfNotExist();
+
             $user = new User();
             $user->setEmail('admin@example.com');
             $user->setFullName('Admin');
@@ -75,6 +130,16 @@ class UserManager
             $user->setPassword($passwordHash);
             $user->setStatus(User::STATUS_ACTIVE);
             $user->setDateCreated(date('Y-m-d H:i:s'));
+
+            // Assign user Administrator role
+            $adminRole = $this->entityManager
+                ->getRepository(Role::class)
+                ->findOneByName('Administrator');
+            if ($adminRole==null) {
+                throw new \Exception('Administrator role doesn\'t exist');
+            }
+
+            $user->getRoles()->add($adminRole);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -195,5 +260,48 @@ class UserManager
         $this->entityManager->flush();
 
         return true;
+    }
+
+    /**
+     * This method is used to change the password for the given user. To change the password,
+     * one must know the old password.
+     */
+    public function changePassword($user, $data)
+    {
+        $oldPassword = $data['old_password'];
+
+        // Check that old password is correct
+        if (!$this->validatePassword($user, $oldPassword)) {
+            return false;
+        }
+
+        $newPassword = $data['new_password'];
+
+        // Check password length
+        if (strlen($newPassword)<6 || strlen($newPassword)>64) {
+            return false;
+        }
+
+        // Set new password for user
+        $bcrypt = new Bcrypt();
+        $passwordHash = $bcrypt->create($newPassword);
+        $user->setPassword($passwordHash);
+
+        // Apply changes
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    /**
+     * Checks whether an active user with given email address already exists in the database.
+     */
+    public function checkUserExists($email): bool
+    {
+
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneByEmail($email);
+
+        return $user !== null;
     }
 }
