@@ -7,6 +7,9 @@ namespace Application;
 use Application\Controller\Factory\ImageControllerFactory;
 use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\RegistrationControllerFactory;
+use Application\Controller\IndexController;
+use Application\Service\Factory\RbacAssertionManagerFactory;
+use Application\Service\RbacAssertionManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
@@ -157,6 +160,7 @@ return [
             Service\MailSender::class   => InvokableFactory::class,
             Service\ImageManager::class => InvokableFactory::class,
             Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
+            RbacAssertionManager::class => RbacAssertionManagerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -181,7 +185,6 @@ return [
     'session_containers' => [
         'UserRegistrations'
     ],
-
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -195,5 +198,19 @@ return [
                 ]
             ]
         ]
-    ]
+    ],
+    'access_filter' => [
+        'options' => [
+            'mode' => 'restrictive' // restrictive  !!  permissive
+        ],
+        'controllers' => [
+            IndexController::class => [
+                // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
+                ['actions' => ['index',], 'allow' => '*'],
+                // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
+                // пользователям с привилегией "user.manage".
+                ['actions' => ['about'], 'allow' => '+application.about']
+            ],
+        ]
+    ],
 ];
