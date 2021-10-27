@@ -56,12 +56,12 @@
                         </li>
                         <li class="nav-item <?=$this->url() === '/about' ? 'active' : '' ?>">
                             <a class="nav-link" href="<?= $this->url('about') ?>">
-                                About <span class="sr-only">(current)</span>
+                                About
                             </a>
                         </li>
                         <li class="nav-item <?=$this->url() === '/contact-us' ? 'active' : '' ?>">
                             <a class="nav-link" href="<?= $this->url('contactus') ?>">
-                                Contact <span class="sr-only">(current)</span>
+                                Contact
                             </a>
                         </li>
                         <li class="nav-item <?=$this->url() === '/images' ? 'active' : '' ?>">
@@ -79,8 +79,29 @@
                                 'type' => 'code39', 'label' => 'HELLO-WORLD']); ?>" >
                                 Barcode </a>
                         </li>
+                    <?php if ($this->access('role.manage')) { ?>
+                        <li class="nav-item <?=$this->url() === '/users' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?= $this->url('users') ?>">
+                                Users
+                            </a>
+                        </li>
+                        <li class="nav-item <?=$this->url() === '/roles' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?= $this->url('roles') ?>">
+                                Roles
+                            </a>
+                        </li>
+                        <li class="nav-item <?=$this->url() === '/permissions' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?= $this->url('permissions') ?>">
+                                Permissions
+                            </a>
+                        </li>
+                    <?php } ?>
+                        <li class="nav-item <?php //$this->url() === '/permissions' ? 'active' : '' ?>">
+                            <a class="nav-link" href="<?php // $this->url('permissions') ?>">
+                                <?= $this->escapeHtml($this->identity()) ?>
+                            </a>
+                        </li>
                     </ul>
-                    <?= $this->escapeHtml($this->identity()) ?>
                 </div>
             </div>
         </nav>
