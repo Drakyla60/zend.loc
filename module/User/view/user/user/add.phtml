@@ -33,6 +33,10 @@ $form->get('confirm_password')->setAttributes([
     'placeholder'=>'Retype password',
 ]);
 
+$form->get('roles')->setAttributes([
+    'class'=>'form-control'
+]);
+
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
 
 $form->prepare();
@@ -76,6 +80,12 @@ $form->prepare();
             <?= $this->formLabel($form->get('status')); ?>
             <?= $this->formElement($form->get('status')); ?>
             <?= $this->formElementErrors($form->get('status')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('roles')); ?>
+            <?= $this->formElement($form->get('roles')); ?>
+            <?= $this->formElementErrors($form->get('roles')); ?>
         </div>
 
         <?= $this->formElement($form->get('csrf')); ?>

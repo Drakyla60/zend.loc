@@ -23,6 +23,10 @@ $form->get('status')->setAttributes([
     'class'=>'form-control'
 ]);
 
+$form->get('roles')->setAttributes([
+    'class'=>'form-control'
+]);
+
 $form->get('submit')
     ->setAttributes(['class'=>'btn btn-primary'])
     ->setValue('Save');
@@ -53,6 +57,12 @@ $form->prepare();
             <?= $this->formElement($form->get('status')); ?>
             <?= $this->formElementErrors($form->get('status')); ?>
         </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('roles')); ?>
+            <?= $this->formElement($form->get('roles')); ?>
+            <?= $this->formElementErrors($form->get('roles')); ?>
+        </div
 
         <?= $this->formElement($form->get('csrf')); ?>
         <?= $this->formElementErrors($form->get('csrf')); ?>
