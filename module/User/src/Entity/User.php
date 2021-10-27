@@ -67,73 +67,46 @@ class User
      */
     private $roles;
 
-    /**
-     * Конструктор.
-     */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
     }
 
-    /**
-     * @return integer
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
     public function setEmail(string $email)
     {
         $this->email = $email;
     }
 
-    /**
-     * @return string
-     */
     public function getFullName(): string
     {
         return $this->fullName;
     }
 
-    /**
-     * @param string $fullName
-     */
     public function setFullName(string $fullName)
     {
         $this->fullName = $fullName;
     }
 
-    /**
-     * @return int
-     */
     public function getStatus(): int
     {
         return $this->status;
     }
 
-    /**
-     * @return array
-     */
     public static function getStatusList(): array
     {
         return [
@@ -142,9 +115,6 @@ class User
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getStatusAsString(): string
     {
         $list = self::getStatusList();
@@ -154,73 +124,46 @@ class User
         return 'Unknown';
     }
 
-    /**
-     * @param int $status
-     */
     public function setStatus(int $status)
     {
         $this->status = $status;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password)
     {
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
     public function getDateCreated(): string
     {
         return $this->dateCreated;
     }
 
-    /**
-     * @param string $dateCreated
-     */
     public function setDateCreated(string $dateCreated)
     {
         $this->dateCreated = $dateCreated;
     }
 
-    /**
-     * @return string
-     */
     public function getResetPasswordToken(): string
     {
         return $this->passwordResetToken;
     }
 
-    /**
-     * @param string $token
-     */
     public function setPasswordResetToken(string $token)
     {
         $this->passwordResetToken = $token;
     }
 
-    /**
-     * @return string
-     */
     public function getPasswordResetTokenCreationDate(): string
     {
         return $this->passwordResetTokenCreationDate;
     }
 
-    /**
-     * @param string $date
-     */
     public function setPasswordResetTokenCreationDate(string $date)
     {
         $this->passwordResetTokenCreationDate = $date;
@@ -231,7 +174,7 @@ class User
         return $this->roles;
     }
 
-    public function getRolesAsString()
+    public function getRolesAsString(): string
     {
         $roleList = '';
 
@@ -247,9 +190,6 @@ class User
         return $roleList;
     }
 
-    /**
-     * Присваивает пользователю роль.
-     */
     public function addRole($role)
     {
         $this->roles->add($role);

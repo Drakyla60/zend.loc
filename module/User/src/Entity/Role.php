@@ -68,7 +68,7 @@ class Role
         $this->permissions = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -116,6 +116,12 @@ class Role
     public function getChildRoles()
     {
         return $this->childRoles;
+    }
+
+    //@TODO треба перевірити то всьо
+    public function setParentRole($parentRole)
+    {
+        $this->parentRoles = $parentRole;
     }
 
     public function getPermissions()
