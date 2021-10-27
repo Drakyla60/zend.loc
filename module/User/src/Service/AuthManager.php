@@ -2,27 +2,42 @@
 
 namespace User\Service;
 
+use Exception;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Authentication\Result;
+use Laminas\Config\Config;
+use Laminas\Session\SessionManager;
 
 class AuthManager
 {
+
+    // Constants returned by the access filter.
+    const ACCESS_GRANTED = 1; // Access to the page is granted.
+    const AUTH_REQUIRED  = 2; // Authentication is required to see the page.
+    const ACCESS_DENIED  = 3; // Access to the page is denied.
+
     private $authService;
     private $sessionManager;
     private $config;
+    private $rbacManager;
 
-    public function __construct($authService, $sessionManager, $config)
+    public function __construct($authService, $sessionManager, $config, $rbacManager)
     {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
         $this->config = $config;
+        $this->rbacManager = $rbacManager;
     }
 
-    public function login($email, $password, $rememberMe)
+    /**
+     * @throws Exception
+     */
+    public function login($email, $password, $rememberMe): Result
     {
         // Перевіряємо, увійшов користувач в систему. Якщо так, не дозволяємо
         // йому увійти двічі.
         if ($this->authService->getIdentity() != null) {
-            throw new \Exception('Already logged in');
+            throw new Exception('Already logged in');
         }
 
         // Аутентіфіціруем користувача.
@@ -40,35 +55,38 @@ class AuthManager
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function logout()
     {
         if ($this->authService->getIdentity() == null) {
-            throw new \Exception('The user is not logged in');
+            throw new Exception('The user is not logged in');
         }
 
         $this->authService->clearIdentity();
     }
 
     /**
-     * This is a simple access control filter. It is able to restrict unauthorized
-     * users to visit certain pages.
+     * Це простий фільтр контролю доступу. Він може обмежувати доступ до певних сторінок
+     * для неавторизованих користувачів.
      *
-     * This method uses the 'access_filter' key in the config file and determines
-     * whenther the current visitor is allowed to access the given controller action
-     * or not. It returns true if allowed; otherwise false.
-     * @throws \Exception
+     * Даний метод використовує ключ у файлі конфігурації та визначає, чи дозволено
+     * поточному відвідувачеві доступ до заданої дії контролера чи ні. Якщо дозволено,
+     * він повертає true, інакше – false.
+     * @throws Exception
      */
-    public function filterAccess($controllerName, $actionName): bool
+    public function filterAccess($controllerName, $actionName): int
     {
-        // Determine mode - 'restrictive' (default) or 'permissive'. In restrictive
-        // mode all controller actions must be explicitly listed under the 'access_filter'
-        // config key, and access is denied to any not listed action for unauthorized users.
-        // In permissive mode, if an action is not listed under the 'access_filter' key,
-        // access to it is permitted to anyone (even for not logged in users.
-        // Restrictive mode is more secure and recommended to use.
+// Визначаємо режим - 'обмежувальний' (за умовчанням) або 'дозвільний'. В обмежувальному
+        // в режимі всі дії контролера повинні бути явно перераховані під ключом конфігурації 'access_filter',
+        // та доступ до будь-якої не зазначеної дії для неавторизованих користувачів заборонено.
+        // У дозвільному режимі, якщо дія не вказана під ключом 'access_filter', доступ до неї
+        // Дозволений для всіх (навіть для незалогінених користувачів).
+        // Обмежувальний режим є безпечнішим, і рекомендується використовувати його.
         $mode = $this->config['options']['mode'] ?? 'restrictive';
         if ($mode!='restrictive' && $mode!='permissive')
-            throw new \Exception('Invalid access filter mode (expected either restrictive or permissive mode');
+            throw new Exception('Invalid access filter mode (expected either restrictive or permissive mode');
 
         if (isset($this->config['controllers'][$controllerName])) {
             $items = $this->config['controllers'][$controllerName];
@@ -78,22 +96,50 @@ class AuthManager
                 if (is_array($actionList) && in_array($actionName, $actionList) ||
                     $actionList=='*') {
                     if ($allow=='*')
-                        return true; // Anyone is allowed to see the page.
-                    else if ($allow=='@' && $this->authService->hasIdentity()) {
-                        return true; // Only authenticated user is allowed to see the page.
+                        //Усі можуть переглядати цю сторінку.
+                        return self::ACCESS_GRANTED;
+                    else if (!$this->authService->hasIdentity()) {
+                        // Тільки автентифіковані користувачі можуть переглядати сторінку.
+                        return self::AUTH_REQUIRED;
+                    }
+
+                    if ($allow=='@') {
+                        // Будь-який автентифікований користувач може переглядати сторінку.
+                        return self::ACCESS_GRANTED;
+                    } else if (substr($allow, 0, 1)=='@') {
+                        // Тільки користувачі з певним привілеєм можуть переглядати сторінку.
+                        $identity = substr($allow, 1);
+                        if ($this->authService->getIdentity()==$identity)
+                            return self::ACCESS_GRANTED;
+                        else
+                            return self::ACCESS_DENIED;
+                    } else if (substr($allow, 0, 1)=='+') {
+                        // Тільки користувачі з цим привілеєм можуть переглядати сторінку.
+                        $permission = substr($allow, 1);
+                        if ($this->rbacManager->isGranted(null, $permission))
+                            return self::ACCESS_GRANTED;
+                        else
+                            return self::ACCESS_DENIED;
                     } else {
-                        return false; // Access denied.
+                        throw new Exception('Unexpected value for "allow" - expected ' .
+                            'either "?", "@", "@identity" or "+permission"');
                     }
                 }
             }
         }
 
-        // In restrictive mode, we forbid access for unauthorized users to any
-        // action not listed under 'access_filter' key (for security reasons).
-        if ($mode=='restrictive' && !$this->authService->hasIdentity())
-            return false;
 
-        // Permit access to this page.
-        return true;
+        // В обмежувальному режимі ми вимагаємо автентифікації для будь-якої дії, не
+        // перерахованого під ключом 'access_filter' та відмовляємо у доступі авторизованим користувачам
+        // (З міркувань безпеки).
+        if ($mode=='restrictive') {
+            if(!$this->authService->hasIdentity())
+                return self::AUTH_REQUIRED;
+            else
+                return self::ACCESS_DENIED;
+        }
+
+        // Дозволити доступ до цієї сторінки.
+        return self::ACCESS_GRANTED;
     }
 }
