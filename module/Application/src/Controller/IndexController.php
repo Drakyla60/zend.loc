@@ -6,9 +6,6 @@ namespace Application\Controller;
 
 use Application\Entity\Post;
 use Application\Form\ContactForm;
-use Application\Service\MailSender;
-use Application\Service\PostManager;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
@@ -22,9 +19,9 @@ use Laminas\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
 
-    private MailSender $mailSender;
-    private EntityManager $entityManager;
-    private PostManager $postManager;
+    private $mailSender;
+    private $entityManager;
+    private $postManager;
     private $authService;
 
     public function __construct($mailSender, $entityManager, $postManager, $authService)
