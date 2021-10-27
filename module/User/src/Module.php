@@ -28,6 +28,10 @@ class Module
 
         $sharedEventManager->attach(AbstractActionController::class,
             MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 100);
+
+        $sessionManager = $event->getApplication()->getServiceManager()->get(SessionManager::class);
+
+        $this->forgetInvalidSession($sessionManager);
     }
 
     /**
@@ -78,5 +82,20 @@ class Module
                 return $controller->redirect()->toRoute('not-authorized');
             }
         }
+    }
+
+    private function forgetInvalidSession($sessionManager)
+    {
+        try {
+            $sessionManager->start();
+            return;
+        } catch (\Exception $e) {
+        }
+        /**
+         * Session validation failed: toast it and carry on.
+         */
+        // @codeCoverageIgnoreStart
+        session_unset();
+        // @codeCoverageIgnoreEnd
     }
 }
