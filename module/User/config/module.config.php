@@ -4,19 +4,35 @@ declare(strict_types=1);
 
 namespace User;
 
-use Application\Controller\IndexController;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
+use User\Controller\AuthController;
 use User\Controller\Factory\AuthControllerFactory;
+use User\Controller\Factory\PermissionControllerFactory;
+use User\Controller\Factory\RoleControllerFactory;
+use User\Controller\Factory\UserControllerFactory;
+use User\Controller\PermissionController;
+use User\Controller\Plugin\AccessPlugin;
+use User\Controller\Plugin\Factory\AccessPluginFactory;
+use User\Controller\RoleController;
+use User\Controller\UserController;
 use User\Service\Factory\AuthAdapterFactory;
 use User\Service\Factory\AuthManagerFactory;
+use User\Service\Factory\PermissionManagerFactory;
+use User\Service\Factory\RbacManagerFactory;
+use User\Service\Factory\RoleManagerFactory;
 use User\Service\Factory\UserManagerFactory;
 use User\Service\Factory\AuthenticationServiceFactory;
 use User\Service\AuthAdapter;
 use User\Service\AuthManager;
+use User\Service\PermissionManager;
+use User\Service\RbacManager;
+use User\Service\RoleManager;
 use User\Service\UserManager;
+use User\View\Helper\Access;
+use User\View\Helper\Factory\AccessFactory;
 
 return [
     'router'             => [
@@ -26,7 +42,7 @@ return [
                 'options' => [
                     'route'    => '/users/',
                     'defaults' => [
-                        'controller' => Controller\UserController::class,
+                        'controller' => UserController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -36,7 +52,7 @@ return [
                 'options' => [
                     'route'    => '/login',
                     'defaults' => [
-                        'controller' => Controller\AuthController::class,
+                        'controller' => AuthController::class,
                         'action'     => 'login',
                     ],
                 ],
@@ -46,8 +62,18 @@ return [
                 'options' => [
                     'route'    => '/logout',
                     'defaults' => [
-                        'controller' => Controller\AuthController::class,
+                        'controller' => AuthController::class,
                         'action'     => 'logout',
+                    ],
+                ],
+            ],
+            'not-authorized' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/not-authorized',
+                    'defaults' => [
+                        'controller' => AuthController::class,
+                        'action'     => 'notAuthorized',
                     ],
                 ],
             ],
@@ -56,7 +82,7 @@ return [
                 'options' => [
                     'route'    => '/reset-password',
                     'defaults' => [
-                        'controller' => Controller\UserController::class,
+                        'controller' => UserController::class,
                         'action'     => 'resetPassword',
                     ],
                 ],
@@ -66,7 +92,7 @@ return [
                 'options' => [
                     'route'    => '/set-password',
                     'defaults' => [
-                        'controller' => Controller\UserController::class,
+                        'controller' => UserController::class,
                         'action'     => 'setPassword',
                     ],
                 ],
@@ -80,17 +106,50 @@ return [
                         'id' => '[a-zA-Z0-9_-]*',
                     ],
                     'defaults' => [
-                        'controller'    => Controller\UserController::class,
+                        'controller'    => UserController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'roles' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/roles[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => RoleController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'permissions' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/permissions[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => PermissionController::class,
                         'action'        => 'index',
                     ],
                 ],
             ],
         ],
     ],
+    'session_containers' => [
+        'UserSessionContainer',
+    ],
     'controllers'        => [
         'factories' => [
-            Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
-            Controller\AuthController::class => AuthControllerFactory::class,
+            UserController::class       => UserControllerFactory::class,
+            AuthController::class       => AuthControllerFactory::class,
+            RoleController::class       => RoleControllerFactory::class,
+            PermissionController::class => PermissionControllerFactory::class,
         ],
     ],
     'service_manager'    => [
@@ -120,9 +179,6 @@ return [
             __DIR__ . '/../view',
         ],
     ],
-    'session_containers' => [
-        'UserSessionContainer',
-    ],
     'doctrine'           => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -137,19 +193,44 @@ return [
             ]
         ]
     ],
-    'access_filter'      => [
+    'access_filter' => [
         'options' => [
             'mode' => 'restrictive' // restrictive  !!  permissive
         ],
         'controllers' => [
             Controller\UserController::class => [
-                ['actions' => ['index'], 'allow' => '*'],
-                ['actions' => ['add'], 'allow' => '@']
+                // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
+                ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
+                // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
+                // пользователям с привилегией "user.manage".
+                ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'],
+                    'allow' => '+user.manage']
             ],
-            IndexController::class => [
-                ['actions' => ['index'], 'allow' => '*'],
-                ['actions' => ['about'], 'allow' => '@']
+            Controller\RoleController::class => [
+                // Разрешить доступ аутентифицированным пользователям с привилегией "role.manage".
+                ['actions' => '*', 'allow' => '+role.manage']
+            ],
+            Controller\PermissionController::class => [
+                // Разрешить доступ аутентифицированным пользователям с привилегией "permission.manage".
+                ['actions' => '*', 'allow' => '+permission.manage']
             ],
         ]
     ],
+
+
+//    'access_filter'      => [
+//        'options' => [
+//            'mode' => 'restrictive' // restrictive  !!  permissive
+//        ],
+//        'controllers' => [
+//            UserController::class => [
+//                ['actions' => ['index'], 'allow' => '*'],
+//                ['actions' => ['add'], 'allow' => '@']
+//            ],
+//            IndexController::class => [
+//                ['actions' => ['index'], 'allow' => '*'],
+//                ['actions' => ['about'], 'allow' => '@']
+//            ],
+//        ]
+//    ],
 ];
