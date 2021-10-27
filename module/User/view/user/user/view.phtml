@@ -39,6 +39,10 @@ $this->headTitle('View User');
                 <th>Status:</th>
                 <td><?= $this->escapeHtml($user->getStatusAsString()) ?></th>
             </tr>
+            <tr>
+                <th>Roles:</th>
+                <td><?= $this->escapeHtml($user->getRolesAsString()) ?></th>
+            </tr>
         </table>
     </div>
 </div>
