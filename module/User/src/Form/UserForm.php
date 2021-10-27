@@ -2,20 +2,29 @@
 
 namespace User\Form;
 
+use Doctrine\ORM\EntityManager;
 use Laminas\Filter\ToInt;
 use Laminas\Form\Form;
 use Laminas\InputFilter\ArrayInput;
 use Laminas\Validator\Hostname;
+use User\Entity\User;
+use User\Validator\UserExistsValidator;
 
 class UserForm extends Form
 {
     private $scenario;
 
-    public function __construct($scenario = 'create')
+    private ?EntityManager $entityManager;
+
+    private ?User $user;
+
+    public function __construct($scenario = 'create', $entityManager = null, $user = null)
     {
         parent::__construct('user-form');
         $this->setAttribute('method', 'post');
         $this->scenario = $scenario;
+        $this->entityManager = $entityManager;
+        $this->user = $user;
 
         $this->addElements();
         $this->addInputFilter();
@@ -73,6 +82,18 @@ class UserForm extends Form
             ],
         ]);
 
+        // Add "roles" field
+        $this->add([
+            'type'  => 'select',
+            'name' => 'roles',
+            'attributes' => [
+                'multiple' => 'multiple',
+            ],
+            'options' => [
+                'label' => 'Role(s)',
+            ],
+        ]);
+
         $this->add([
             'type' => 'csrf',
             'name' => 'csrf',
@@ -118,6 +139,13 @@ class UserForm extends Form
                     'options' => [
                         'allow' => Hostname::ALLOW_DNS,
                         'useMxCheck' => false,
+                    ],
+                ],
+                [
+                    'name' => UserExistsValidator::class,
+                    'options' => [
+                        'entityManager' => $this->entityManager,
+                        'user' => $this->user
                     ],
                 ],
             ],
@@ -187,6 +215,19 @@ class UserForm extends Form
                         'haystack' => [1, 2]
                     ]
                 ]
+            ],
+        ]);
+
+        // Add input for "roles" field
+        $inputFilter->add([
+            'class'    => ArrayInput::class,
+            'name'     => 'roles',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'ToInt'],
+            ],
+            'validators' => [
+                ['name'=>'GreaterThan', 'options'=>['min'=>0]]
             ],
         ]);
     }
