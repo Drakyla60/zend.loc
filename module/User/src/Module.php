@@ -6,6 +6,7 @@ namespace User;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Session\SessionManager;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
 
@@ -30,44 +31,52 @@ class Module
     }
 
     /**
-     * Метод-обробник для події 'Dispatch'. Ми обробляємо подія Dispatch
-     * Для виклику фільтру доступу. Фільтр доступу дозволяє визначити,
-     * Чи може користувач переглядати сторінку. Якщо користувач не
-     * Авторизований, і у нього немає прав для перегляду, ми відкривається його
-     * На сторінку входу на сайт.
+     * Метод оброблювача подій для події Dispatch. Ми обробляємо подію Dispatch
+     * І викликаємо фільтр доступу. Фільтр доступу дозволяє визначити, чи дозволено поточному
+     * відвідувачу переглядати сторінку чи ні. Якщо він не авторизований і доступ до сторінки
+     * для нього заборонено, ми перенаправляємо такого користувача на сторінку входу на сайт.
      */
     public function onDispatch(MvcEvent $event)
     {
-        // Отримуємо контролер і дію, якому був відправлений HTTP-запит.
+
+        // Отримуємо контролер і дію, якого було відправлено HTTP-запит.
         $controller = $event->getTarget();
         $controllerName = $event->getRouteMatch()->getParam('controller', null);
         $actionName = $event->getRouteMatch()->getParam('action', null);
 
-        // Конвертуємо ім'я дії з пунктиром в ім'я в верблюжому регістрі.
+        // Конвертуємо написане через дефіс ім'я дії верблюжий регістр.
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
 
         // Отримуємо екземпляр сервісу AuthManager.
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
 
-        // Виконуємо фільтр доступу для кожного контролера крім AuthController
-        // (щоб уникнути нескінченного перенаправлення).
-        if ($controllerName != AuthController::class &&
-            !$authManager->filterAccess($controllerName, $actionName)) {
+        // Застосовуємо фільтр доступу до кожного контролера крім AuthController
+        // (щоб уникнути нескінченного перенаправления).
+        if ($controllerName!=AuthController::class)
+        {
+            $result = $authManager->filterAccess($controllerName, $actionName);
 
-            // Запоминаем URL страницы, к которой пытался обратиться пользователь. Мы перенаправим пользователя
-            // на этот URL после успешной авторизации.
-            $uri = $event->getApplication()->getRequest()->getUri();
-            // Робимо URL відносним (прибираємо схему, інформацію про користувача, ім'я хоста і порт),
-            // щоб уникнути перенаправлення на інший домен недоброзичливцем.
-            $uri->setScheme(null)
-                ->setHost(null)
-                ->setPort(null)
-                ->setUserInfo(null);
-            $redirectUrl = $uri->toString();
+            if ($result==AuthManager::AUTH_REQUIRED) {
 
-            // перенаправляє користувача на сторінку "Login".
-            return $controller->redirect()->toRoute('login', [],
-                ['query' => ['redirectUrl' => $redirectUrl]]);
+                // Запам'ятовуємо URL сторінки, яку намагався перейти користувач. Ми
+                // Перенаправимо користувача на цю URL після його успішного входу на сайт.
+                $uri = $event->getApplication()->getRequest()->getUri();
+                // Робимо URL-адресу відносним (прибираємо схему, відомості про користувача, ім'я хоста та порт),
+                // щоб уникнути перенаправлення в інший домен зловмисниками.
+                $uri->setScheme(null)
+                    ->setHost(null)
+                    ->setPort(null)
+                    ->setUserInfo(null);
+                $redirectUrl = $uri->toString();
+
+                // Перенаправляємо користувача на сторінку "Login".
+                return $controller->redirect()->toRoute('login', [],
+                    ['query'=>['redirectUrl'=>$redirectUrl]]);
+            }
+            else if ($result==AuthManager::ACCESS_DENIED) {
+                // Перенаправляємо користувача на сторінку "Not Authorized".
+                return $controller->redirect()->toRoute('not-authorized');
+            }
         }
     }
 }
