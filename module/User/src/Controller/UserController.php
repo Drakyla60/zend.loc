@@ -7,13 +7,17 @@ namespace User\Controller;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Paginator\Paginator;
 use Laminas\View\Model\ViewModel;
 use User\Entity\Role;
 use User\Entity\User;
+use User\Form\EditUserForm;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
-use User\Form\UserForm;
+use User\Form\AddUserForm;
 use User\Service\UserManager;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 
 /**
  *
@@ -33,21 +37,31 @@ class UserController extends AbstractActionController
 
     public function indexAction(): ViewModel
     {
-        $query = $this
-            ->entityManager
-            ->getRepository(User::class)
-            ->findAll();
-//            ->findAllUsers();
+        // Access control.
+//        if (!$this->access('user.manage')) {
+//            $this->getResponse()->setStatusCode(401);
+//            return;
+//        }
+        $page = $this->params()->fromQuery('page', 1);
 
-        $this->sessionContainer->name = $query;
+        $query = $this->entityManager
+            ->getRepository(User::class)
+            ->findAllUsers();
+
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage(2);
+        $paginator->setCurrentPageNumber($page);
+
+//        $this->sessionContainer->name = $query;
         return new ViewModel([
-            'users' => $query
+            'users' => $paginator
         ]);
     }
 
     public function addAction()
     {
-        $form = new UserForm('create', $this->entityManager);
+        $form = new AddUserForm($this->entityManager);
         // Get the list of all available roles (sorted by name).
         $allRoles = $this->entityManager->getRepository(Role::class)
             ->findBy([], ['name'=>'ASC']);
@@ -117,10 +131,21 @@ class UserController extends AbstractActionController
             return false;
         }
 
-        $form = new UserForm('update', $this->entityManager, $user);
+        $form = new EditUserForm($this->entityManager, $user);
+
+        $allRoles = $this->entityManager->getRepository(Role::class)
+            ->findBy([], ['name'=>'ASC']);
+        $roleList = [];
+        foreach ($allRoles as $role) {
+            $roleList[$role->getId()] = $role->getName();
+        }
+
+        $form->get('roles')->setValueOptions($roleList);
+
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
+//            unset($data['roles']);
             $form->setData($data);
 
             if ($form->isValid()) {
@@ -132,10 +157,16 @@ class UserController extends AbstractActionController
             }
         } else {
 
+            $userRoleIds = [];
+            foreach ($user->getRoles() as $role) {
+                $userRoleIds[] = $role->getId();
+            }
+
             $form->setData([
                 'full_name' => $user->getFullName(),
                 'email' => $user->getEmail(),
                 'status' => $user->getStatus(),
+                'roles' => $userRoleIds
             ]);
         }
 
