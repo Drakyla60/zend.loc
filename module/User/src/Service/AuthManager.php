@@ -3,10 +3,7 @@
 namespace User\Service;
 
 use Exception;
-use Laminas\Authentication\AuthenticationService;
 use Laminas\Authentication\Result;
-use Laminas\Config\Config;
-use Laminas\Session\SessionManager;
 
 class AuthManager
 {
@@ -32,7 +29,7 @@ class AuthManager
     /**
      * @throws Exception
      */
-    public function login($email, $password, $rememberMe): Result
+    public function login($email, $password, $rememberMe)
     {
         // Перевіряємо, увійшов користувач в систему. Якщо так, не дозволяємо
         // йому увійти двічі.
