@@ -2,27 +2,24 @@
 
 namespace User\Form;
 
-use Doctrine\ORM\EntityManager;
 use Laminas\Filter\ToInt;
 use Laminas\Form\Form;
 use Laminas\InputFilter\ArrayInput;
+use Laminas\Validator\GreaterThan;
 use Laminas\Validator\Hostname;
-use User\Entity\User;
 use User\Validator\UserExistsValidator;
 
-class UserForm extends Form
+class AddUserForm extends Form
 {
-    private $scenario;
 
-    private ?EntityManager $entityManager;
+    private $entityManager;
 
-    private ?User $user;
+    private $user;
 
-    public function __construct($scenario = 'create', $entityManager = null, $user = null)
+    public function __construct( $entityManager = null, $user = null)
     {
-        parent::__construct('user-form');
+        parent::__construct('add-user-form');
         $this->setAttribute('method', 'post');
-        $this->scenario = $scenario;
         $this->entityManager = $entityManager;
         $this->user = $user;
 
@@ -51,24 +48,21 @@ class UserForm extends Form
             ],
         ]);
 
-        if ($this->scenario == 'create') {
+        $this->add([
+            'type' => 'password',
+            'name' => 'password',
+            'options' => [
+                'label' => 'Password',
+            ],
+        ]);
 
-            $this->add([
-                'type' => 'password',
-                'name' => 'password',
-                'options' => [
-                    'label' => 'Password',
-                ],
-            ]);
-
-            $this->add([
-                'type' => 'password',
-                'name' => 'confirm_password',
-                'options' => [
-                    'label' => 'Confirm password',
-                ],
-            ]);
-        }
+        $this->add([
+            'type' => 'password',
+            'name' => 'confirm_password',
+            'options' => [
+                'label' => 'Confirm password',
+            ],
+        ]);
 
         $this->add([
             'type' => 'select',
@@ -168,52 +162,45 @@ class UserForm extends Form
             ],
         ]);
 
-        if ($this->scenario == 'create') {
-
-            $inputFilter->add([
-                'name' => 'password',
-                'required' => true,
-                'filters' => [
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        'options' => [
-                            'min' => 6,
-                            'max' => 64
-                        ],
+        $inputFilter->add([
+            'name' => 'password',
+            'required' => true,
+            'filters' => [],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 6,
+                        'max' => 64
                     ],
                 ],
-            ]);
-
-            $inputFilter->add([
-                'name' => 'confirm_password',
-                'required' => true,
-                'filters' => [
-                ],
-                'validators' => [
-                    [
-                        'name' => 'Identical',
-                        'options' => [
-                            'token' => 'password',
-                        ],
-                    ],
-                ],
-            ]);
-        }
+            ],
+        ]);
 
         $inputFilter->add([
-            'name' => 'status',
+            'name' => 'confirm_password',
             'required' => true,
-            'filters' => [
+            'filters' => [],
+            'validators' => [
+                [
+                    'name' => 'Identical',
+                    'options' => [
+                        'token' => 'password',
+                    ],
+                ],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'name'       => 'status',
+            'required'   => true,
+            'filters'    => [
                 ['name' => ToInt::class],
             ],
             'validators' => [
                 [
-                    'name' => 'InArray',
-                    'options' => [
-                        'haystack' => [1, 2]
-                    ]
+                    'name'    => 'InArray',
+                    'options' => ['haystack' => [1, 2]]
                 ]
             ],
         ]);
@@ -227,7 +214,10 @@ class UserForm extends Form
                 ['name' => 'ToInt'],
             ],
             'validators' => [
-                ['name'=>'GreaterThan', 'options'=>['min'=>0]]
+                [
+                    'name'    => GreaterThan::class,
+                    'options' => ['min' => 0]
+                ],
             ],
         ]);
     }

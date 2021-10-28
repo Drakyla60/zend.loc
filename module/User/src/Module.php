@@ -90,12 +90,11 @@ class Module
             $sessionManager->start();
             return;
         } catch (\Exception $e) {
+            echo 'Пздц)';
         }
         /**
          * Session validation failed: toast it and carry on.
          */
-        // @codeCoverageIgnoreStart
-        session_unset();
-        // @codeCoverageIgnoreEnd
+        $sessionManager->destroy();
     }
 }
