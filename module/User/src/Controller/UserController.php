@@ -176,59 +176,58 @@ class UserController extends AbstractActionController
         ));
     }
 
-//    public function changePasswordAction()
-//    {
-//        $id = (int)$this->params()->fromRoute('id', -1);
-//        if ($id<1) {
-//            $this->getResponse()->setStatusCode(404);
-//            return false;
-//        }
-//
-//        $user = $this->entityManager->getRepository(User::class)
-//            ->find($id);
-//
-//        if ($user == null) {
-//            $this->getResponse()->setStatusCode(404);
-//            return false;
-//        }
-//
-//        // Create "change password" form
-//        $form = new PasswordChangeForm('change');
-//
-//        // Check if user has submitted the form
-//        if ($this->getRequest()->isPost()) {
-//
-//            // Fill in the form with POST data
-//            $data = $this->params()->fromPost();
-//
-//            $form->setData($data);
-//
-//            // Validate form
-//            if($form->isValid()) {
-//
-//                // Get filtered and validated data
-//                $data = $form->getData();
-//
-//                // Try to change password.
-//                if (!$this->userManager->changePassword($user, $data)) {
-//                    $this->flashMessenger()->addErrorMessage(
-//                        'Sorry, the old password is incorrect. Could not set the new password.');
-//                } else {
-//                    $this->flashMessenger()->addSuccessMessage(
-//                        'Changed the password successfully.');
-//                }
-//
-//                // Redirect to "view" page
-//                return $this->redirect()->toRoute('users',
-//                    ['action'=>'view', 'id'=>$user->getId()]);
-//            }
-//        }
-//
-//        return new ViewModel([
-//            'user' => $user,
-//            'form' => $form
-//        ]);
-//    }
+    public function changePasswordAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', -1);
+        if ($id<1) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        $user = $this->entityManager->getRepository(User::class)
+            ->find($id);
+
+        if ($user == null) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        // Create "change password" form
+        $form = new PasswordChangeForm('change');
+
+        // Check if user has submitted the form
+        if ($this->getRequest()->isPost()) {
+
+            // Fill in the form with POST data
+            $data = $this->params()->fromPost();
+
+            $form->setData($data);
+
+            // Validate form
+            if($form->isValid()) {
+
+                // Get filtered and validated data
+                $data = $form->getData();
+
+                // Try to change password.
+                if (!$this->userManager->changePassword($user, $data)) {
+                    $this->flashMessenger()->addErrorMessage(
+                        'Sorry, the old password is incorrect. Could not set the new password.');
+                } else {
+                    $this->flashMessenger()->addSuccessMessage('Changed the password successfully.');
+                }
+
+                // Redirect to "view" page
+                return $this->redirect()->toRoute('users',
+                    ['action'=>'view', 'id'=>$user->getId()]);
+            }
+        }
+
+        return new ViewModel([
+            'user' => $user,
+            'form' => $form
+        ]);
+    }
 
     public function resetPasswordAction()
     {
