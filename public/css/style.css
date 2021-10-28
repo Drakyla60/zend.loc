@@ -42,3 +42,10 @@
     border-style: solid;
     box-shadow: inset 0px 0px 0px 0.10em currentColor;
 }
+.admin-form-btn {
+    margin-right: 5px;
+}
+
+.admin-form-btn-create {
+    margin-top: 10px;
+}

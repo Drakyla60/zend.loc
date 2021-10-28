@@ -10,39 +10,61 @@ $this->headTitle('View User');
 //]);
 ?>
 <!---->
-<?//= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
-<?//= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
-<?//= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
 
-<h1>View User</h1>
+<div class="col-md-12">
+    <h2>View User <b><?= $this->escapeHtml($user->getFullName()) ?></b></h2>
+</div>
+<div class="col-md-5">
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+<!--            <div class="text-center">-->
+<!--                <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">-->
+<!--            </div>-->
 
-<div class="row">
-    <div class="col-md-6">
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th>ID:</th>
-                <td><?= $this->escapeHtml($user->getId()) ?></th>
-            </tr>
-            <tr>
-                <th>E-mail:</th>
-                <td><?= $this->escapeHtml($user->getEmail()) ?></th>
-            </tr>
-            <tr>
-                <th>Full Name:</th>
-                <td><?= $this->escapeHtml($user->getFullName()) ?></th>
-            </tr>
-            <tr>
-                <th>Date Created:</th>
-                <td><?= $this->escapeHtml($user->getDateCreated()) ?></th>
-            </tr>
-            <tr>
-                <th>Status:</th>
-                <td><?= $this->escapeHtml($user->getStatusAsString()) ?></th>
-            </tr>
-            <tr>
-                <th>Roles:</th>
-                <td><?= $this->escapeHtml($user->getRolesAsString()) ?></th>
-            </tr>
-        </table>
+            <h3 class="profile-username text-center"> ID <?= $this->escapeHtml($user->getId()) ?></h3>
+
+            <p class="text-muted text-center"><?= $this->escapeHtml($user->getFullName()) ?></p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>Date Created</b> <a class="float-right"><?= $this->escapeHtml($user->getDateCreated()) ?></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Email</b> <a class="float-right"
+                        href="mailto:<?= $this->escapeHtml($user->getEmail()) ?>">
+                        <?= $this->escapeHtml($user->getEmail()) ?></a>
+                </li>
+            </ul>
+
+            <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $user->getId()]); ?>"
+               class="btn btn-primary btn-block"><b>Edit <?= $this->escapeHtml($user->getFullName()) ?></b></a>
+        </div>
+        <!-- /.card-body -->
     </div>
+    <!-- /.card -->
+    </div>
+    <div class="col-md-7">
+    <!-- About Me Box -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">About</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <strong><i class="fas fa-book mr-1"></i> Status</strong>
+            <p class="text-muted">
+                <?= $this->escapeHtml($user->getStatusAsString()) ?>
+            </p><hr>
+
+            <strong><i class="fas fa-user-secret mr-1"></i> Roles</strong>
+            <p class="text-muted"><?= $this->escapeHtml($user->getRolesAsString()) ?></p>
+
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 </div>
