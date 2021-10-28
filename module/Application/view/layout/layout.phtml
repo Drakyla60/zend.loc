@@ -96,11 +96,21 @@
                             </a>
                         </li>
                     <?php } ?>
+
                         <li class="nav-item <?php //$this->url() === '/permissions' ? 'active' : '' ?>">
                             <a class="nav-link" href="<?php // $this->url('permissions') ?>">
                                 <?= $this->escapeHtml($this->identity()) ?>
                             </a>
                         </li>
+                        <?php if ($this->identity()) { ?>
+                            <a class="nav-link" href="<?= $this->url('logout') ?>">
+                                Logout
+                            </a>
+                        <?php } else { ?>
+                                <a class="nav-link" href="<?= $this->url('login') ?>">
+                                    Login
+                                </a>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>

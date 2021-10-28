@@ -99,10 +99,7 @@ class PostController extends AbstractActionController
     public function editAction()
     {
         $form = new PostForm();
-
-        $postId = $this
-            ->params()
-            ->fromRoute('id', -1);
+        $postId = $this->params()->fromRoute('id', -1);
 
         $post = $this
             ->entityManager

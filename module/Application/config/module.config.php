@@ -206,7 +206,7 @@ return [
         'controllers' => [
             IndexController::class => [
                 // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
-                ['actions' => ['index',], 'allow' => '*'],
+                ['actions' => ['index','contactUs'], 'allow' => '*'],
                 // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
                 // пользователям с привилегией "user.manage".
                 ['actions' => ['about'], 'allow' => '+application.about']

@@ -102,7 +102,7 @@ class User
         $this->fullName = $fullName;
     }
 
-    public function getStatus(): int
+    public function getStatus()
     {
         return $this->status;
     }

@@ -17,7 +17,7 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
         </a>
     </p>
-
+<?= $this->paginationControl($users, 'Sliding', 'user/partial/paginator', ['route' => 'users']); ?>
 <?php if ($users) { ?>
 
     <table class="table table-striped">
@@ -67,7 +67,4 @@
 <?php } else { ?>
     <?php echo 'Користувачів поки що немає'?>
 <?php } ?>
-<?//= $this->paginationControl($users,
-//    'Sliding',
-//    'user/partial/paginator',
-//    array('route' => 'users')); ?>
+<?= $this->paginationControl($users, 'Sliding', 'user/partial/paginator', array('route' => 'users')); ?>
