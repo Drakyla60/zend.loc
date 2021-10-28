@@ -28,95 +28,123 @@
         <?= $this->headScript() ?>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button
-                        class="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?= $this->url('home') ?>">
-                        <img src="<?= $this->basePath('img/laminas-logo.svg') ?>" alt="Laminas">MVC Skeleton
-                    </a>
-                </div>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
 
-                        <li class="nav-item <?=$this->url() === '/' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('home') ?>">
-                                Home <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/about' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('about') ?>">
-                                About
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/contact-us' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('contactus') ?>">
-                                Contact
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/images' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('images', ['action' => 'index']); ?>">
-                                Gallery
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/registration' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('registration', ['action' => 'index']); ?>">
-                                Registration
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"  href="<?= $this->url('barcode', [
-                                'type' => 'code39', 'label' => 'HELLO-WORLD']); ?>" >
-                                Barcode </a>
-                        </li>
-                    <?php if ($this->access('role.manage')) { ?>
-                        <li class="nav-item <?=$this->url() === '/users' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('users') ?>">
-                                Users
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/roles' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('roles') ?>">
-                                Roles
-                            </a>
-                        </li>
-                        <li class="nav-item <?=$this->url() === '/permissions' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?= $this->url('permissions') ?>">
-                                Permissions
-                            </a>
-                        </li>
-                    <?php } ?>
+<!--        <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">-->
+<!--            <div class="container">-->
+<!--                <div class="navbar-header">-->
+<!--                    <button-->
+<!--                        class="navbar-toggler"-->
+<!--                        type="button"-->
+<!--                        data-toggle="collapse"-->
+<!--                        data-target="#navbarSupportedContent"-->
+<!--                        aria-controls="navbarSupportedContent"-->
+<!--                        aria-expanded="false"-->
+<!--                        aria-label="Toggle navigation"-->
+<!--                    >-->
+<!--                        <span class="navbar-toggler-icon"></span>-->
+<!--                    </button>-->
+<!--                    <a class="navbar-brand" href="--><?//= $this->url('home') ?><!--">-->
+<!--                        <img src="--><?//= $this->basePath('img/laminas-logo.svg') ?><!--" alt="Laminas">MVC Skeleton-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--                    <ul class="navbar-nav">-->
+<!---->
+<!--                        <li class="nav-item --><?//=$this->url() === '/' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('home') ?><!--">-->
+<!--                                Home <span class="sr-only">(current)</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/about' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('about') ?><!--">-->
+<!--                                About-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/contact-us' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('contactus') ?><!--">-->
+<!--                                Contact-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/images' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('images', ['action' => 'index']); ?><!--">-->
+<!--                                Gallery-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/registration' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('registration', ['action' => 'index']); ?><!--">-->
+<!--                                Registration-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link"  href="--><?//= $this->url('barcode', [
+//                                'type' => 'code39', 'label' => 'HELLO-WORLD']); ?><!--" >-->
+<!--                                Barcode </a>-->
+<!--                        </li>-->
+<!--                    --><?php //if ($this->access('role.manage')) { ?>
+<!--                        <li class="nav-item --><?//=$this->url() === '/users' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('users') ?><!--">-->
+<!--                                Users-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/roles' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('roles') ?><!--">-->
+<!--                                Roles-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item --><?//=$this->url() === '/permissions' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?//= $this->url('permissions') ?><!--">-->
+<!--                                Permissions-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?php //} ?>
+<!---->
+<!--                        <li class="nav-item --><?php ////$this->url() === '/permissions' ? 'active' : '' ?><!--">-->
+<!--                            <a class="nav-link" href="--><?php //// $this->url('permissions') ?><!--">-->
+<!--                                --><?//= $this->escapeHtml($this->identity()) ?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        --><?php //if ($this->identity()) { ?>
+<!--                            <a class="nav-link" href="--><?//= $this->url('logout') ?><!--">-->
+<!--                                Logout-->
+<!--                            </a>-->
+<!--                        --><?php //} else { ?>
+<!--                                <a class="nav-link" href="--><?//= $this->url('login') ?><!--">-->
+<!--                                    Login-->
+<!--                                </a>-->
+<!--                        --><?php //} ?>
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </nav>-->
 
-                        <li class="nav-item <?php //$this->url() === '/permissions' ? 'active' : '' ?>">
-                            <a class="nav-link" href="<?php // $this->url('permissions') ?>">
-                                <?= $this->escapeHtml($this->identity()) ?>
-                            </a>
-                        </li>
-                        <?php if ($this->identity()) { ?>
-                            <a class="nav-link" href="<?= $this->url('logout') ?>">
-                                Logout
-                            </a>
-                        <?php } else { ?>
-                                <a class="nav-link" href="<?= $this->url('login') ?>">
-                                    Login
-                                </a>
-                        <?php } ?>
-                    </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Navigation bar -->
+                    <?php
+                    // Check if the activeMenuItemId passed to layout view model
+                    // and if so, use it for setting active navbar item.
+                    if (isset($activeMenuItemId)) {
+                        $this->mainMenu()->setActiveItemId($activeMenuItemId);
+                    }
+
+                    // Render the navbar
+                    echo $this->mainMenu()->render();
+                    ?>
                 </div>
             </div>
-        </nav>
-        <div class="container">
-            <?= $this->content ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Breadcrumbs -->
+                    <?= $this->pageBreadcrumbs()->render(); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Page content placeholder -->
+                    <?= $this->content; ?>
+                </div>
+            </div>
             <hr>
             <footer>
                 <p>
