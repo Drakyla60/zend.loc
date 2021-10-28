@@ -18,10 +18,11 @@ return [
     'Laminas\Filter',
     'Laminas\Router',
     'Laminas\Validator',
-    'User',
     'Admin',
     'Application',
+    'User',
     'Laminas\DeveloperTools',
+    'Laminas\Mvc\Plugin\FlashMessenger',
     'DoctrineModule',
     'DoctrineORMModule'
 ];
