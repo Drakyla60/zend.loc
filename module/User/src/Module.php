@@ -23,6 +23,11 @@ class Module
      */
     public function onBootstrap(MvcEvent $event)
     {
+
+//        $viewModel = $event->getViewModel();
+//        $viewModel->setTemplate('layout/users_layout');
+
+
         $eventManager = $event->getApplication()->getEventManager();
         $sharedEventManager = $eventManager->getSharedManager();
 

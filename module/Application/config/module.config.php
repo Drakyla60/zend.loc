@@ -6,10 +6,23 @@ namespace Application;
 
 use Application\Controller\Factory\ImageControllerFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\PostControllerFactory;
 use Application\Controller\Factory\RegistrationControllerFactory;
+use Application\Controller\ImageController;
 use Application\Controller\IndexController;
+use Application\Controller\MyController;
+use Application\Controller\PostController;
+use Application\Controller\RegistrationController;
+use Application\Service\Factory\NavManagerFactory;
+use Application\Service\Factory\PostManagerFactory;
 use Application\Service\Factory\RbacAssertionManagerFactory;
+use Application\Service\ImageManager;
+use Application\Service\MailSender;
+use Application\Service\NavManager;
+use Application\Service\PostManager;
 use Application\Service\RbacAssertionManager;
+use Application\View\Helper\Breadcrumbs;
+use Application\View\Helper\Menu;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
@@ -24,7 +37,7 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -38,7 +51,7 @@ return [
                         'id' => '[0-9]*'
                     ],
                     'defaults' => [
-                        'controller'    => Controller\PostController::class,
+                        'controller'    => PostController::class,
                         'action'        => 'index',
                     ],
                 ],
@@ -48,7 +61,7 @@ return [
                 'options' => [
                     'route'    => '/about',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'about',
                     ],
                 ],
@@ -58,7 +71,7 @@ return [
                 'options' => [
                     'route'    => '/contact-us',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'contactUs',
                     ],
                 ],
@@ -71,7 +84,7 @@ return [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
                     'defaults' => [
-                        'controller'    => Controller\ImageController::class,
+                        'controller'    => ImageController::class,
                         'action'        => 'index',
                     ],
                 ],
@@ -84,7 +97,7 @@ return [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
                     'defaults' => [
-                        'controller'    => Controller\RegistrationController::class,
+                        'controller'    => RegistrationController::class,
                         'action'        => 'index',
                     ],
                 ],
@@ -94,7 +107,7 @@ return [
                 'options' => [
                     'route'    => '/my',
                     'defaults' => [
-                        'controller' => Controller\MyController::class,
+                        'controller' => MyController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -104,7 +117,7 @@ return [
                 'options' => [
                     'route'    => '/getJson',
                     'defaults' => [
-                        'controller' => Controller\MyController::class,
+                        'controller' => MyController::class,
                         'action'     => 'getJson',
                     ],
                 ],
@@ -118,7 +131,7 @@ return [
                         'label' => '[a-zA-Z0-9_-]*'
                     ],
                     'defaults'    => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'barcode',
                     ],
                 ],
@@ -128,7 +141,7 @@ return [
                 'options' => [
                     'regex'    => '/doc(?<page>\/[a-zA-Z0-9_\-]+)\.html',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'doc',
                     ],
                     'spec'     => '/doc/%page%.html'
@@ -139,7 +152,7 @@ return [
                 'options' => [
                     'route'    => '/application[/:action]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => IndexController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -148,19 +161,30 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\MyController::class           => InvokableFactory::class,
-            Controller\IndexController::class        => IndexControllerFactory::class,
-            Controller\ImageController::class        => ImageControllerFactory::class,
-            Controller\RegistrationController::class => RegistrationControllerFactory::class,
-            Controller\PostController::class         => Controller\Factory\PostControllerFactory::class,
+            MyController::class           => InvokableFactory::class,
+            IndexController::class        => IndexControllerFactory::class,
+            ImageController::class        => ImageControllerFactory::class,
+            RegistrationController::class => RegistrationControllerFactory::class,
+            PostController::class         => PostControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
-            Service\MailSender::class   => InvokableFactory::class,
-            Service\ImageManager::class => InvokableFactory::class,
-            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
+            MailSender::class   => InvokableFactory::class,
+            ImageManager::class => InvokableFactory::class,
+            PostManager::class  => PostManagerFactory::class,
             RbacAssertionManager::class => RbacAssertionManagerFactory::class,
+            NavManager::class => NavManagerFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Menu::class => View\Helper\Factory\MenuFactory::class,
+            View\Helper\Breadcrumbs::class => InvokableFactory::class,
+        ],
+        'aliases' => [
+            'mainMenu' => View\Helper\Menu::class,
+            'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
         ],
     ],
     'view_manager' => [

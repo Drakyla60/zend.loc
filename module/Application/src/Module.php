@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Laminas\Mvc\MvcEvent;
+
 class Module
 {
     public function getConfig(): array
@@ -11,5 +13,11 @@ class Module
         /** @var array $config */
         $config = include __DIR__ . '/../config/module.config.php';
         return $config;
+    }
+
+    public function onBootstrap(MvcEvent $event)
+    {
+//        $viewModel = $event->getViewModel();
+//        $viewModel->setTemplate('layout/layout');
     }
 }

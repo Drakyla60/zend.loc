@@ -186,8 +186,8 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map'        => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
+            'layout/layout'           => __DIR__ . '/../view/layout/users_layout.phtml',
+            'user/index/index' => __DIR__ . '/../view/user/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
@@ -226,30 +226,11 @@ return [
                     'allow' => '+user.manage']
             ],
             Controller\RoleController::class => [
-                // Разрешить доступ аутентифицированным пользователям с привилегией "role.manage".
                 ['actions' => '*', 'allow' => '+role.manage']
             ],
             Controller\PermissionController::class => [
-                // Разрешить доступ аутентифицированным пользователям с привилегией "permission.manage".
                 ['actions' => '*', 'allow' => '+permission.manage']
             ],
         ]
     ],
-
-
-//    'access_filter'      => [
-//        'options' => [
-//            'mode' => 'restrictive' // restrictive  !!  permissive
-//        ],
-//        'controllers' => [
-//            UserController::class => [
-//                ['actions' => ['index'], 'allow' => '*'],
-//                ['actions' => ['add'], 'allow' => '@']
-//            ],
-//            IndexController::class => [
-//                ['actions' => ['index'], 'allow' => '*'],
-//                ['actions' => ['about'], 'allow' => '@']
-//            ],
-//        ]
-//    ],
 ];
