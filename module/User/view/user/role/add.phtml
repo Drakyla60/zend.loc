@@ -23,7 +23,7 @@ $form->get('inherit_roles')->setAttributes([
     'class'=>'form-control', 
     ]);
 
-$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary form-control']);
 
 $form->prepare();
 ?>
@@ -42,7 +42,7 @@ $form->prepare();
             <?= $this->formLabel($form->get('name')); ?>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
                 </div>
                 <?= $this->formElement($form->get('name')); ?>
                 <?= $this->formElementErrors($form->get('name')); ?>
@@ -51,7 +51,7 @@ $form->prepare();
             <?= $this->formLabel($form->get('description')); ?>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
                 </div>
                 <?= $this->formElement($form->get('description')); ?>
                 <?= $this->formElementErrors($form->get('description')); ?>
