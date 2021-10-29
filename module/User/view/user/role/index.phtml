@@ -9,59 +9,74 @@ $this->headTitle('Roles');
 //            ]);
 ?>
 
-<h1>Manage Roles</h1>
 
-<?//= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
-<?//= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
-<?//= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+<div class="col-sm-6">
+    <h1>Manage Roles</h1>
+</div>
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
 
-<p>
-<a class="btn btn-success" href="
-    <?= $this->url('roles', ['action'=>'add']); ?>">
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Role
-</a>
-</p>
-
-<table class="table table-striped">
-
-   <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Date Created</th>
-        <th>Actions</th>        
-    </tr>
-    
-    <?php foreach ($roles as $role): ?>
-    
-    <tr>
-        <td><?= $this->escapeHtml($role->getId()); ?></td>
-        <td>
-            <a href="<?= $this->url('roles', ['action'=>'view', 'id'=>$role->getId()]); ?>">
-                <?= $this->escapeHtml($role->getName()); ?>
-            </a> 
-        </td>
-        <td><?= $this->escapeHtml($role->getDescription()); ?></a> 
-        </td>
-        <td><nobr><?= $this->escapeHtml($role->getDateCreated()); ?></nobr></td>        
-        <td>
-            </nobr>
-            <a class="btn btn-info" href="<?= $this->url('roles', 
-                    ['action'=>'edit', 'id'=>$role->getId()]); ?>">
-                <span class="glyphicon glyphicon-pencil" ></span> Edit
-            </a>
-            <a class="btn btn-danger" href="<?= $this->url('roles',
-                    ['action'=>'delete', 'id'=>$role->getId()]); ?>">
-                <span class="glyphicon glyphicon-remove"></span> Delete
-            </a>
-            </nobr>
-        </td>    
-    </tr>
-        
-    <?php endforeach; ?>   
-    
-</table>
+<div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Manage Users</li>
+    </ol>
+</div>
+<section class="content">
+    <p>
+        <a class="btn btn-success admin-form-btn admin-form-btn-create" href="<?= $this->url('roles', ['action'=>'add']); ?>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Role
+        </a>
+    </p>
 
 
 
 
+    <?php if ($roles) { ?>
+
+        <table class="table table-striped">
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Created</th>
+                <th>Actions</th>
+            </tr>
+
+            <?php foreach ($roles as $role): ?>
+
+                <tr>
+                    <td><?= $this->escapeHtml($role->getId()); ?></td>
+                    <td>
+                        <a href="<?= $this->url('roles', ['action'=>'view', 'id'=>$role->getId()]); ?>">
+                            <?= $this->escapeHtml($role->getName()); ?>
+                        </a>
+                    </td>
+                    <td>
+                        <?= $this->escapeHtml($role->getDescription()); ?></a>
+                    </td>
+                    <td>
+                        <nobr><?= $this->escapeHtml($role->getDateCreated()); ?></nobr>
+                    </td>
+                    <td>
+                        <a class="btn-sm btn-info admin-form-btn" href="
+                        <?= $this->url('roles',['action'=>'edit', 'id'=>$role->getId()]); ?>">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </a>
+                        <a class="btn-sm btn-danger admin-form-btn" href="
+                        <?= $this->url('roles', ['action'=>'delete', 'id'=>$role->getId()]); ?>">
+                            <span class="glyphicon glyphicon-asterisk"></span> Change Password
+                        </a>
+                    </td>
+                </tr>
+
+            <?php endforeach; ?>
+
+        </table>
+    <?php } else { ?>
+        <?php echo 'Ролей поки що немає' ?>
+    <?php } ?>
+<!--    --><?//= $this->paginationControl($users, 'Sliding', 'user/partial/paginator', array('route' => 'users')); ?>
+</section>

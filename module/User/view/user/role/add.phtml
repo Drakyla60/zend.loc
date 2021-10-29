@@ -28,42 +28,62 @@ $form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
 $form->prepare();
 ?>
 
-<h1>Add Role</h1>
+<div class="col-md-12">
+    <h2>Add Role</h2>
+</div>
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Please fill out the following form and click the <i>Create</i> button.</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
 
-<p>
-    Please fill out the following form and click the <i>Create</i> button.
-</p>
-
-<div class="row">
-    <div class="col-md-6">
-        <?= $this->form()->openTag($form); ?>
-        
-        <div class="form-group">
             <?= $this->formLabel($form->get('name')); ?>
-            <?= $this->formElement($form->get('name')); ?>
-            <?= $this->formElementErrors($form->get('name')); ?>                  
-        </div>
-        
-        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('name')); ?>
+                <?= $this->formElementErrors($form->get('name')); ?>
+            </div>
+
             <?= $this->formLabel($form->get('description')); ?>
-            <?= $this->formElement($form->get('description')); ?>
-            <?= $this->formElementErrors($form->get('description')); ?>                  
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('description')); ?>
+                <?= $this->formElementErrors($form->get('description')); ?>
+            </div>
+
         </div>
-        
-        <div class="form-group">
+        <!-- /.card-body -->
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Settings</h3>
+        </div>
+        <div class="card-body">
+
             <?= $this->formLabel($form->get('inherit_roles')); ?>
-            <?= $this->formElement($form->get('inherit_roles')); ?>
-            <?= $this->formElementErrors($form->get('inherit_roles')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
+                </div>
+                <?= $this->formElement($form->get('inherit_roles')); ?>
+                <?= $this->formElementErrors($form->get('inherit_roles')); ?>
+            </div>
+
+            <?= $this->formElement($form->get('csrf')); ?>
+            <?= $this->formElementErrors($form->get('csrf')); ?>
+
+            <?= $this->formElement($form->get('submit')); ?>
+
+            <?= $this->form()->closeTag(); ?>
         </div>
-        
-        <?= $this->formElement($form->get('csrf')); ?>
-        
-        <?= $this->formElement($form->get('submit')); ?>
-        
-        <?= $this->form()->closeTag(); ?>
-    </div>    
-</div>   
-
-
-
-
+        <!-- /.card-body -->
+    </div>
+</div>

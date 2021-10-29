@@ -26,46 +26,65 @@ $form->get('inherit_roles')->setAttributes([
 
 $form->get('submit')
         ->setAttributes(['class'=>'btn btn-primary'])
-        ->setValue('Save');
+        ->setValue('Update ');
 
 $form->prepare();
 ?>
+<div class="col-md-12">
+    <h2>Edit Role <?= $this->escapeHtml($role->getName()) ?></h2>
+</div>
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Please fill out the following form and click the <i>Update</i> button.</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
 
-<h1>Edit Role <?= $this->escapeHtml($role->getName()) ?></h1>
-
-<p>
-<a class="btn btn-default" href="<?= $this->url('roles', ['action'=>'editPermissions', 'id'=>$role->getId()]) ?>">
-  <span class="glyphicon glyphicon-check"></span> Edit Permissions
-</a>
-</p>
-
-<div class="row">
-    <div class="col-md-6">
-        <?= $this->form()->openTag($form); ?>
-        
-        <div class="form-group">
             <?= $this->formLabel($form->get('name')); ?>
-            <?= $this->formElement($form->get('name')); ?>
-            <?= $this->formElementErrors($form->get('name')); ?>                  
-        </div>
-        
-        <div class="form-group">
-            <?= $this->formLabel($form->get('description')); ?>
-            <?= $this->formElement($form->get('description')); ?>
-            <?= $this->formElementErrors($form->get('description')); ?>                  
-        </div>
-        
-        <div class="form-group">
-            <?= $this->formLabel($form->get('inherit_roles')); ?>
-            <?= $this->formElement($form->get('inherit_roles')); ?>
-            <?= $this->formElementErrors($form->get('inherit_roles')); ?>
-        </div>
-        
-        <?= $this->formElement($form->get('csrf')); ?>
-        
-        <?= $this->formElement($form->get('submit')); ?>
-        
-        <?= $this->form()->closeTag(); ?>
-    </div>    
-</div>   
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('name')); ?>
+                <?= $this->formElementErrors($form->get('name')); ?>
+            </div>
 
+            <?= $this->formLabel($form->get('description')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('description')); ?>
+                <?= $this->formElementErrors($form->get('description')); ?>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Settings</h3>
+        </div>
+        <div class="card-body">
+
+            <?= $this->formLabel($form->get('inherit_roles')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-question"></i></span>
+                </div>
+                <?= $this->formElement($form->get('inherit_roles')); ?>
+                <?= $this->formElementErrors($form->get('inherit_roles')); ?>
+            </div>
+
+                        <?= $this->formElement($form->get('csrf')); ?>
+                        <?= $this->formElementErrors($form->get('csrf')); ?>
+
+            <?= $this->formElement($form->get('submit')); ?>
+
+            <?= $this->form()->closeTag(); ?>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
