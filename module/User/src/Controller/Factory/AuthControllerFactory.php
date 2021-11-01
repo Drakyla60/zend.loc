@@ -3,6 +3,7 @@
 namespace User\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use User\Controller\AuthController;
 use User\Service\AuthManager;
@@ -15,7 +16,8 @@ class AuthControllerFactory implements FactoryInterface
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $authManager = $container->get(AuthManager::class);
         $userManager = $container->get(UserManager::class);
+        $authService = $container->get(AuthenticationService::class);
 
-        return new AuthController($entityManager, $authManager, $userManager);
+        return new AuthController($entityManager, $authManager, $userManager, $authService);
     }
 }
