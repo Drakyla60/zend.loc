@@ -172,6 +172,59 @@ class UserManager
         }
     }
 
+    public function createEmailConfirmationToken($user)
+    {
+        if ($user->getStatus() == User::STATUS_ACTIVE) {
+            throw new Exception('Користувач ' . $user->getEmail() . 'вже підтвердив скою пошту.');
+        }
+
+        $token = Rand::getString(32, '0123456789abcdefghijklmnopqrstuvwxyz', true);
+
+        $bcrypt = new Bcrypt();
+        $tokenHash = $bcrypt->create($token);
+
+        $user->setPasswordResetToken($tokenHash);
+        $currentDate = date('Y-m-d H:i:s');
+        $user->setPasswordResetTokenCreationDate($currentDate); //@TODO Створити поле для EmailConfirmation
+        $this->entityManager->flush();
+
+        $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $emailConfirmation = 'http://' . $httpHost . '/email-confirmation?token=' . $token . "&email=" . $user->getEmail();
+
+        // Produce HTML of password reset email
+        $bodyHtml = $this->viewRenderer->render(
+            'user/email/email-confirmation',
+            ['emailConfirmation' => $emailConfirmation,]);
+
+        //@TODO Винести то колись звідси
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'smmithadam@gmail.com';                     //SMTP username
+            $mail->Password   = 'favorite_world';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom('admin@example.com', 'Administration');
+            $mail->addAddress($user->getEmail(), $user->getFullName());     //Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Reset Password !!! ';
+            $mail->Body    = $bodyHtml;
+
+            $mail->send();
+            echo '<p> Лист надіслано. За декілька хвилин перевірте свою  адресу <b> ' .  $user->getEmail() . '</b></p>';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+
     public function generatePasswordResetToken($user)
     {
         if ($user->getStatus() != User::STATUS_ACTIVE) {
@@ -329,5 +382,37 @@ class UserManager
             ->findOneByEmail($email);
 
         return $user !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function activateUser($email, $token): bool
+    {
+
+        $user = $this
+            ->entityManager
+            ->getRepository(User::class)
+            ->findOneByEmail($email);
+
+        if($user == null || $user->getStatus() == User::STATUS_ACTIVE) {
+            throw new Exception('Користувача не знайдено або він вже активований');
+        }
+
+        // Check that token hash matches the token hash in our DB.
+        $bcrypt = new Bcrypt();
+        $tokenHash = $user->getResetPasswordToken();
+
+        if (!$bcrypt->verify($token, $tokenHash)) {
+            throw new Exception('Недійсний token');
+        }
+
+        // Remove password reset token
+        $user->setPasswordResetToken('');
+        $user->setStatus(User::STATUS_ACTIVE);
+//
+        $this->entityManager->flush();
+
+        return true;
     }
 }
