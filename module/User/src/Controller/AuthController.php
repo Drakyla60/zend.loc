@@ -7,18 +7,22 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Uri\Uri;
 use Laminas\View\Model\ViewModel;
 use User\Form\LoginForm;
+use User\Form\RegistrationUserForm;
 
 class AuthController extends AbstractActionController
 {
     private $entityManager;
     private $authManager;
     private $userManager;
+    private $authService;
 
-    public function __construct($entityManager, $authManager, $userManager)
+    private $rememberMe = 1; //для входу після реєстрації
+    public function __construct($entityManager, $authManager, $userManager, $authService)
     {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
         $this->userManager = $userManager;
+        $this->authService = $authService;
     }
 
     /**
@@ -82,6 +86,30 @@ class AuthController extends AbstractActionController
             'form' => $form,
             'isLoginError' => $isLoginError,
             'redirectUrl' => $redirectUrl
+        ]);
+    }
+
+    public function registrationAction()
+    {
+        $form = new RegistrationUserForm($this->entityManager);
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+
+                $data = $form->getData();
+                $user = $this->userManager->registrationUser($data);
+
+//                $result1 = $this->userManager->generatePasswordResetToken($user);
+////                $result = $this->authManager->login($data['email'], $data['password'], $this->rememberMe);
+//                echo 'Вам відправлено лист'. $data['email'] .' для підтвердження ел-пошти. ';
+                return $this->redirect()->toRoute('home');
+            }
+        }
+        return new ViewModel([
+            'form' => $form
         ]);
     }
 
