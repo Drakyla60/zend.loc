@@ -16,6 +16,8 @@ class User
     const STATUS_ACTIVE  = 1;
     const STATUS_RETIRED = 2;
 
+    const DEFAULT_ROLE = 4; //ID Guest Role
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id")
