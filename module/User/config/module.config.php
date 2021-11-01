@@ -67,6 +67,16 @@ return [
                     ],
                 ],
             ],
+            'email-confirmation' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/email-confirmation',
+                    'defaults' => [
+                        'controller' => UserController::class,
+                        'action'     => 'emailConfirmation',
+                    ],
+                ],
+            ],
             'logout' => [
                 'type' => Literal::class,
                 'options' => [
@@ -229,7 +239,7 @@ return [
         'controllers' => [
             Controller\UserController::class => [
                 // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
-                ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
+                ['actions' => ['resetPassword', 'message', 'setPassword', 'emailConfirmation'], 'allow' => '*'],
                 // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
                 // пользователям с привилегией "user.manage".
                 ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'],
