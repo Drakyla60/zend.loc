@@ -210,12 +210,12 @@ class UserManager
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('admin@example.com', 'Administration');
+            $mail->setFrom('admin@example.com', 'Admin');
             $mail->addAddress($user->getEmail(), $user->getFullName());     //Add a recipient
 
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Reset Password !!! ';
+            $mail->Subject = 'Підтвердженння електронної пошти.';
             $mail->Body    = $bodyHtml;
 
             $mail->send();

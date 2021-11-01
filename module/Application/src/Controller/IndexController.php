@@ -9,6 +9,8 @@ use Application\Form\ContactForm;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
+use Laminas\Log\Logger;
+use Laminas\Log\Writer\Stream;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Paginator\Paginator;
 use Laminas\View\Model\ViewModel;
@@ -34,6 +36,11 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        $writer = new Stream('./data/logfile.log','a');
+        $logger = new Logger();
+        $logger->addWriter($writer);
+        $logger->log(Logger::INFO, 'Тестове повідомлення');
+        $logger->err('Informational message');
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
 
