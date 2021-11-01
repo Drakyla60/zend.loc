@@ -102,9 +102,7 @@ class AuthController extends AbstractActionController
                 $data = $form->getData();
                 $user = $this->userManager->registrationUser($data);
 
-//                $result1 = $this->userManager->generatePasswordResetToken($user);
-////                $result = $this->authManager->login($data['email'], $data['password'], $this->rememberMe);
-//                echo 'Вам відправлено лист'. $data['email'] .' для підтвердження ел-пошти. ';
+                $result = $this->userManager->createEmailConfirmationToken($user);
                 return $this->redirect()->toRoute('home');
             }
         }
