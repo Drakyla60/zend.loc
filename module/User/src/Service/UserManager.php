@@ -54,6 +54,32 @@ class UserManager
         return $user;
     }
 
+    public function registrationUser($data): User
+    {
+        // Do not allow several users with the same email address.
+        if($this->checkUserExists($data['email'])) {
+            throw new \Exception("User with email address " . $data['$email'] . " already exists");
+        }
+
+        $user = new User();
+        $user->setEmail($data['email']);
+        $user->setFullName($data['full_name']);
+
+        $bcrypt = new Bcrypt();
+        $passwordHash = $bcrypt->create($data['password']);
+        $user->setPassword($passwordHash);
+        $user->setStatus(User::STATUS_RETIRED);
+        $currentDate = date('Y-m-d H:i:s');
+        $user->setDateCreated($currentDate);
+
+        $this->assignRoles($user, [User::DEFAULT_ROLE]);
+
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
     /**
      * @throws Exception
      */
