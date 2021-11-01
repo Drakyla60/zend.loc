@@ -176,6 +176,28 @@ class UserController extends AbstractActionController
         ));
     }
 
+    public function emailConfirmationAction()
+    {
+
+        $email = $this->params()->fromQuery('email', null);
+        $token = $this->params()->fromQuery('token', null);
+
+        // Validate token length
+        if ($token != null && (!is_string($token) || strlen($token) != 32)) {
+            throw new Exception('Invalid token type or length');
+        }
+        try {
+            $this->userManager->activateUser($email, $token);
+            return $this->redirect()->toRoute('login');
+        } catch (Exception $exception) {
+            $this->flashMessenger()
+                ->addErrorMessage('Виникла помилка : ' . $exception->getMessage());
+            return $this->redirect()->toRoute('home');
+        }
+
+
+    }
+
     public function changePasswordAction()
     {
         $id = (int)$this->params()->fromRoute('id', -1);
