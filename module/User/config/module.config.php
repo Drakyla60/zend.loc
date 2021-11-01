@@ -57,6 +57,16 @@ return [
                     ],
                 ],
             ],
+            'registration' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/registration',
+                    'defaults' => [
+                        'controller' => AuthController::class,
+                        'action'     => 'registration',
+                    ],
+                ],
+            ],
             'logout' => [
                 'type' => Literal::class,
                 'options' => [
