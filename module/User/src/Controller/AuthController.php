@@ -88,7 +88,7 @@ class AuthController extends AbstractActionController
                 $isLoginError = true;
             }
         }
-
+        $this->layout()->setTemplate('layout/auth_layout');
         return new ViewModel([
             'form' => $form,
             'isLoginError' => $isLoginError,
@@ -117,6 +117,7 @@ class AuthController extends AbstractActionController
                 return $this->redirect()->toRoute('home');
             }
         }
+        $this->layout()->setTemplate('layout/auth_layout');
         return new ViewModel([
             'form' => $form,
             'recaptcha' => $recaptcha

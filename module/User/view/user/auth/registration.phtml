@@ -38,48 +38,114 @@ $form->get('confirm_password')->setAttributes([
         'class' => 'sr-only'
     ]);
 ?>
-<!--<form class="form">-->
-<!--    <div class="card-body">-->
-<!--        <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label">-->
-<!--                --><?//= $this->formLabel($form->get('full_name')); ?>
-<!--            </label>-->
-<!--            <div class="col-sm-8">-->
-<!--                --><?//= $this->formElement($form->get('full_name')); ?>
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--     /.card-body -->
-<!--    <div class="card-footer">-->
-<!--        <button type="submit" class="btn btn-info form-control">Sign in</button>-->
-<!--    </div>-->
-<!--     /.card-footer -->
-<!--</form>-->
 
 <?php if (null == $this->identity()) {?>
 
-    <div class="col-md-offset-4 col-md-4">
-        <form class="form-signin" method="post">
-            <h2 class="form-signin-heading">Registration</h2>
+    <div class="register-box">
+        <div class="register-logo">
+            <a href="<?= $this->url('home') ?>"><b>Admin</b>LTE</a>
+        </div>
 
-            <?= $this->formLabel($form->get('full_name')); ?>
-            <?= $this->formElement($form->get('full_name')); ?> <br>
+        <div class="card">
+            <div class="card-body register-card-body">
+                <p class="login-box-msg">Register a new membership</p>
 
-            <?= $this->formLabel($form->get('email')); ?>
-            <?= $this->formElement($form->get('email')); ?> <br>
+                <form action="../../index.html" method="post">
+                    <?= $this->formLabel($form->get('full_name')); ?>
+                    <div class="input-group mb-3">
+                        <?= $this->formElement($form->get('full_name')); ?>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <?= $this->formLabel($form->get('email')); ?>
+                    <div class="input-group mb-3">
+                        <?= $this->formElement($form->get('email')); ?>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <?= $this->formLabel($form->get('password')); ?>
+                    <div class="input-group mb-3">
+                        <?= $this->formElement($form->get('password')); ?>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <?= $this->formLabel($form->get('confirm_password')); ?>
+                    <div class="input-group mb-3">
+                        <?= $this->formElement($form->get('confirm_password')); ?>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <?= $recaptcha->getHTML(); ?><br>
+                    <?= $this->formElement($form->get('csrf')) ?>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                                <label for="agreeTerms">
+                                    I agree to the <a href="#">terms</a>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+<!---->
+<!--                <div class="social-auth-links text-center">-->
+<!--                    <p>- OR -</p>-->
+<!--                    <a href="#" class="btn btn-block btn-primary">-->
+<!--                        <i class="fab fa-facebook mr-2"></i>-->
+<!--                        Sign up using Facebook-->
+<!--                    </a>-->
+<!--                    <a href="#" class="btn btn-block btn-danger">-->
+<!--                        <i class="fab fa-google-plus mr-2"></i>-->
+<!--                        Sign up using Google+-->
+<!--                    </a>-->
+<!--                </div>-->
 
-            <?= $this->formLabel($form->get('password')); ?>
-            <?= $this->formElement($form->get('password')); ?><br>
-
-
-            <?= $this->formLabel($form->get('confirm_password')); ?>
-            <?= $this->formElement($form->get('confirm_password')); ?><br>
-
-            <br><?= $recaptcha->getHTML(); ?><br>
-            <?= $this->formElement($form->get('csrf')) ?>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Registration</button>
-        </form>
+                <a href="<?= $this->url('login') ?>" class="text-center">I already have a membership</a>
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
     </div>
+
+<!--    <div class="col-md-offset-4 col-md-4">-->
+<!--        <form class="form-signin" method="post">-->
+<!--            <h2 class="form-signin-heading">Registration</h2>-->
+<!---->
+<!--            --><?//= $this->formLabel($form->get('full_name')); ?>
+<!--            --><?//= $this->formElement($form->get('full_name')); ?><!-- <br>-->
+<!---->
+<!--            --><?//= $this->formLabel($form->get('email')); ?>
+<!--            --><?//= $this->formElement($form->get('email')); ?><!-- <br>-->
+<!---->
+<!--            --><?//= $this->formLabel($form->get('password')); ?>
+<!--            --><?//= $this->formElement($form->get('password')); ?><!--<br>-->
+<!---->
+<!---->
+<!--            --><?//= $this->formLabel($form->get('confirm_password')); ?>
+<!--            --><?//= $this->formElement($form->get('confirm_password')); ?><!--<br>-->
+<!---->
+<!--            <br>--><?//= $recaptcha->getHTML(); ?><!--<br>-->
+<!--            --><?//= $this->formElement($form->get('csrf')) ?>
+<!--            <button class="btn btn-lg btn-primary btn-block" type="submit">Registration</button>-->
+<!--        </form>-->
+<!--    </div>-->
 <?php } else { ?>
     <p> Ви вже зареєстровані!</p>
 <?php } ?>
