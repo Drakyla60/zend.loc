@@ -20,6 +20,7 @@ use User\Controller\RoleController;
 use User\Controller\UserController;
 use User\Service\Factory\AuthAdapterFactory;
 use User\Service\Factory\AuthManagerFactory;
+use User\Service\Factory\MailManagerFactory;
 use User\Service\Factory\PermissionManagerFactory;
 use User\Service\Factory\RbacManagerFactory;
 use User\Service\Factory\RoleManagerFactory;
@@ -27,6 +28,7 @@ use User\Service\Factory\UserManagerFactory;
 use User\Service\Factory\AuthenticationServiceFactory;
 use User\Service\AuthAdapter;
 use User\Service\AuthManager;
+use User\Service\MailManager;
 use User\Service\PermissionManager;
 use User\Service\RbacManager;
 use User\Service\RoleManager;
@@ -180,6 +182,7 @@ return [
             AuthManager::class           => AuthManagerFactory::class,
             RoleManager::class           => RoleManagerFactory::class,
             RbacManager::class           => RbacManagerFactory::class,
+            MailManager::class           => MailManagerFactory::class,
             PermissionManager::class     => PermissionManagerFactory::class,
         ],
     ],

@@ -14,16 +14,18 @@ class UserManager
 
     private $entityManager;
     private $roleManager;
+    private $mailManager;
     private $permissionManager;
     private $viewRenderer;
     private $config;
 
-    public function __construct($entityManager, $roleManager, $permissionManager, $viewRenderer, $config)
+    public function __construct($entityManager, $roleManager, $mailManager, $permissionManager, $viewRenderer, $config)
     {
         $this->entityManager = $entityManager;
-        $this->viewRenderer = $viewRenderer;
         $this->roleManager = $roleManager;
+        $this->mailManager = $mailManager;
         $this->permissionManager = $permissionManager;
+        $this->viewRenderer = $viewRenderer;
         $this->config = $config;
     }
 
@@ -172,6 +174,9 @@ class UserManager
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function createEmailConfirmationToken($user)
     {
         if ($user->getStatus() == User::STATUS_ACTIVE) {
@@ -196,33 +201,17 @@ class UserManager
             'user/email/email-confirmation',
             ['emailConfirmation' => $emailConfirmation,]);
 
-        //@TODO Винести то колись звідси
-        $mail = new PHPMailer(true);
 
-        try {
-            //Server settings
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'smmithadam@gmail.com';                     //SMTP username
-            $mail->Password   = 'favorite_world';                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $option = [
+            'subjectEmail' => 'Підтвердженння електронної пошти.',
+            'bodyHtml' => $bodyHtml,
+        ];
 
-            //Recipients
-            $mail->setFrom('admin@example.com', 'Admin');
-            $mail->addAddress($user->getEmail(), $user->getFullName());     //Add a recipient
-
-            //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Підтвердженння електронної пошти.';
-            $mail->Body    = $bodyHtml;
-
-            $mail->send();
-            echo '<p> Лист надіслано. За декілька хвилин перевірте свою  адресу <b> ' .  $user->getEmail() . '</b></p>';
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        if ( true == $this->mailManager->sendMail($user, $option)) {
+            echo 'Лист для підтвердженння електронної поштинадіслано, превірте пошту : ' . $user->getEmail();
         }
+
+
     }
 
     public function generatePasswordResetToken($user)
