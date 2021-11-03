@@ -27,7 +27,7 @@ class PermissionController extends AbstractActionController
     {
         $permissions = $this->entityManager->getRepository(Permission::class)
             ->findBy([], ['name'=>'ASC']);
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'permissions' => $permissions
         ]);
@@ -65,7 +65,7 @@ class PermissionController extends AbstractActionController
                 return $this->redirect()->toRoute('permissions', ['action'=>'index']);
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form
         ]);
@@ -90,7 +90,7 @@ class PermissionController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
             return false;
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'permission' => $permission
         ]);
@@ -147,7 +147,7 @@ class PermissionController extends AbstractActionController
                 'description'=>$permission->getDescription()
             ));
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form,
             'permission' => $permission

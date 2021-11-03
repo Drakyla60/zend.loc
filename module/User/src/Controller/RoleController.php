@@ -27,7 +27,7 @@ class RoleController extends AbstractActionController
         $roles = $this->entityManager
             ->getRepository(Role::class)
             ->findBy([], ['id' => 'ASC']);
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'roles' => $roles,
         ]);
@@ -70,7 +70,7 @@ class RoleController extends AbstractActionController
                 return $this->redirect()->toRoute('roles', ['action' => 'index']);
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form
         ]);
@@ -97,7 +97,7 @@ class RoleController extends AbstractActionController
             ->findBy([], ['name' => 'ASC']);
 
         $effectivePermissions = $this->roleManager->getEffectivePermissions($role);
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'role' => $role,
             'allPermissions' => $allPermissions,
@@ -174,7 +174,7 @@ class RoleController extends AbstractActionController
                 'description' => $role->getDescription()
             ));
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form,
             'role' => $role
@@ -251,7 +251,7 @@ class RoleController extends AbstractActionController
         }
 
         $errors = $form->getMessages();
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form,
             'role' => $role,

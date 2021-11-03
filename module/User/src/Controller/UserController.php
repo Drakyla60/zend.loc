@@ -56,7 +56,7 @@ class UserController extends AbstractActionController
         $paginator->setDefaultItemCountPerPage(2);
         $paginator->setCurrentPageNumber($page);
 
-//        $this->sessionContainer->name = $query;
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'users' => $paginator
         ]);
@@ -88,6 +88,7 @@ class UserController extends AbstractActionController
                     ['action' => 'view', 'id' => $user->getId()]);
             }
         }
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form
         ]);
@@ -110,7 +111,7 @@ class UserController extends AbstractActionController
             $this->getResponse()->setStatusCode(404);
             return false;
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'user' => $user
         ]);
@@ -172,7 +173,7 @@ class UserController extends AbstractActionController
                 'roles' => $userRoleIds
             ]);
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel(array(
             'user' => $user,
             'form' => $form
@@ -247,7 +248,7 @@ class UserController extends AbstractActionController
                     ['action'=>'view', 'id'=>$user->getId()]);
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'user' => $user,
             'form' => $form
@@ -282,7 +283,7 @@ class UserController extends AbstractActionController
                 }
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form,
             'recaptcha' => $recaptcha,
@@ -334,7 +335,7 @@ class UserController extends AbstractActionController
                 }
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form
         ]);
@@ -349,7 +350,7 @@ class UserController extends AbstractActionController
         if ($id != 'invalid-email' && $id != 'sent' && $id != 'set' && $id != 'failed') {
             throw new Exception('Invalid message ID specified');
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'id' => $id
         ]);
