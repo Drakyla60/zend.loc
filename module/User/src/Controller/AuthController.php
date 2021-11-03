@@ -15,14 +15,17 @@ class AuthController extends AbstractActionController
     private $authManager;
     private $userManager;
     private $authService;
+    private $reCaptchaManager;
 
     private $rememberMe = 1; //для входу після реєстрації
-    public function __construct($entityManager, $authManager, $userManager, $authService)
+
+    public function __construct($entityManager, $authManager, $userManager, $reCaptchaManager, $authService)
     {
         $this->entityManager = $entityManager;
         $this->authManager = $authManager;
         $this->userManager = $userManager;
         $this->authService = $authService;
+        $this->reCaptchaManager = $reCaptchaManager;
     }
 
     /**
@@ -42,6 +45,8 @@ class AuthController extends AbstractActionController
         $this->userManager->createAdminUserIfNotExists();
 
         $form = new LoginForm();
+        $recaptcha = $this->reCaptchaManager->init();
+
         $form->get('redirect_url')->setValue($redirectUrl);
 
         // Зберігаємо статус входу на сайт.
@@ -51,7 +56,9 @@ class AuthController extends AbstractActionController
             $data = $this->params()->fromPost();
             $form->setData($data);
 
-            if ($form->isValid()) {
+            $result = $this->reCaptchaManager->checkReCaptcha($data['g-recaptcha-response']);
+
+            if ($form->isValid() && true == $result) {
 
                 $data = $form->getData();
                 $result = $this->authManager->login($data['email'], $data['password'], $data['remember_me']);
@@ -85,7 +92,8 @@ class AuthController extends AbstractActionController
         return new ViewModel([
             'form' => $form,
             'isLoginError' => $isLoginError,
-            'redirectUrl' => $redirectUrl
+            'redirectUrl' => $redirectUrl,
+            'recaptcha' => $recaptcha
         ]);
     }
 
