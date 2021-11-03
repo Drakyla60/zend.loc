@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User;
 
+use User\Controller\Factory\IndexControllerFactory;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -13,6 +14,7 @@ use User\Controller\Factory\AuthControllerFactory;
 use User\Controller\Factory\PermissionControllerFactory;
 use User\Controller\Factory\RoleControllerFactory;
 use User\Controller\Factory\UserControllerFactory;
+use User\Controller\IndexController;
 use User\Controller\PermissionController;
 use User\Controller\Plugin\AccessPlugin;
 use User\Controller\Plugin\Factory\AccessPluginFactory;
@@ -41,10 +43,20 @@ use User\View\Helper\Factory\AccessFactory;
 return [
     'router'             => [
         'routes' => [
-            'home_user' => [
+            'home_user_admin' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/users/',
+                    'route'    => '/admin/',
+                    'defaults' => [
+                        'controller' => IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'user' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/admin/users/',
                     'defaults' => [
                         'controller' => UserController::class,
                         'action'     => 'index',
@@ -124,7 +136,7 @@ return [
             'users' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/users[/:action[/:id]]',
+                    'route'    => '/admin/users[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[a-zA-Z0-9_-]*',
@@ -138,7 +150,7 @@ return [
             'roles' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/roles[/:action[/:id]]',
+                    'route'    => '/admin/roles[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]*',
@@ -152,7 +164,7 @@ return [
             'permissions' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/permissions[/:action[/:id]]',
+                    'route'    => '/admin/permissions[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]*',
@@ -173,6 +185,7 @@ return [
             UserController::class       => UserControllerFactory::class,
             AuthController::class       => AuthControllerFactory::class,
             RoleController::class       => RoleControllerFactory::class,
+            IndexController::class       => IndexControllerFactory::class,
             PermissionController::class => PermissionControllerFactory::class,
         ],
     ],
@@ -213,7 +226,7 @@ return [
         'exception_template'       => 'error/index',
         'template_map'        => [
             'layout/layout'           => __DIR__ . '/../view/layout/users_layout.phtml',
-            'user/index/index' => __DIR__ . '/../view/user/index/index.phtml',
+            'user/index/index'        => __DIR__ . '/../view/user/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
@@ -243,7 +256,7 @@ return [
             'mode' => 'restrictive' // restrictive  !!  permissive
         ],
         'controllers' => [
-            Controller\UserController::class => [
+            UserController::class => [
                 // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
                 ['actions' => ['resetPassword', 'message', 'setPassword', 'emailConfirmation'], 'allow' => '*'],
                 // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
@@ -251,10 +264,13 @@ return [
                 ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'],
                     'allow' => '+user.manage']
             ],
-            Controller\RoleController::class => [
+            IndexController::class => [
                 ['actions' => '*', 'allow' => '+role.manage']
             ],
-            Controller\PermissionController::class => [
+            RoleController::class => [
+                ['actions' => '*', 'allow' => '+role.manage']
+            ],
+            PermissionController::class => [
                 ['actions' => '*', 'allow' => '+permission.manage']
             ],
         ]

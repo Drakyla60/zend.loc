@@ -194,7 +194,7 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout'           => __DIR__ . '/../view/layout/application_layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
@@ -235,12 +235,11 @@ return [
                 // пользователям с привилегией "user.manage".
 //                ['actions' => ['about'], 'allow' => '+application.about']
             ],
+            PostController::class => [
+                ['actions' => ['*'], 'allow' => '*'],
+            ],
             ImageController::class => [
-                // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],
-                // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
-                // пользователям с привилегией "user.manage".
-//                ['actions' => ['about'], 'allow' => '+application.about']
             ],
         ]
     ],

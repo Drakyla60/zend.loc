@@ -133,6 +133,7 @@ class AuthController extends AbstractActionController
 
     public function notAuthorizedAction()
     {
+        $this->layout()->setTemplate('layout/application_layout');
         $this->getResponse()->setStatusCode(403);
 
         return new ViewModel();
