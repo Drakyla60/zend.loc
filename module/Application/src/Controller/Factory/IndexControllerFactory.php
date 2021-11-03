@@ -7,6 +7,8 @@ use Application\Service\MailSender;
 use Application\Service\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
+use User\Service\MailManager;
+use User\Service\ReCaptchaManager;
 
 class IndexControllerFactory
 {
@@ -16,7 +18,15 @@ class IndexControllerFactory
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $postManager = $container->get(PostManager::class);
         $authService = $container->get(AuthenticationService::class);
+        $reCaptchaManager = $container->get(ReCaptchaManager::class);
+        $mailManager = $container->get(MailManager::class);
 
-        return new IndexController($mailSender, $entityManager, $postManager, $authService);
+        return new IndexController(
+            $mailSender,
+            $entityManager,
+            $postManager,
+            $authService,
+            $reCaptchaManager,
+            $mailManager);
     }
 }

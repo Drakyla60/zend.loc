@@ -230,10 +230,17 @@ return [
         'controllers' => [
             IndexController::class => [
                 // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
-                ['actions' => ['index','contactUs'], 'allow' => '*'],
+                ['actions' => ['index','contactUs', 'about', 'thankYou', 'sendError', 'barcode'], 'allow' => '*'],
                 // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
                 // пользователям с привилегией "user.manage".
-                ['actions' => ['about'], 'allow' => '+application.about']
+//                ['actions' => ['about'], 'allow' => '+application.about']
+            ],
+            ImageController::class => [
+                // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
+                ['actions' => ['index','upload', 'file'], 'allow' => '*'],
+                // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
+                // пользователям с привилегией "user.manage".
+//                ['actions' => ['about'], 'allow' => '+application.about']
             ],
         ]
     ],

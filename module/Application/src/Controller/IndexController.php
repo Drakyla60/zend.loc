@@ -25,17 +25,22 @@ class IndexController extends AbstractActionController
     private $entityManager;
     private $postManager;
     private $authService;
+    private $reCaptchaManager;
+    private $mailManager;
 
-    public function __construct($mailSender, $entityManager, $postManager, $authService)
+    public function __construct($mailSender, $entityManager, $postManager, $authService, $reCaptchaManager, $mailManager)
     {
         $this->mailSender = $mailSender;
         $this->entityManager = $entityManager;
         $this->postManager = $postManager;
         $this->authService = $authService;
+        $this->reCaptchaManager = $reCaptchaManager;
+        $this->mailManager = $mailManager;
     }
 
     public function indexAction()
     {
+
         $writer = new Stream('./data/logfile.log','a');
         $logger = new Logger();
         $logger->addWriter($writer);
@@ -68,12 +73,16 @@ class IndexController extends AbstractActionController
 
         $tagCloud = $this->postManager->getTagCloud();
 
-        return new ViewModel([
+        $this->layout()->setTemplate('layout/application_layout');
+        $view =  new ViewModel([
             'posts'       => $paginator,
             'postManager' => $this->postManager,
             'tagCloud'    => $tagCloud,
             'loginName' => $name,
         ]);
+
+//        $view->setTemplate('')
+        return $view;
     }
 
     /**
@@ -86,6 +95,7 @@ class IndexController extends AbstractActionController
         ];
         $appName = 'Hello World';
 
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
             'meta' => $meta,
             'appName' => $appName,
@@ -98,32 +108,52 @@ class IndexController extends AbstractActionController
     public function contactUsAction()
     {
         $form = new ContactForm();
+        $recaptcha = $this->reCaptchaManager->init();
 
         if ($this->getRequest()->isPost()) {
+            $request = $this->getRequest();
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
 
-            $formData = $this->params()->fromPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
+            $form->setData($data);
+            $result = $this->reCaptchaManager->checkReCaptcha($data['g-recaptcha-response']);
+            if ($form->isValid() && true == $result) {
 
                 $formData = $form->getData();
+                $var = $formData['file'];
+                if (null != $formData['file']) {
+                    $path = $formData['file']['tmp_name'];
+                    $savePath = './data/contact-us' . '/'. time() .'_'. $formData['file']['name'];
 
-                if(!$this->mailSender
-                    ->sendMail('Drakyla60@gmail.com', $formData['email'], $formData['subject'], $formData['body'])) {
+                    $result = move_uploaded_file($path, $savePath);
+                }
+
+                $option = [
+                    'subjectEmail' => 'Користувач : <b>' . $formData['email'] . '</b> Написав вам лист через контактну форму',
+                    'bodyHtml'     => 'Тема листа : ' . $formData['subject'] . '<br>' .
+                                      'Текст листа :' . $formData['body'],
+                    'file'         => $savePath,
+                ];
+//                die();
+                if(!$this->mailManager->sendMailWithContactUs($formData, $option)) {
                     return $this->redirect()->toRoute('application', ['action'=>'sendError']);
                 }
 
                 return $this->redirect()->toRoute('application', ['action' => 'thankYou']);
             } else {
-
+                $this->layout()->setTemplate('layout/application_layout');
                 return new ViewModel([
                     'form' => $form,
+                    'recaptcha' => $recaptcha
                 ]);
             }
         }
-
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
             'form' => $form,
+            'recaptcha' => $recaptcha
         ]);
     }
 
@@ -132,6 +162,7 @@ class IndexController extends AbstractActionController
      */
     public function thankYouAction()
     {
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel();
     }
 
@@ -140,6 +171,7 @@ class IndexController extends AbstractActionController
      */
     public function sendErrorAction()
     {
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel();
     }
 
