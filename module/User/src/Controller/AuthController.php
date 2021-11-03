@@ -100,12 +100,15 @@ class AuthController extends AbstractActionController
     public function registrationAction()
     {
         $form = new RegistrationUserForm($this->entityManager);
+        $recaptcha = $this->reCaptchaManager->init();
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
 
-            if ($form->isValid()) {
+            $result = $this->reCaptchaManager->checkReCaptcha($data['g-recaptcha-response']);
+
+            if ($form->isValid() && true == $result) {
 
                 $data = $form->getData();
                 $user = $this->userManager->registrationUser($data);
@@ -115,7 +118,8 @@ class AuthController extends AbstractActionController
             }
         }
         return new ViewModel([
-            'form' => $form
+            'form' => $form,
+            'recaptcha' => $recaptcha
         ]);
     }
 
