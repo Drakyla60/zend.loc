@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Exception;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Paginator\Paginator;
+use Laminas\ReCaptcha\ReCaptcha;
 use Laminas\View\Model\ViewModel;
 use User\Entity\Role;
 use User\Entity\User;
@@ -255,11 +256,17 @@ class UserController extends AbstractActionController
     {
         $form = new PasswordResetForm();
 
+        $pubKey = '6LdjVhAdAAAAANLl74bwQ0OJbZdRjg_f-YDPz-B5';
+        $privKey = '6LdjVhAdAAAAAH1ZRn41j23E1JEYPvXUEMDiku_Z';
+
+        $recaptcha = new ReCaptcha($pubKey, $privKey);
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
 
-            if ($form->isValid()) {
+            $captcha = $recaptcha->verify($data['g-recaptcha-response']);
+
+            if ($form->isValid() && $captcha->isValid()) {
                 $user = $this
                     ->entityManager
                     ->getRepository(User::class)
@@ -277,7 +284,8 @@ class UserController extends AbstractActionController
         }
 
         return new ViewModel([
-            'form' => $form
+            'form' => $form,
+            'recaptcha' => $recaptcha,
         ]);
     }
 
