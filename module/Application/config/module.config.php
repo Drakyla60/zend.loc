@@ -10,7 +10,7 @@ use Application\Controller\Factory\PostControllerFactory;
 use Application\Controller\Factory\RegistrationControllerFactory;
 use Application\Controller\ImageController;
 use Application\Controller\IndexController;
-use Application\Controller\MyController;
+use Application\Controller\ProfileController;
 use Application\Controller\PostController;
 use Application\Controller\RegistrationController;
 use Application\Service\Factory\NavManagerFactory;
@@ -21,8 +21,6 @@ use Application\Service\MailSender;
 use Application\Service\NavManager;
 use Application\Service\PostManager;
 use Application\Service\RbacAssertionManager;
-use Application\View\Helper\Breadcrumbs;
-use Application\View\Helper\Menu;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Regex;
@@ -102,13 +100,17 @@ return [
                     ],
                 ],
             ],
-            'my' => [
-                'type'    => Literal::class,
+            'profile' => [
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/my',
+                    'route'    => '/profile[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
                     'defaults' => [
-                        'controller' => MyController::class,
-                        'action'     => 'index',
+                        'controller'    => ProfileController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],
@@ -117,7 +119,7 @@ return [
                 'options' => [
                     'route'    => '/getJson',
                     'defaults' => [
-                        'controller' => MyController::class,
+                        'controller' => ProfileController::class,
                         'action'     => 'getJson',
                     ],
                 ],
@@ -161,7 +163,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            MyController::class           => InvokableFactory::class,
+            ProfileController::class           => InvokableFactory::class,
             IndexController::class        => IndexControllerFactory::class,
             ImageController::class        => ImageControllerFactory::class,
             RegistrationController::class => RegistrationControllerFactory::class,
@@ -236,7 +238,10 @@ return [
 //                ['actions' => ['about'], 'allow' => '+application.about']
             ],
             PostController::class => [
-                ['actions' => ['*'], 'allow' => '*'],
+                ['actions' => ['add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
+            ],
+            ProfileController::class => [
+                ['actions' => ['index'], 'allow' => '@'],
             ],
             ImageController::class => [
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],
