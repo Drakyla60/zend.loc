@@ -23,6 +23,7 @@ use User\Service\Factory\AuthManagerFactory;
 use User\Service\Factory\MailManagerFactory;
 use User\Service\Factory\PermissionManagerFactory;
 use User\Service\Factory\RbacManagerFactory;
+use User\Service\Factory\ReCaptchaManagerFactory;
 use User\Service\Factory\RoleManagerFactory;
 use User\Service\Factory\UserManagerFactory;
 use User\Service\Factory\AuthenticationServiceFactory;
@@ -31,6 +32,7 @@ use User\Service\AuthManager;
 use User\Service\MailManager;
 use User\Service\PermissionManager;
 use User\Service\RbacManager;
+use User\Service\ReCaptchaManager;
 use User\Service\RoleManager;
 use User\Service\UserManager;
 use User\View\Helper\Access;
@@ -183,6 +185,7 @@ return [
             RoleManager::class           => RoleManagerFactory::class,
             RbacManager::class           => RbacManagerFactory::class,
             MailManager::class           => MailManagerFactory::class,
+            ReCaptchaManager::class      => ReCaptchaManagerFactory::class,
             PermissionManager::class     => PermissionManagerFactory::class,
         ],
     ],

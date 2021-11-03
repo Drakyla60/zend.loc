@@ -25,15 +25,17 @@ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
  */
 class UserController extends AbstractActionController
 {
-    private EntityManager $entityManager;
-    private UserManager $userManager;
+    private $entityManager;
+    private $userManager;
     private $sessionContainer;
+    private $reCaptchaManager;
 
-    public function __construct($entityManager, $userManager, $sessionContainer)
+    public function __construct($entityManager, $userManager, $reCaptchaManager, $sessionContainer)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
         $this->sessionContainer = $sessionContainer;
+        $this->reCaptchaManager = $reCaptchaManager;
     }
 
     public function indexAction(): ViewModel
@@ -256,17 +258,15 @@ class UserController extends AbstractActionController
     {
         $form = new PasswordResetForm();
 
-        $pubKey = '6LdjVhAdAAAAANLl74bwQ0OJbZdRjg_f-YDPz-B5';
-        $privKey = '6LdjVhAdAAAAAH1ZRn41j23E1JEYPvXUEMDiku_Z';
+        $recaptcha = $this->reCaptchaManager->init();
 
-        $recaptcha = new ReCaptcha($pubKey, $privKey);
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
 
-            $captcha = $recaptcha->verify($data['g-recaptcha-response']);
+            $result = $this->reCaptchaManager->checkReCaptcha($data['g-recaptcha-response']);
 
-            if ($form->isValid() && $captcha->isValid()) {
+            if ($form->isValid() && true == $result) {
                 $user = $this
                     ->entityManager
                     ->getRepository(User::class)
