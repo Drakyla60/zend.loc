@@ -88,10 +88,10 @@ return [
                     ],
                 ],
             ],
-            'registration' => [
+            'reg' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/registration[/:action]',
+                    'route'    => '/reg[/:action]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
@@ -232,11 +232,7 @@ return [
         ],
         'controllers' => [
             IndexController::class => [
-                // Дать доступ к действиям "resetPassword", "message" и "setPassword" всем.
                 ['actions' => ['index','contactUs', 'about', 'thankYou', 'sendError', 'barcode'], 'allow' => '*'],
-                // Дать доступ к действиям "index", "add", "edit", "view", "changePassword"
-                // пользователям с привилегией "user.manage".
-//                ['actions' => ['about'], 'allow' => '+application.about']
             ],
             PostController::class => [
                 ['actions' => ['add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
@@ -247,6 +243,10 @@ return [
             ImageController::class => [
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],
             ],
+            RegistrationController::class => [
+                ['actions' => ['index', 'review'], 'allow' => '*'],
+            ],
+
         ]
     ],
 ];

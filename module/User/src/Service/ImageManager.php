@@ -32,4 +32,21 @@ class ImageManager
         return $data;
     }
 
+    public function uploadContactUsImage($data)
+    {
+        $pathCatalog = $this->config['images']['contactUsImagesCatalog'];
+
+        if (null != $data['file']) {
+            $path = $data['file']['tmp_name'];
+            $fileName =  time() .'_'. $data['file']['name'];
+            $savePath = $pathCatalog . $fileName;
+
+            if (move_uploaded_file($path, $savePath)) {
+                $data['file'] = $savePath;
+            }
+
+        }
+        return $data;
+    }
+
 }

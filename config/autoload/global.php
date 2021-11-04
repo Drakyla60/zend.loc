@@ -25,8 +25,9 @@ return [
         'allLog' => './data/log/allLog.log'
     ],
     'images' => [
-        'userImagesCatalog' => './public/img/avatar/',
-        'postImagesCatalog' => './public/img/post/',
+        'userImagesCatalog'      => './public/img/avatar/',
+        'postImagesCatalog'      => './public/img/post/',
+        'contactUsImagesCatalog' => './public/img/contact-us/'
     ],
     // Налаштування сеcії.
     'session_config' => [

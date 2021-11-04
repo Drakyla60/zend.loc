@@ -20,49 +20,41 @@ use Laminas\View\Model\ViewModel;
  */
 class IndexController extends AbstractActionController
 {
-
-    private $mailSender;
     private $entityManager;
     private $postManager;
     private $authService;
     private $reCaptchaManager;
     private $mailManager;
+    private $imageManager;
 
-    public function __construct($mailSender,
-                                $entityManager,
+    public function __construct($entityManager,
                                 $postManager,
                                 $authService,
                                 $reCaptchaManager,
-                                $mailManager
+                                $mailManager,
+                                $imageManager
     )
     {
-        $this->mailSender = $mailSender;
-        $this->entityManager = $entityManager;
-        $this->postManager = $postManager;
-        $this->authService = $authService;
+        $this->entityManager    = $entityManager;
+        $this->postManager      = $postManager;
+        $this->authService      = $authService;
         $this->reCaptchaManager = $reCaptchaManager;
-        $this->mailManager = $mailManager;
+        $this->mailManager      = $mailManager;
+        $this->imageManager     = $imageManager;
     }
 
     public function indexAction()
     {
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
-
         $name = $this->authService->getIdentity();
 
         if ($tagFilter) {
-
-            $query = $this
-                ->entityManager
-                ->getRepository(Post::class)
-                ->findPostsByTag($tagFilter);
-
+            $query = $this->entityManager
+                ->getRepository(Post::class)->findPostsByTag($tagFilter);
         } else {
-            $query = $this
-                ->entityManager
-                ->getRepository(Post::class)
-                ->findPublishedPosts();
+            $query = $this->entityManager
+                ->getRepository(Post::class)->findPublishedPosts();
         }
 
         $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
@@ -99,9 +91,6 @@ class IndexController extends AbstractActionController
         ]);
     }
 
-    /**
-     * @return \Laminas\Http\Response|ViewModel
-     */
     public function contactUsAction()
     {
         $form = new ContactForm();
@@ -119,19 +108,14 @@ class IndexController extends AbstractActionController
             if ($form->isValid() && true == $result) {
 
                 $formData = $form->getData();
-                $var = $formData['file'];
-                if (null != $formData['file']) {
-                    $path = $formData['file']['tmp_name'];
-                    $savePath = './data/contact-us' . '/'. time() .'_'. $formData['file']['name'];
 
-                    $result = move_uploaded_file($path, $savePath);
-                }
+                $formData = $this->imageManager->uploadContactUsImage($formData);
 
                 $option = [
-                    'subjectEmail' => 'Користувач : <b>' . $formData['email'] . '</b> Написав вам лист через контактну форму',
+                    'subjectEmail' => 'Користувач :' . $formData['email'] . ' Написав вам лист через контактну форму',
                     'bodyHtml'     => 'Тема листа : ' . $formData['subject'] . '<br>' .
                                       'Текст листа :' . $formData['body'],
-                    'file'         => $savePath,
+                    'file'         => $formData['file'],
                 ];
 //                die();
                 if(!$this->mailManager->sendMailWithContactUs($formData, $option)) {
