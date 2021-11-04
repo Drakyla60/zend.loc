@@ -27,8 +27,16 @@ class IndexController extends AbstractActionController
     private $authService;
     private $reCaptchaManager;
     private $mailManager;
+    private $loggerManager;
 
-    public function __construct($mailSender, $entityManager, $postManager, $authService, $reCaptchaManager, $mailManager)
+    public function __construct($mailSender,
+                                $entityManager,
+                                $postManager,
+                                $authService,
+                                $reCaptchaManager,
+                                $mailManager,
+                                $loggerManager
+    )
     {
         $this->mailSender = $mailSender;
         $this->entityManager = $entityManager;
@@ -36,16 +44,18 @@ class IndexController extends AbstractActionController
         $this->authService = $authService;
         $this->reCaptchaManager = $reCaptchaManager;
         $this->mailManager = $mailManager;
+        $this->loggerManager = $loggerManager;
     }
 
     public function indexAction()
     {
 
-        $writer = new Stream('./data/logfile.log','a');
-        $logger = new Logger();
-        $logger->addWriter($writer);
-        $logger->log(Logger::INFO, 'Тестове повідомлення');
-        $logger->err('Informational message');
+//        $writer = new Stream('./data/logfile.log','a');
+//        $logger = new Logger();
+//        $logger->addWriter($writer);
+//        $logger->log(Logger::INFO, 'Тестове повідомлення');
+//        $logger->err('Informational message');
+        $this->loggerManager->logger('info', 'Інформаційне повідомення');
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
 

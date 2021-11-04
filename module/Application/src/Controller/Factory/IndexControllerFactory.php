@@ -7,6 +7,7 @@ use Application\Service\MailSender;
 use Application\Service\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
+use User\Service\LoggerManager;
 use User\Service\MailManager;
 use User\Service\ReCaptchaManager;
 
@@ -20,6 +21,7 @@ class IndexControllerFactory
         $authService = $container->get(AuthenticationService::class);
         $reCaptchaManager = $container->get(ReCaptchaManager::class);
         $mailManager = $container->get(MailManager::class);
+        $loggerManager = $container->get(LoggerManager::class);
 
         return new IndexController(
             $mailSender,
@@ -27,6 +29,8 @@ class IndexControllerFactory
             $postManager,
             $authService,
             $reCaptchaManager,
-            $mailManager);
+            $mailManager,
+            $loggerManager
+        );
     }
 }

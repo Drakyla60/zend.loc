@@ -8,4 +8,4 @@ phpunit.xml
 /.idea
 data/upload/
 public/img/captcha/
-/data/logfile.log
+/data/log/
