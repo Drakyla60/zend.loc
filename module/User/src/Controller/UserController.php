@@ -40,11 +40,6 @@ class UserController extends AbstractActionController
 
     public function indexAction(): ViewModel
     {
-        // Access control.
-//        if (!$this->access('user.manage')) {
-//            $this->getResponse()->setStatusCode(401);
-//            return;
-//        }
         $page = $this->params()->fromQuery('page', 1);
 
         $query = $this->entityManager

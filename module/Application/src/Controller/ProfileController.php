@@ -20,7 +20,31 @@ class ProfileController extends AbstractActionController
         $this->entityManager = $entityManager;
     }
 
-    public function indexAction()
+    public function indexAction(): ViewModel
+    {
+        $email = $this->authService->getIdentity();
+
+        $profile = $this->entityManager
+            ->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        return new ViewModel([
+            'profile' => $profile,
+        ]);
+    }
+
+    public function editAction(): ViewModel
+    {
+        $email = $this->authService->getIdentity();
+
+        $profile = $this->entityManager
+            ->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        return new ViewModel([
+            'profile' => $profile,
+        ]);
+    }
+
+    public function settingsAction(): ViewModel
     {
         $email = $this->authService->getIdentity();
 

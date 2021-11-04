@@ -242,7 +242,7 @@ return [
                 ['actions' => ['add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
             ],
             ProfileController::class => [
-                ['actions' => ['index'], 'allow' => '@'],
+                ['actions' => ['index', 'edit', 'settings'], 'allow' => '@'],
             ],
             ImageController::class => [
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],

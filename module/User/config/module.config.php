@@ -202,7 +202,7 @@ return [
             RoleManager::class           => RoleManagerFactory::class,
             RbacManager::class           => RbacManagerFactory::class,
             MailManager::class           => MailManagerFactory::class,
-            LoggerManager::class           => LoggerManagerFactory::class,
+            LoggerManager::class         => LoggerManagerFactory::class,
             ReCaptchaManager::class      => ReCaptchaManagerFactory::class,
             PermissionManager::class     => PermissionManagerFactory::class,
         ],
