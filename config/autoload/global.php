@@ -20,6 +20,10 @@ use Laminas\Session\Validator\RemoteAddr;
 use Doctrine\DBAL\Driver\PDO\MySQL\Driver as PDOMySqlDriver;
 
 return [
+
+    'logger' => [
+        'allLog' => './data/log/allLog.log'
+    ],
     // Налаштування сеcії.
     'session_config' => [
         // На який час записуєьбся кука в браузер.
