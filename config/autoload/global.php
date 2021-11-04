@@ -24,6 +24,10 @@ return [
     'logger' => [
         'allLog' => './data/log/allLog.log'
     ],
+    'images' => [
+        'userImagesCatalog' => './public/img/avatar/',
+        'postImagesCatalog' => './public/img/post/',
+    ],
     // Налаштування сеcії.
     'session_config' => [
         // На який час записуєьбся кука в браузер.

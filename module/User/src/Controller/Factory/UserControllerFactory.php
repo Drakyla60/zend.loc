@@ -2,6 +2,7 @@
 
 namespace User\Controller\Factory;
 
+use User\Service\ImageManager;
 use User\Controller\UserController;
 use Interop\Container\ContainerInterface;
 use User\Service\ReCaptchaManager;
@@ -11,11 +12,18 @@ class UserControllerFactory
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): UserController
     {
-        $entityManager = $container->get('doctrine.entitymanager.orm_default');
-        $userManager = $container->get(UserManager::class);
+        $entityManager    = $container->get('doctrine.entitymanager.orm_default');
+        $userManager      = $container->get(UserManager::class);
         $reCaptchaManager = $container->get(ReCaptchaManager::class);
         $sessionContainer = $container->get('UserSessionContainer');
+        $imageManager     = $container->get(ImageManager::class);
 
-        return new UserController($entityManager, $userManager, $reCaptchaManager, $sessionContainer);
+        return new UserController(
+            $entityManager,
+            $userManager,
+            $reCaptchaManager,
+            $sessionContainer,
+            $imageManager
+        );
     }
 }

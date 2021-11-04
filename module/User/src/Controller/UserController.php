@@ -29,13 +29,20 @@ class UserController extends AbstractActionController
     private $userManager;
     private $sessionContainer;
     private $reCaptchaManager;
+    private $imageManager;
 
-    public function __construct($entityManager, $userManager, $reCaptchaManager, $sessionContainer)
+    public function __construct($entityManager,
+                                $userManager,
+                                $reCaptchaManager,
+                                $sessionContainer,
+                                $imageManager
+    )
     {
-        $this->entityManager = $entityManager;
-        $this->userManager = $userManager;
+        $this->entityManager    = $entityManager;
+        $this->userManager      = $userManager;
         $this->sessionContainer = $sessionContainer;
         $this->reCaptchaManager = $reCaptchaManager;
+        $this->imageManager     = $imageManager;
     }
 
     public function indexAction(): ViewModel
@@ -71,32 +78,14 @@ class UserController extends AbstractActionController
         $form->get('roles')->setValueOptions($roleList);
 
         if ($this->getRequest()->isPost()) {
-            $request = $this->getRequest();
-            $data = array_merge_recursive(
-                $request->getPost()->toArray(),
-                $request->getFiles()->toArray()
-            );
+            $data = $this->getDataggg();
             $form->setData($data);
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
-
-                $var = $data['avatar'];
-                if (null != $data['avatar']) {
-                    $path = $data['avatar']['tmp_name'];
-                    $fileName =  time() .'_'. $data['avatar']['name'];
-                    $savePath = './public/img/avatar/'. $fileName;
-
-                    $result = move_uploaded_file($path, $savePath);
-                    if ($result) {
-                        $data['avatar'] = $fileName;
-                    }
-                }
-
-//                die();
+                $data = $this->imageManager->uploadUserImage($data);
                 $user = $this->userManager->addUser($data);
-
+                $this->logger('info', 'Додано нового Коритстувача з Адмінки: '. $data['email']);
                 return $this->redirect()->toRoute('users',
                     ['action' => 'view', 'id' => $user->getId()]);
             }
@@ -170,20 +159,9 @@ class UserController extends AbstractActionController
 
             if ($form->isValid()) {
                 $data = $form->getData();
-
-                $var = $data['avatar'];
-                if (null != $data['avatar']) {
-                    $path = $data['avatar']['tmp_name'];
-                    $fileName =  time() .'_'. $data['avatar']['name'];
-                    $savePath = './public/img/avatar/'. $fileName;
-
-                    $result = move_uploaded_file($path, $savePath);
-                    if ($result) {
-                        $data['avatar'] = $fileName;
-                    }
-                }
+                $data = $this->imageManager->uploadUserImage($data);
                 $this->userManager->updateUser($user, $data);
-
+                $this->logger('info', 'Внесено зміни з Адмінки для коритстувача : '. $data['email']);
                 return $this->redirect()->toRoute('users',
                     ['action' => 'view', 'id' => $user->getId()]);
             }
@@ -382,6 +360,19 @@ class UserController extends AbstractActionController
         return new ViewModel([
             'id' => $id
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDataggg(): array
+    {
+        $request = $this->getRequest();
+        $data = array_merge_recursive(
+            $request->getPost()->toArray(),
+            $request->getFiles()->toArray()
+        );
+        return $data;
     }
 
 }
