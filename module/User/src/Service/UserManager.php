@@ -44,8 +44,10 @@ class UserManager
         $passwordHash = $bcrypt->create($data['password']);
         $user->setPassword($passwordHash);
         $user->setStatus($data['status']);
+        $user->setAvatar($data['avatar']);
         $currentDate = date('Y-m-d H:i:s');
         $user->setDateCreated($currentDate);
+        $user->setDateUpdated($currentDate);
 
         $this->assignRoles($user, $data['roles']);
 
@@ -97,6 +99,9 @@ class UserManager
         $user->setFullName($data['full_name']);
         $user->setStatus($data['status']);
 
+        $user->setAvatar($data['avatar']);
+//        $currentDate = date('Y-m-d H:i:s');
+//        $user->setDateUpdated($currentDate);
         $this->assignRoles($user, $data['roles']);
 
         $this->entityManager->persist($user);

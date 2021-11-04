@@ -76,12 +76,30 @@ class UserController extends AbstractActionController
         $form->get('roles')->setValueOptions($roleList);
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
+            $request = $this->getRequest();
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
             $form->setData($data);
 
             if ($form->isValid()) {
 
                 $data = $form->getData();
+
+                $var = $data['avatar'];
+                if (null != $data['avatar']) {
+                    $path = $data['avatar']['tmp_name'];
+                    $fileName =  time() .'_'. $data['avatar']['name'];
+                    $savePath = './public/img/avatar/'. $fileName;
+
+                    $result = move_uploaded_file($path, $savePath);
+                    if ($result) {
+                        $data['avatar'] = $fileName;
+                    }
+                }
+
+//                die();
                 $user = $this->userManager->addUser($data);
 
                 return $this->redirect()->toRoute('users',
@@ -148,12 +166,27 @@ class UserController extends AbstractActionController
 
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
-//            unset($data['roles']);
+            $request = $this->getRequest();
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
             $form->setData($data);
 
             if ($form->isValid()) {
                 $data = $form->getData();
+
+                $var = $data['avatar'];
+                if (null != $data['avatar']) {
+                    $path = $data['avatar']['tmp_name'];
+                    $fileName =  time() .'_'. $data['avatar']['name'];
+                    $savePath = './public/img/avatar/'. $fileName;
+
+                    $result = move_uploaded_file($path, $savePath);
+                    if ($result) {
+                        $data['avatar'] = $fileName;
+                    }
+                }
                 $this->userManager->updateUser($user, $data);
 
                 return $this->redirect()->toRoute('users',
