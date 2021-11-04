@@ -2,9 +2,14 @@
 
 namespace User\Form;
 
+use Laminas\Filter\File\RenameUpload;
 use Laminas\Filter\ToInt;
 use Laminas\Form\Form;
 use Laminas\InputFilter\ArrayInput;
+use Laminas\InputFilter\FileInput;
+use Laminas\Validator\File\ImageSize;
+use Laminas\Validator\File\IsImage;
+use Laminas\Validator\File\MimeType;
 use Laminas\Validator\GreaterThan;
 use Laminas\Validator\Hostname;
 use User\Validator\UserExistsValidator;
@@ -19,6 +24,7 @@ class AddUserForm extends Form
     public function __construct( $entityManager = null, $user = null)
     {
         parent::__construct('add-user-form');
+        $this->setAttribute('enctype', 'multipart/form-data');
         $this->setAttribute('method', 'post');
         $this->entityManager = $entityManager;
         $this->user = $user;
@@ -74,6 +80,17 @@ class AddUserForm extends Form
                     2 => 'Retired',
                 ]
             ],
+        ]);
+
+        $this->add([
+            'type'       => 'file',
+            'name'       => 'avatar',
+            'attributes' => [
+                'id' => 'file'
+            ],
+            'options'    => [
+                'label' => 'Image file'
+            ]
         ]);
 
         // Add "roles" field
@@ -187,6 +204,35 @@ class AddUserForm extends Form
                     'options' => [
                         'token' => 'password',
                     ],
+                ],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'type'       => FileInput::class,
+            'name'       => 'avatar',
+            'required'   => false,
+            'validators' => [
+//                [
+//                    'name'    => UploadFile::class
+//                ],
+                [
+                    'name'    => MimeType::class,
+                    'options' => [
+                        'mimeType'  => ['image/jpeg', 'image/png']
+                    ]
+                ],
+                [
+                    'name'    => IsImage::class
+                ],
+                [
+                    'name'    => ImageSize::class,
+                    'options' => [
+                        'minWidth'  => 128,
+                        'minHeight' => 128,
+                        'maxWidth'  => 4096,
+                        'maxHeight' => 4096
+                    ]
                 ],
             ],
         ]);

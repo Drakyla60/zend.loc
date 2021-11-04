@@ -5,6 +5,10 @@ namespace User\Form;
 use Laminas\Filter\ToInt;
 use Laminas\Form\Form;
 use Laminas\InputFilter\ArrayInput;
+use Laminas\InputFilter\FileInput;
+use Laminas\Validator\File\ImageSize;
+use Laminas\Validator\File\IsImage;
+use Laminas\Validator\File\MimeType;
 use Laminas\Validator\GreaterThan;
 use Laminas\Validator\Hostname;
 use User\Validator\UserExistsValidator;
@@ -20,6 +24,7 @@ class EditUserForm extends Form
     {
         parent::__construct('edit-user-form');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('enctype', 'multipart/form-data');
         $this->entityManager = $entityManager;
         $this->user = $user;
 
@@ -58,6 +63,17 @@ class EditUserForm extends Form
                     2 => 'Retired',
                 ]
             ],
+        ]);
+
+        $this->add([
+            'type'       => 'file',
+            'name'       => 'avatar',
+            'attributes' => [
+                'id' => 'file'
+            ],
+            'options'    => [
+                'label' => 'Image file'
+            ]
         ]);
 
         // Add "roles" field
@@ -146,6 +162,32 @@ class EditUserForm extends Form
                 ],
             ],
         ]);
+        $inputFilter->add([
+            'type'       => FileInput::class,
+            'name'       => 'avatar',
+            'required'   => false,
+            'validators' => [
+                [
+                    'name'    => MimeType::class,
+                    'options' => [
+                        'mimeType'  => ['image/jpeg', 'image/png']
+                    ]
+                ],
+                [
+                    'name'    => IsImage::class
+                ],
+                [
+                    'name'    => ImageSize::class,
+                    'options' => [
+                        'minWidth'  => 128,
+                        'minHeight' => 128,
+                        'maxWidth'  => 4096,
+                        'maxHeight' => 4096
+                    ]
+                ],
+            ],
+        ]);
+
 
         $inputFilter->add([
             'name'       => 'status',
