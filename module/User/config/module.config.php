@@ -18,6 +18,8 @@ use User\Controller\IndexController;
 use User\Controller\PermissionController;
 use User\Controller\Plugin\AccessPlugin;
 use User\Controller\Plugin\Factory\AccessPluginFactory;
+use User\Controller\Plugin\Factory\LoggerPluginFactory;
+use User\Controller\Plugin\LoggerPlugin;
 use User\Controller\RoleController;
 use User\Controller\UserController;
 use User\Service\Factory\AuthAdapterFactory;
@@ -208,9 +210,11 @@ return [
     'controller_plugins' => [
         'factories' => [
             AccessPlugin::class => AccessPluginFactory::class,
+            LoggerPlugin::class => LoggerPluginFactory::class,
         ],
         'aliases' => [
             'access' => AccessPlugin::class,
+            'logger' => LoggerPlugin::class,
         ],
     ],
     'view_helpers' => [
