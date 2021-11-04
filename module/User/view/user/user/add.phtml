@@ -33,6 +33,11 @@ $form->get('confirm_password')->setAttributes([
     'placeholder'=>'Retype password',
 ]);
 
+$form->get('avatar')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Avatar',
+]);
+
 $form->get('roles')->setAttributes([
     'class'=>'form-control'
 ]);
@@ -87,6 +92,16 @@ $form->prepare();
                 <?= $this->formElement($form->get('confirm_password')); ?>
                 <?= $this->formElementErrors($form->get('confirm_password')); ?>
             </div>
+
+            <?= $this->formLabel($form->get('avatar')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-question"></i></span>
+                </div>
+                <?= $this->formElement($form->get('avatar')); ?>
+                <?= $this->formElementErrors($form->get('avatar')); ?>
+            </div>
+
 
         </div>
         <!-- /.card-body -->
