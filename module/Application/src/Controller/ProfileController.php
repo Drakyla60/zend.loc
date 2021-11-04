@@ -7,17 +7,28 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
+use User\Entity\User;
 
 class ProfileController extends AbstractActionController
 {
+    private $authService;
+    private $entityManager;
+
+    public function __construct($authService, $entityManager)
+    {
+        $this->authService = $authService;
+        $this->entityManager = $entityManager;
+    }
+
     public function indexAction()
     {
-        $meta = [
-            'title' => 'My Controller page!'
-        ];
+        $email = $this->authService->getIdentity();
+
+        $profile = $this->entityManager
+            ->getRepository(User::class)->findOneBy(['email' => $email]);
 
         return new ViewModel([
-            'meta' => $meta,
+            'profile' => $profile,
         ]);
     }
 

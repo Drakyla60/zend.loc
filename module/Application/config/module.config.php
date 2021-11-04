@@ -7,6 +7,7 @@ namespace Application;
 use Application\Controller\Factory\ImageControllerFactory;
 use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\PostControllerFactory;
+use Application\Controller\Factory\ProfileControllerFactory;
 use Application\Controller\Factory\RegistrationControllerFactory;
 use Application\Controller\ImageController;
 use Application\Controller\IndexController;
@@ -163,7 +164,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            ProfileController::class           => InvokableFactory::class,
+            ProfileController::class      => ProfileControllerFactory::class,
             IndexController::class        => IndexControllerFactory::class,
             ImageController::class        => ImageControllerFactory::class,
             RegistrationController::class => RegistrationControllerFactory::class,

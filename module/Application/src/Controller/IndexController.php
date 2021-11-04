@@ -27,15 +27,13 @@ class IndexController extends AbstractActionController
     private $authService;
     private $reCaptchaManager;
     private $mailManager;
-    private $loggerManager;
 
     public function __construct($mailSender,
                                 $entityManager,
                                 $postManager,
                                 $authService,
                                 $reCaptchaManager,
-                                $mailManager,
-                                $loggerManager
+                                $mailManager
     )
     {
         $this->mailSender = $mailSender;
@@ -44,18 +42,10 @@ class IndexController extends AbstractActionController
         $this->authService = $authService;
         $this->reCaptchaManager = $reCaptchaManager;
         $this->mailManager = $mailManager;
-        $this->loggerManager = $loggerManager;
     }
 
     public function indexAction()
     {
-
-//        $writer = new Stream('./data/logfile.log','a');
-//        $logger = new Logger();
-//        $logger->addWriter($writer);
-//        $logger->log(Logger::INFO, 'Тестове повідомлення');
-//        $logger->err('Informational message');
-        $this->loggerManager->logger('info', 'Інформаційне повідомення');
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
 
@@ -84,15 +74,12 @@ class IndexController extends AbstractActionController
         $tagCloud = $this->postManager->getTagCloud();
 
         $this->layout()->setTemplate('layout/application_layout');
-        $view =  new ViewModel([
+        return new ViewModel([
             'posts'       => $paginator,
             'postManager' => $this->postManager,
             'tagCloud'    => $tagCloud,
             'loginName' => $name,
         ]);
-
-//        $view->setTemplate('')
-        return $view;
     }
 
     /**

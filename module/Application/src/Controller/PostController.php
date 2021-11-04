@@ -40,7 +40,7 @@ class PostController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->postManager->addNewPost($data);
-
+                $this->logger('info', 'Додано новий Пост: '. $data['title']);
                 return $this->redirect()->toRoute('application');
             }
         }
@@ -74,7 +74,7 @@ class PostController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
                 $this->postManager->addCommentToPost($post, $data);
-
+                $this->logger('info', 'Додано новий Коментар: '. $data['author'] . ' - '. $data['comment']);
                 return $this->redirect()->toRoute('posts',
                     [
                         'action' => 'view',
@@ -82,7 +82,7 @@ class PostController extends AbstractActionController
                     ]);
             }
         }
-
+        $this->logger('info', 'Переглянуто пост: '. $post->getTitle());
         return new ViewModel([
             'post'         => $post,
             'commentCount' => $commentCount,
