@@ -46,9 +46,23 @@ class User
     protected int $status;
 
     /**
+     * @ORM\Column(name="avatar")
+     */
+    protected string $avatar;
+
+    /**
      * @ORM\Column(name="date_created")
      */
     protected string $dateCreated;
+
+    /**
+     * @ORM\Column(name="date_updated")
+     */
+    protected string $dateUpdated;
+    /**
+     * @ORM\Column(name="date_deleted")
+     */
+    protected string $dateDeleted;
 
     /**
      * @ORM\Column(name="pwd_reset_token")
@@ -115,6 +129,54 @@ class User
             self::STATUS_ACTIVE => 'Active',
             self::STATUS_RETIRED => 'Retired'
         ];
+    }
+
+    /**
+     * @return int
+     */
+    public function getAvatar(): string
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param string $avatar
+     */
+    public function setAvatar(string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateUpdated(): string
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * @param string $dateUpdated
+     */
+    public function setDateUpdated(string $dateUpdated): void
+    {
+        $this->dateUpdated = $dateUpdated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateDeleted(): string
+    {
+        return $this->dateDeleted;
+    }
+
+    /**
+     * @param string $dateDeleted
+     */
+    public function setDateDeleted(string $dateDeleted): void
+    {
+        $this->dateDeleted = $dateDeleted;
     }
 
     public function getStatusAsString(): string
