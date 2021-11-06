@@ -1,5 +1,5 @@
 -- --------------------------------------------------------
--- Хост:                         localhost
+-- Хост:                         127.0.0.1
 -- Версия сервера:               5.7.35 - MySQL Community Server (GPL)
 -- Операционная система:         Linux
 -- HeidiSQL Версия:              11.3.0.6295
@@ -14,7 +14,7 @@
 
 
 -- Дамп структуры базы данных laminas_blog
-CREATE DATABASE IF NOT EXISTS `laminas_blog` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `laminas_blog` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `laminas_blog`;
 
 -- Дамп структуры для таблица laminas_blog.comment
@@ -172,10 +172,16 @@ CREATE TABLE IF NOT EXISTS `permission` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_idx` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы laminas_blog.permission: ~0 rows (приблизительно)
+-- Дамп данных таблицы laminas_blog.permission: ~5 rows (приблизительно)
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+REPLACE INTO `permission` (`id`, `name`, `description`, `date_created`) VALUES
+	(1, 'user.manage', 'Manage users', '2021-11-04 16:14:05'),
+	(2, 'permission.manage', 'Manage permissions', '2021-11-04 16:14:05'),
+	(3, 'role.manage', 'Manage roles', '2021-11-04 16:14:05'),
+	(4, 'profile.any.view', 'View anyone\'s profile', '2021-11-04 16:14:05'),
+	(5, 'profile.own.view', 'View own profile', '2021-11-04 16:14:05');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 -- Дамп структуры для таблица laminas_blog.post
@@ -225,10 +231,13 @@ CREATE TABLE IF NOT EXISTS `role` (
   `date_created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_idx` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы laminas_blog.role: ~0 rows (приблизительно)
+-- Дамп данных таблицы laminas_blog.role: ~2 rows (приблизительно)
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+REPLACE INTO `role` (`id`, `name`, `description`, `date_created`) VALUES
+	(3, 'Administrator', 'A person who manages users, roles, etc.', '2021-11-04 16:15:55'),
+	(4, 'Guest', 'A person who can log in and view own profile.', '2021-11-04 16:15:55');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 -- Дамп структуры для таблица laminas_blog.role_hierarchy
@@ -256,11 +265,17 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
   KEY `role_id` (`role_id`),
   KEY `permission_id` (`permission_id`),
   CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы laminas_blog.role_permission: ~0 rows (приблизительно)
+-- Дамп данных таблицы laminas_blog.role_permission: ~5 rows (приблизительно)
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
+REPLACE INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
+	(4, 3, 1),
+	(5, 3, 2),
+	(6, 3, 3),
+	(7, 3, 4),
+	(8, 4, 5);
 /*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
 
 -- Дамп структуры для таблица laminas_blog.tag
@@ -291,17 +306,23 @@ CREATE TABLE IF NOT EXISTS `user` (
   `full_name` varchar(512) NOT NULL,
   `password` varchar(256) NOT NULL,
   `status` int(11) NOT NULL,
+  `avatar` varchar(255) DEFAULT 'no-avatar.png',
   `date_created` datetime NOT NULL,
+  `date_deleted` datetime DEFAULT NULL,
+  `date_updated` datetime DEFAULT NULL,
   `pwd_reset_token` varchar(100) DEFAULT NULL,
   `pwd_reset_token_creation_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_idx` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы laminas_blog.user: ~0 rows (приблизительно)
+-- Дамп данных таблицы laminas_blog.user: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-REPLACE INTO `user` (`id`, `email`, `full_name`, `password`, `status`, `date_created`, `pwd_reset_token`, `pwd_reset_token_creation_date`) VALUES
-	(1, 'Drakyla60@gmail.com', 'Roma Volkov 1', '$2y$10$Klu9Eharvo4gtIJYWxYd.OjGcFH1D7G54TZwMCjt9ZZpIaxqLS2Bm', 1, '2021-10-20 20:19:07', '', '2021-10-23 09:14:16');
+REPLACE INTO `user` (`id`, `email`, `full_name`, `password`, `status`, `avatar`, `date_created`, `date_deleted`, `date_updated`, `pwd_reset_token`, `pwd_reset_token_creation_date`) VALUES
+	(2, 'admin@example.com', 'Admin', '$2y$10$Imo1uvINsdlhPjy7iI9KvenaZX9FDDZk6nG5TdmfOPio8JtQtuo26', 1, 'no-avatar.png', '2021-11-04 16:15:55', NULL, '2021-11-04 16:15:55', NULL, NULL),
+	(3, 'Drakyla60@gmail.com', 'Roma Volkov', '$2y$10$b2H/zmO5zftLhOjzeS90Uui0bZdv13mhh1WEEAytQ1V6rnXUQwcAa', 1, '1636200045__images_rewards_16x9_2020_11_Holiday_Cards_Wallpapers_16x9_ACV2.jpg', '2021-11-04 17:27:31', NULL, '2021-11-04 17:27:31', NULL, NULL),
+	(4, 'genry@gmail.com', 'genry', '$2y$10$nvEe0wWyl52BMHpPFxX9DOHqryIIL2EUzvNr5.SATe3q9iJp0y892', 1, '1636060737_WIP-6th-anniversary-wallpaper-dark.jpg', '2021-11-04 21:19:01', NULL, '2021-11-04 21:19:01', NULL, NULL),
+	(5, 'jonny@gmail.com', 'jonny', '$2y$10$P/m4dMNe7MJVU.9hfhFNJerx6LT353FYbnuUxhz0H1PWaiOmKIEq6', 1, '1636105927_Airplane_Plane_Engine_Propeller_black_white_2880x1800.jpg', '2021-11-05 09:52:07', NULL, '2021-11-05 09:52:07', NULL, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Дамп структуры для таблица laminas_blog.user_role
@@ -314,10 +335,15 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы laminas_blog.user_role: ~0 rows (приблизительно)
+-- Дамп данных таблицы laminas_blog.user_role: ~4 rows (приблизительно)
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+REPLACE INTO `user_role` (`id`, `user_id`, `role_id`) VALUES
+	(1, 2, 3),
+	(5, 4, 4),
+	(6, 5, 4),
+	(7, 3, 3);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

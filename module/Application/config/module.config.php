@@ -101,17 +101,37 @@ return [
                     ],
                 ],
             ],
+//            'profile' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/profile[/:action[/:id]]',
+//                    'constraints' => [
+//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                        'id' => '[0-9]*'
+//                    ],
+//                    'defaults' => [
+//                        'controller'    => ProfileController::class,
+//                        'action'        => 'index',
+//                    ],
+//                ],
+//            ],
             'profile' => [
-                'type'    => Segment::class,
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/profile[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]*'
-                    ],
+                    'route'    => '/profile',
                     'defaults' => [
-                        'controller'    => ProfileController::class,
-                        'action'        => 'index',
+                        'controller' => ProfileController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'profile_settings' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/profile/settings',
+                    'defaults' => [
+                        'controller' => ProfileController::class,
+                        'action'     => 'settings',
                     ],
                 ],
             ],
@@ -235,7 +255,7 @@ return [
                 ['actions' => ['index','contactUs', 'about', 'thankYou', 'sendError', 'barcode'], 'allow' => '*'],
             ],
             PostController::class => [
-                ['actions' => ['add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
             ],
             ProfileController::class => [
                 ['actions' => ['index', 'edit', 'settings'], 'allow' => '@'],

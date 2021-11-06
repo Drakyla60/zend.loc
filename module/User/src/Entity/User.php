@@ -131,33 +131,21 @@ class User
         ];
     }
 
-    /**
-     * @return int
-     */
     public function getAvatar(): string
     {
         return $this->avatar;
     }
 
-    /**
-     * @param string $avatar
-     */
     public function setAvatar(string $avatar): void
     {
         $this->avatar = $avatar;
     }
 
-    /**
-     * @return string
-     */
     public function getDateUpdated(): string
     {
         return $this->dateUpdated;
     }
 
-    /**
-     * @param string $dateUpdated
-     */
     public function setDateUpdated(string $dateUpdated): void
     {
         $this->dateUpdated = $dateUpdated;

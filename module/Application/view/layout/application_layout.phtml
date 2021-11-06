@@ -65,16 +65,13 @@
                                 Contact
                             </a>
                         </li>
-                        <li class="nav-item <?=$this->url() === '/registration' ? 'active' : '' ?>">
+                        <li class="nav-item <?=$this->url() === '/reg' ? 'active' : '' ?>">
                             <a class="nav-link" href="<?= $this->url('reg', ['action' => 'index']); ?>">
                                 Reg
                             </a>
                         </li>
-
-
                     </ul>
                     </div>
-                    <div class="form-inline my-2 my-lg-0">
                     <ul class="navbar-nav">
                         <div class="dropdown show">
                             <?php if ($this->identity()) { ?>
@@ -103,12 +100,16 @@
                                 </a>
                             </div>
                             <?php } else { ?>
-                                <a class="nav-link" href="<?= $this->url('login') ?>">
-                                    Login
-                                </a>
-                                <a class="nav-link" href="<?= $this->url('registration'); ?>">
-                                    Registration
-                                </a>
+                                <li class="nav-item <?=$this->url() === '/login' ? 'active' : '' ?>">
+                                    <a href="<?= $this->url('login') ?>">
+                                        Login
+                                    </a>
+                                </li>
+                                <li class="nav-item <?=$this->url() === '/registration' ? 'active' : '' ?>">
+                                    <a href="<?= $this->url('registration'); ?>">
+                                        Registration
+                                    </a>
+                                </li>
                             <?php } ?>
 
                         </div>
@@ -130,7 +131,6 @@
                         <!--                                </a>-->
                         <!--                        --><?php //} ?>
                     </ul>
-                </div>
             </div>
         </nav>
 

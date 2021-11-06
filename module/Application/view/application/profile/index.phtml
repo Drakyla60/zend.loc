@@ -1,2 +1,31 @@
+<div class="row d-flex p-3" >
 
-<?php var_dump($profile);?>
+<?php require_once 'menu.php'; ?>
+
+    <!-- Profle Content -->
+    <div class="col-lg-9" >
+        <div class="card border-primary mb-3">
+            <div class="card-header bg-transparent border-success">Below are name, email addresse, contacts and more on file for your account.</div>
+            <div class="card-body text-dark">
+<!--                <h5 class="card-title-light">s</h5>-->
+
+                <table class="table">
+                    <thead>
+                    <h3 class="card-title-light">Ваші дані</h3>
+                    </thead>
+                    <tbody>
+                    <tr> <td>ID: </td> <td><?= $profile->getId()?></td> </tr>
+                    <tr> <td>Name: </td> <td><?= $profile->getFullName()?></td> </tr>
+                    <tr> <td>Email: </td> <td><?= $profile->getEmail()?></td> </tr>
+                    <tr> <td>Date Created: </td> <td><?= $profile->getDateCreated()?></td> </tr>
+                    <tr> <td>Date Updated: </td> <td><?= $profile->getDateUpdated()?></td> </tr>
+                    <tr> <td>Roles: </td> <td><?= $profile->getRolesAsString()?></td> </tr>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-transparent border-success">
+                <a href="<?=$this->url('profile_settings') ?>">Змінити Інформацію</a>
+            </div>
+        </div>
+    </div>

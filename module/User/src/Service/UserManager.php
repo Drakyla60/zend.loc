@@ -161,8 +161,10 @@ class UserManager
             $bcrypt = new Bcrypt();
             $passwordHash = $bcrypt->create('Secur1ty');
             $user->setPassword($passwordHash);
+            $user->setAvatar('no-avatar.png');
             $user->setStatus(User::STATUS_ACTIVE);
             $user->setDateCreated(date('Y-m-d H:i:s'));
+            $user->setDateUpdated(date('Y-m-d H:i:s'));
 
             // Assign user Administrator role
             $adminRole = $this->entityManager
