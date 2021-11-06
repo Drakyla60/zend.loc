@@ -350,6 +350,37 @@ class UserManager
         return true;
     }
 
+    public function changeProfile($user, $data)
+    {
+//            @TODO Воно працює але треба після зміни логіна почистити сесію
+//              і розлогінитися бо падає всьо
+//        if ($user->getEmail() != $data['email']) {
+//            $user->setEmail($data['email']);
+//
+//            if($this->checkUserExists($data['email'])) {
+//                throw new \Exception("Another user with email address " . $data['email'] . " already exists");
+//            }
+//        }
+        if ($user->getFullName() != $data['full_name']){
+            $user->setFullName($data['full_name']);
+
+//            @TODO Зробити перевірку на існування лоігна
+        }
+
+
+
+        if ($data['avatar']) {
+            $user->setAvatar($data['avatar']);
+        }
+        $currentDate = date('Y-m-d H:i:s');
+        $user->setDateUpdated($currentDate);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
+
     /**
      * Checks whether an active user with given email address already exists in the database.
      */

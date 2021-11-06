@@ -101,30 +101,30 @@ return [
                     ],
                 ],
             ],
-//            'profile' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/profile[/:action[/:id]]',
-//                    'constraints' => [
-//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                        'id' => '[0-9]*'
-//                    ],
-//                    'defaults' => [
-//                        'controller'    => ProfileController::class,
-//                        'action'        => 'index',
-//                    ],
-//                ],
-//            ],
             'profile' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/profile',
+                    'route'    => '/profile[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
                     'defaults' => [
-                        'controller' => ProfileController::class,
-                        'action'     => 'index',
+                        'controller'    => ProfileController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],
+//            'profile' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/profile',
+//                    'defaults' => [
+//                        'controller' => ProfileController::class,
+//                        'action'     => 'index',
+//                    ],
+//                ],
+//            ],
             'profile_settings' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -135,6 +135,26 @@ return [
                     ],
                 ],
             ],
+//            'profile_security' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/profile/security',
+//                    'defaults' => [
+//                        'controller' => ProfileController::class,
+//                        'action'     => 'security',
+//                    ],
+//                ],
+//            ],
+//            'profile_notifications' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/profile/notifications',
+//                    'defaults' => [
+//                        'controller' => ProfileController::class,
+//                        'action'     => 'notifications',
+//                    ],
+//                ],
+//            ],
             'myGetJson' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -258,7 +278,7 @@ return [
                 ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
             ],
             ProfileController::class => [
-                ['actions' => ['index', 'edit', 'settings'], 'allow' => '@'],
+                ['actions' => ['index', 'edit', 'settings','profile', 'security', 'notifications'], 'allow' => '@'],
             ],
             ImageController::class => [
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],

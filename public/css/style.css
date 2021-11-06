@@ -1,16 +1,18 @@
-:root {
-    --brand-color: #013755;
+form ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px 5px;
 }
 
-.navbar {
-    background-color: var(--brand-color);
+form ul li {
+    color: red;
 }
 
-.btn-primary {
-    background-color: var(--brand-color);
-    border-color: var(--brand-color);
+.alert ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px 5px;
 }
-
 
 .inputDnD .form-control-file {
     position: relative;
