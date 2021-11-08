@@ -1,14 +1,13 @@
-FROM php:7.4-apache
+FROM php:7.4-fpm
 
-RUN a2enmod rewrite \
-    && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
-    && mv /var/www/html /var/www/public
+#RUN a2enmod rewrite \
+#    && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
+#    && mv /var/www/html /var/www/public
 
 RUN apt-get update && apt-get install -y wget git unzip \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-ADD ./php.ini /usr/local/etc/php/php.ini
 ## Install Composer
 RUN curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
@@ -38,6 +37,14 @@ RUN apt-get update \
  && apt-get install -y git zlib1g-dev \
  && docker-php-ext-install pdo pdo_mysql mysqli zip
 
+
+ADD ./php.ini /usr/local/etc/php/php.ini
+USER root
+
+WORKDIR /code
+
+#RUN chmod 777 data/cache
+
 ## PostgreSQL PDO support
 # RUN apt-get install --yes libpq-dev \
 #     && docker-php-ext-install pdo_pgsql
@@ -66,7 +73,3 @@ RUN apt-get update \
 #     && apt-get install --yes libzstd-dev \
 #     && pecl install redis \
 #     && docker-php-ext-enable redis
-
-
-WORKDIR /var/www
-#RUN chmod -R 775 /var/www

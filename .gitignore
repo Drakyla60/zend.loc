@@ -11,3 +11,6 @@ public/img/captcha/
 /data/log/
 /public/img/avatar/
 /public/img/contact-us/
+/mysql/
+/logs/
+/mysql-files/
