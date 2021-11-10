@@ -73,7 +73,7 @@
                     </ul>
                     </div>
                     <ul class="navbar-nav">
-                        <div class="dropdown show">
+                        <li class="dropdown show">
                             <?php if ($this->identity()) { ?>
                             <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <?= $this->escapeHtml($this->identity()) ?>
@@ -99,37 +99,20 @@
                                     Logout
                                 </a>
                             </div>
-                            <?php } else { ?>
-                                <li class="nav-item <?=$this->url() === '/login' ? 'active' : '' ?>">
-                                    <a href="<?= $this->url('login') ?>">
-                                        Login
-                                    </a>
-                                </li>
-                                <li class="nav-item <?=$this->url() === '/registration' ? 'active' : '' ?>">
-                                    <a href="<?= $this->url('registration'); ?>">
-                                        Registration
-                                    </a>
-                                </li>
-                            <?php } ?>
 
-                        </div>
-<!--                        <li class="nav-item --><?php ////$this->url() === '/permissions' ? 'active' : '' ?><!--">-->
-                        <!--                            <a class="nav-link" href="-->
-                        <?php //// $this->url('permissions') ?><!--">-->
-                        <!--                                --><? //= $this->escapeHtml($this->identity()) ?>
-                        <!--                            </a>-->
-                        <!--                        </li>-->
-                        <!--                        --><?php //if ($this->identity()) { ?>
-                        <!--                            <a class="nav-link" href="-->
-                        <? //= $this->url('logout') ?><!--">-->
-                        <!--                                Logout-->
-                        <!--                            </a>-->
-                        <!--                        --><?php //} else { ?>
-                        <!--                                <a class="nav-link" href="-->
-                        <? //= $this->url('login') ?><!--">-->
-                        <!--                                    Login-->
-                        <!--                                </a>-->
-                        <!--                        --><?php //} ?>
+                            <?php } else { ?>
+                                <ul class="nav justify-content-center">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?= $this->url('login') ?>">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?= $this->url('registration'); ?>">Registration</a>
+                                    </li>
+                                </ul>
+                            <?php } ?>
+                        </li>
+
+
                     </ul>
             </div>
         </nav>

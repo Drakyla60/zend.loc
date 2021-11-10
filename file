@@ -16,3 +16,7 @@ FLUSH PRIVILEGES;
 
 
 mysql -ublog -ppassword -h127.0.0.1 -P3306
+
+chmod -R 777 public
+chmod -R 777 data
+
