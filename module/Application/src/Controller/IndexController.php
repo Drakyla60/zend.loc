@@ -22,14 +22,14 @@ use Laminas\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
     private $entityManager;
-    private $postManager;
+//    private $postManager;
     private $authService;
     private $reCaptchaManager;
     private $mailManager;
     private $imageManager;
 
     public function __construct($entityManager,
-                                $postManager,
+//                                $postManager,
                                 $authService,
                                 $reCaptchaManager,
                                 $mailManager,
@@ -37,7 +37,7 @@ class IndexController extends AbstractActionController
     )
     {
         $this->entityManager    = $entityManager;
-        $this->postManager      = $postManager;
+//        $this->postManager      = $postManager;
         $this->authService      = $authService;
         $this->reCaptchaManager = $reCaptchaManager;
         $this->mailManager      = $mailManager;
@@ -51,31 +51,31 @@ class IndexController extends AbstractActionController
 //        $image->resize(250, 0);
 //        $img = $image->output();
 //
-        $page = $this->params()->fromQuery('page', 1);
-        $tagFilter = $this->params()->fromQuery('tag', null);
+//        $page = $this->params()->fromQuery('page', 1);
+//        $tagFilter = $this->params()->fromQuery('tag', null);
         $name = $this->authService->getIdentity();
 
-        if ($tagFilter) {
-            $query = $this->entityManager
-                ->getRepository(Post::class)->findPostsByTag($tagFilter);
-        } else {
-            $query = $this->entityManager
-                ->getRepository(Post::class)->findPublishedPosts();
-        }
+//        if ($tagFilter) {
+//            $query = $this->entityManager
+//                ->getRepository(Post::class)->findPostsByTag($tagFilter);
+//        } else {
+//            $query = $this->entityManager
+//                ->getRepository(Post::class)->findPublishedPosts();
+//        }
 
-        $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
-        $paginator = new Paginator($doctrinePaginator);
-
-        $paginator->setDefaultItemCountPerPage(2);
-        $paginator->setCurrentPageNumber($page);
-
-        $tagCloud = $this->postManager->getTagCloud();
+//        $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
+//        $paginator = new Paginator($doctrinePaginator);
+//
+//        $paginator->setDefaultItemCountPerPage(2);
+//        $paginator->setCurrentPageNumber($page);
+//
+//        $tagCloud = $this->postManager->getTagCloud();
 
         $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
-            'posts'       => $paginator,
-            'postManager' => $this->postManager,
-            'tagCloud'    => $tagCloud,
+//            'posts'       => $paginator,
+//            'postManager' => $this->postManager,
+//            'tagCloud'    => $tagCloud,
             'loginName' => $name,
         ]);
     }

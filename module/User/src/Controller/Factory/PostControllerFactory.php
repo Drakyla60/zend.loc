@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Controller\Factory;
+namespace User\Controller\Factory;
 
-use Application\Controller\PostController;
-use Application\Service\PostManager;
+use User\Controller\PostController;
+use User\Service\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 

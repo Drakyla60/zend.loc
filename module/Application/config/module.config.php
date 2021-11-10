@@ -6,21 +6,21 @@ namespace Application;
 
 use Application\Controller\Factory\ImageControllerFactory;
 use Application\Controller\Factory\IndexControllerFactory;
-use Application\Controller\Factory\PostControllerFactory;
+//use Application\Controller\Factory\PostControllerFactory;
 use Application\Controller\Factory\ProfileControllerFactory;
 use Application\Controller\Factory\RegistrationControllerFactory;
 use Application\Controller\ImageController;
 use Application\Controller\IndexController;
 use Application\Controller\ProfileController;
-use Application\Controller\PostController;
+//use Application\Controller\PostController;
 use Application\Controller\RegistrationController;
 use Application\Service\Factory\NavManagerFactory;
-use Application\Service\Factory\PostManagerFactory;
+//use Application\Service\Factory\PostManagerFactory;
 use Application\Service\Factory\RbacAssertionManagerFactory;
 use Application\Service\ImageManager;
 use Application\Service\MailSender;
 use Application\Service\NavManager;
-use Application\Service\PostManager;
+//use Application\Service\PostManager;
 use Application\Service\RbacAssertionManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
@@ -41,20 +41,20 @@ return [
                     ],
                 ],
             ],
-            'posts' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/posts[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]*'
-                    ],
-                    'defaults' => [
-                        'controller'    => PostController::class,
-                        'action'        => 'index',
-                    ],
-                ],
-            ],
+//            'posts' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/posts[/:action[/:id]]',
+//                    'constraints' => [
+//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                        'id' => '[0-9]*'
+//                    ],
+//                    'defaults' => [
+//                        'controller'    => PostController::class,
+//                        'action'        => 'index',
+//                    ],
+//                ],
+//            ],
             'about' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -208,14 +208,14 @@ return [
             IndexController::class        => IndexControllerFactory::class,
             ImageController::class        => ImageControllerFactory::class,
             RegistrationController::class => RegistrationControllerFactory::class,
-            PostController::class         => PostControllerFactory::class,
+//            PostController::class         => PostControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             MailSender::class   => InvokableFactory::class,
             ImageManager::class => InvokableFactory::class,
-            PostManager::class  => PostManagerFactory::class,
+//            PostManager::class  => PostManagerFactory::class,
             RbacAssertionManager::class => RbacAssertionManagerFactory::class,
             NavManager::class => NavManagerFactory::class,
         ],
@@ -274,9 +274,9 @@ return [
             IndexController::class => [
                 ['actions' => ['index','contactUs', 'about', 'thankYou', 'sendError', 'barcode'], 'allow' => '*'],
             ],
-            PostController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
-            ],
+//            PostController::class => [
+//                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
+//            ],
             ProfileController::class => [
                 ['actions' => ['index', 'edit', 'settings','profile', 'security', 'notifications'], 'allow' => '@'],
             ],

@@ -16,7 +16,7 @@ class IndexControllerFactory
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): IndexController
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
-        $postManager = $container->get(PostManager::class);
+//        $postManager = $container->get(PostManager::class);
         $authService = $container->get(AuthenticationService::class);
         $reCaptchaManager = $container->get(ReCaptchaManager::class);
         $mailManager = $container->get(MailManager::class);
@@ -24,7 +24,7 @@ class IndexControllerFactory
 
         return new IndexController(
             $entityManager,
-            $postManager,
+//            $postManager,
             $authService,
             $reCaptchaManager,
             $mailManager,

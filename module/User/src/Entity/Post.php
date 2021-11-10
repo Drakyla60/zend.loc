@@ -1,5 +1,5 @@
 <?php
-namespace Application\Entity;
+namespace User\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Doctrine\ORM\PersistentCollection;
 /**
  *  Пост в блозі.
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="\Application\Repository\PostRepository")
+ * @ORM\Entity(repositoryClass="\User\Repository\PostRepository")
  * @ORM\Table(name="post")
  */
 class Post
@@ -44,13 +44,13 @@ class Post
     protected $dateCreated;
 
     /**
-     * @ORM\OneToMany(targetEntity="\Application\Entity\Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="\User\Entity\Comment", mappedBy="post")
      * @ORM\JoinColumn(name="id", referencedColumnName="post_id")
      */
     protected $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Application\Entity\Tag", inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity="\User\Entity\Tag", inversedBy="posts")
      * @ORM\JoinTable(name="post_tag",
      *      joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}

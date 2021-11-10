@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entity;
+namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +34,7 @@ class Comment
     protected $dateCreated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Application\Entity\Post", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="\User\Entity\Post", inversedBy="comments")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     protected $post;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Service;
+namespace User\Service;
 
-use Application\Entity\Comment;
-use Application\Entity\Post;
-use Application\Entity\Tag;
+use User\Entity\Comment;
+use User\Entity\Post;
+use User\Entity\Tag;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;

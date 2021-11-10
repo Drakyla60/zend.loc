@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Entity;
+namespace User\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,7 +25,7 @@ class Tag
     protected $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="\Application\Entity\Post", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="\User\Entity\Post", mappedBy="tags")
      */
     protected $posts;
 

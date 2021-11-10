@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Form;
+namespace User\Form;
 
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripTags;

@@ -1,24 +1,16 @@
-<?php
 
-use Application\Entity\Post;
-use Application\Form\CommentForm;
-use Application\Service\PostManager;
-
-?>
 
 <a href="
-    <?= $this->url('application', ['action'=>'index']); ?>">
+    <?= $this->url('posts', ['action'=>'index']); ?>">
     &lt;&lt; Back to list of posts
 </a>
 
 <h1>
-    <?= /** @var Post $post */
-    $this->escapeHtml($post->getTitle()); ?>
+    <?= $this->escapeHtml($post->getTitle()); ?>
 </h1>
 
 <p class="comments-header">
-    <?= /** @var PostManager $postManager */
-    $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
+    <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
     <a href="#comment">
         Add new comment
     </a>
@@ -57,8 +49,7 @@ use Application\Service\PostManager;
 
 <div class="row">
     <div class="col-md-8">
-        <?= /** @var CommentForm $form */
-        $this->form()->openTag($form); ?>
+        <?= $this->form()->openTag($form); ?>
 
         <div class="form-group">
             <?= $this->formLabel($form->get('author')); ?>

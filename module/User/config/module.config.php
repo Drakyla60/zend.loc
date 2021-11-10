@@ -12,6 +12,7 @@ use Laminas\Router\Http\Literal;
 use User\Controller\AuthController;
 use User\Controller\Factory\AuthControllerFactory;
 use User\Controller\Factory\PermissionControllerFactory;
+use User\Controller\Factory\PostControllerFactory;
 use User\Controller\Factory\RoleControllerFactory;
 use User\Controller\Factory\UserControllerFactory;
 use User\Controller\IndexController;
@@ -20,6 +21,7 @@ use User\Controller\Plugin\AccessPlugin;
 use User\Controller\Plugin\Factory\AccessPluginFactory;
 use User\Controller\Plugin\Factory\LoggerPluginFactory;
 use User\Controller\Plugin\LoggerPlugin;
+use User\Controller\PostController;
 use User\Controller\RoleController;
 use User\Controller\UserController;
 use User\Service\Factory\AuthAdapterFactory;
@@ -28,6 +30,7 @@ use User\Service\Factory\ImageManagerFactory;
 use User\Service\Factory\LoggerManagerFactory;
 use User\Service\Factory\MailManagerFactory;
 use User\Service\Factory\PermissionManagerFactory;
+use User\Service\Factory\PostManagerFactory;
 use User\Service\Factory\RbacManagerFactory;
 use User\Service\Factory\ReCaptchaManagerFactory;
 use User\Service\Factory\RoleManagerFactory;
@@ -39,6 +42,7 @@ use User\Service\ImageManager;
 use User\Service\LoggerManager;
 use User\Service\MailManager;
 use User\Service\PermissionManager;
+use User\Service\PostManager;
 use User\Service\RbacManager;
 use User\Service\ReCaptchaManager;
 use User\Service\RoleManager;
@@ -55,16 +59,6 @@ return [
                     'route'    => '/admin/',
                     'defaults' => [
                         'controller' => IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-            'user' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/admin/users/',
-                    'defaults' => [
-                        'controller' => UserController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -139,6 +133,31 @@ return [
                     ],
                 ],
             ],
+
+            'posts' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/admin/posts[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => PostController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'user' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/admin/users/',
+                    'defaults' => [
+                        'controller' => UserController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'users' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -193,6 +212,7 @@ return [
             RoleController::class       => RoleControllerFactory::class,
             IndexController::class      => IndexControllerFactory::class,
             PermissionController::class => PermissionControllerFactory::class,
+            PostController::class       => PostControllerFactory::class,
         ],
     ],
     'service_manager'    => [
@@ -208,6 +228,7 @@ return [
             LoggerManager::class         => LoggerManagerFactory::class,
             ReCaptchaManager::class      => ReCaptchaManagerFactory::class,
             PermissionManager::class     => PermissionManagerFactory::class,
+            PostManager::class           => PostManagerFactory::class,
         ],
     ],
     'controller_plugins' => [
@@ -273,6 +294,9 @@ return [
                 // пользователям с привилегией "user.manage".
                 ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'],
                     'allow' => '+user.manage']
+            ],
+            PostController::class => [
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '+role.manage'],
             ],
             IndexController::class => [
                 ['actions' => '*', 'allow' => '+role.manage']

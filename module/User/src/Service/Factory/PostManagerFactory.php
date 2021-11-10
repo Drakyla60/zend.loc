@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Service\Factory;
+namespace User\Service\Factory;
 
-use Application\Service\PostManager;
+use User\Service\PostManager;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 

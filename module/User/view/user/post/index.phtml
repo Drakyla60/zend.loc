@@ -1,12 +1,4 @@
-<?php
-$this->headTitle('Welcome');
 
-$this->mainMenu()->setActiveItemId('home');
-
-$this->pageBreadcrumbs()->setItems([
-    'Home'=>$this->url('home')
-]);
-?>
 <?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
 <?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
 <?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
@@ -44,27 +36,27 @@ $this->pageBreadcrumbs()->setItems([
 
         <?php endforeach; ?>
 
-        <?= $this->paginationControl($posts, 'Sliding', 'application/partial/paginator', ['route' => 'home']); ?>
+        <?= $this->paginationControl($posts, 'Sliding', 'user/partial/paginator', ['route' => 'posts']); ?>
     </div>
 
-    <div class="col-md-4">
+<!--    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Popular Tags</h3>
             </div>
             <div class="panel-body">
-                <?php foreach($this->tagCloud as $tagName => $frequency): ?>
+                <?php //foreach($this->tagCloud as $tagName => $frequency): ?>
 
-                    <a href="<?= $this->url('application', ['action'=>'index'], ['query'=>['tag'=>$tagName]]); ?>">
+                    <a href="<?php // $this->url('users', ['action'=>'index'], ['query'=>['tag'=>$tagName]]); ?>">
 
-                    <span style="font-size:<?=$frequency * 5?>em">
-                        <?= $this->escapeHtml($tagName); ?>
+                    <span style="font-size:<?php //$frequency * 5?>em">
+                        <?php // $this->escapeHtml($tagName); ?>
                     </span>
 
                     </a>
 
-                <?php endforeach; ?>
+                <?php //endforeach; ?>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>

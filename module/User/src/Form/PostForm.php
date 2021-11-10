@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Form;
+namespace User\Form;
 
-use Application\Entity\Post;
+use User\Entity\Post;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
 use Laminas\Filter\StripTags;
@@ -151,7 +151,7 @@ class PostForm extends Form
 
         $inputFilter->add([
             'name'     => 'tags',
-            'required' => true,
+            'required' => false,
             'filters'  => [
                 ['name' => StringTrim::class],
                 ['name' => StripTags::class],

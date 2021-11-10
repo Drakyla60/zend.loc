@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\Controller;
+namespace User\Controller;
 
-use Application\Entity\Post;
-use Application\Form\CommentForm;
-use Application\Form\PostForm;
-use Application\Service\PostManager;
+use User\Entity\Post;
+use User\Form\CommentForm;
+use User\Form\PostForm;
+use User\Service\PostManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -44,12 +44,12 @@ class PostController extends AbstractActionController
         $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
         $paginator = new Paginator($doctrinePaginator);
 
-        $paginator->setDefaultItemCountPerPage(2);
+        $paginator->setDefaultItemCountPerPage(5);
         $paginator->setCurrentPageNumber($page);
 
         $tagCloud = $this->postManager->getTagCloud();
 
-        $this->layout()->setTemplate('layout/application_layout');
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'posts'       => $paginator,
             'postManager' => $this->postManager,
@@ -73,7 +73,7 @@ class PostController extends AbstractActionController
                 $data = $form->getData();
                 $this->postManager->addNewPost($data);
                 $this->logger('info', 'Додано новий Пост: '. $data['title']);
-                return $this->redirect()->toRoute('application');
+                return $this->redirect()->toRoute('posts');
             }
         }
 
@@ -151,11 +151,7 @@ class PostController extends AbstractActionController
                 $data = $form->getData();
                 $this->postManager->updatePost($post, $data);
 
-                return $this
-                    ->redirect()
-                    ->toRoute('posts', [
-                        'action' => 'admin'
-                    ]);
+                return $this->redirect()->toRoute('posts');
             }
         } else {
             $data = [
@@ -197,14 +193,4 @@ class PostController extends AbstractActionController
         return $this->redirect()->toRoute('posts', ['action' => 'admin']);
     }
 
-    public function adminAction()
-    {
-        $posts = $this->entityManager->getRepository(Post::class)
-            ->findBy([], ['dateCreated'=>'DESC']);
-
-        return new ViewModel([
-            'posts'       => $posts,
-            'postManager' => $this->postManager
-        ]);
-    }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Repository;
+namespace User\Repository;
 
-use Application\Entity\Post;
+use User\Entity\Post;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 
