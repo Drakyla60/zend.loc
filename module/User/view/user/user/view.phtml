@@ -20,8 +20,8 @@ $this->headTitle('View User');
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
             <div class="text-center">
-                <img class="profile-admin-img img-fluid img-circle"
-                     src="<?= $this->basePath('img/avatar/' . $user->getAvatar()) ?>" alt="User profile picture">
+                <img class="profile-admin-img img-fluid "
+                     src="<?= $this->basePath('img/avatar/150x150/' . $user->getAvatar()) ?>" alt="User profile picture">
                 <h3 class="profile-username"> ID <?= $this->escapeHtml($user->getId()) ?></h3>
                 <p class="text-muted"><?= $this->escapeHtml($user->getFullName()) ?></p>
             </div>

@@ -5,21 +5,20 @@
     <!-- Profle Content -->
     <div class="col-lg-9" >
         <div class="card border-primary mb-3">
-            <div class="card-header bg-transparent border-success">Below are name, email addresse, contacts and more on file for your account.</div>
+            <div class="card-header bg-transparent border-success">
+                Нижче наведено ім’я, адреса електронної пошти, контакти та інше, що зберігається у вашому обліковому записі.</div>
             <div class="card-body text-dark">
-<!--                <h5 class="card-title-light">s</h5>-->
-
                 <table class="table">
                     <thead>
                     <h3 class="card-title-light">Ваші дані</h3>
                     </thead>
                     <tbody>
-                    <tr> <td>ID: </td> <td><?= $user->getId()?></td> </tr>
-                    <tr> <td>Name: </td> <td><?= $user->getFullName()?></td> </tr>
+                    <tr> <td>Ваш ID: </td> <td><?= $user->getId()?></td> </tr>
+                    <tr> <td>Імя: </td> <td><?= $user->getFullName()?></td> </tr>
                     <tr> <td>Email: </td> <td><?= $user->getEmail()?></td> </tr>
-                    <tr> <td>Date Created: </td> <td><?= $user->getDateCreated()?></td> </tr>
-                    <tr> <td>Date Updated: </td> <td><?= $user->getDateUpdated()?></td> </tr>
-                    <tr> <td>Roles: </td> <td><?= $user->getRolesAsString()?></td> </tr>
+                    <tr> <td>Дата Реєстрації: </td> <td><?= $user->getDateCreated()?></td> </tr>
+                    <tr> <td>Дата останього оновлення профілю: </td> <td><?= $user->getDateUpdated()?></td> </tr>
+                    <tr> <td>Ваші ролі на сайті: </td> <td><?= $user->getRolesAsString()?></td> </tr>
                     </tr>
                     </tbody>
                 </table>

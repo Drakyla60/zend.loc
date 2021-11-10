@@ -4,12 +4,13 @@
 <!--    --><?php // $avatar = (null != $user->getAvatar()) ? $user->getAvatar() : 'no-avatar.png';?>
     <img src="<?= $this->basePath('img/avatar/original/' . $user->getAvatar() )?>" width="100%" alt="<?= $user->getFullName()?>" class="mb-2">
     <br>
+    <br>
     <ul class="list-group">
         <a href="<?=$this->url('profile') ?>" class="list-group-item  justify-content-between <?= $this->url() == '/profile' ? 'active' : '' ?>">
-            <span><i class="icon-cursor"></i> Profile</span>
+            <span><i class="icon-cursor"></i> <?= $user->getFullName()?></span>
         </a>
         <a href="<?=$this->url('profile_settings') ?>" class="list-group-item justify-content-between <?= $this->url() == '/profile/settings' ? 'active' : '' ?>">
-            <span><i class="icon-settings"></i> Settings</span>
+            <span><i class="icon-settings"></i> Налаштувати профіль</span>
 <!--            <span class="u-label g-font-size-11 g-bg-white g-color-main g-rounded-20 g-px-8">3</span>-->
         </a>
 <!--        <a href="#" class="list-group-item  justify-content-between">-->

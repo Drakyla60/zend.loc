@@ -24,7 +24,6 @@ class MailManager
     public function sendMail($user, array $option = []): bool
     {
         $config = $this->config['mailer']['phpMailer'];
-        //@TODO Винести то колись звідси
         $mail = new PHPMailer(true);
         $mail->CharSet = "UTF-8";
         $mail->Encoding = 'base64';
@@ -55,7 +54,6 @@ class MailManager
     public function sendMailWithContactUs($user, array $option = []): bool
     {
         $config = $this->config['mailer']['phpMailer'];
-        //@TODO Винести то колись звідси
         $mail = new PHPMailer(true);
         $mail->CharSet = "UTF-8";
         $mail->Encoding = 'base64';

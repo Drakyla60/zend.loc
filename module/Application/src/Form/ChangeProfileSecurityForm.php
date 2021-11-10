@@ -28,7 +28,7 @@ class ChangeProfileSecurityForm extends Form
             'type'    => 'password',
             'name'    => 'old_password',
             'options' => [
-                'label' => 'Old Password',
+                'label' => 'Старий пароль',
             ],
         ]);
 
@@ -36,7 +36,7 @@ class ChangeProfileSecurityForm extends Form
             'type'    => 'password',
             'name'    => 'new_password',
             'options' => [
-                'label' => 'New Password',
+                'label' => 'Новий пароль',
             ],
         ]);
 
@@ -44,7 +44,7 @@ class ChangeProfileSecurityForm extends Form
             'type'    => 'password',
             'name'    => 'confirm_new_password',
             'options' => [
-                'label' => 'Confirm new password',
+                'label' => 'Підтвердіть новий пароль',
             ],
         ]);
 
@@ -62,7 +62,7 @@ class ChangeProfileSecurityForm extends Form
             'type'       => 'submit',
             'name'       => 'submit',
             'attributes' => [
-                'value' => 'Change Password'
+                'value' => 'Змінити пароль'
             ],
         ]);
     }

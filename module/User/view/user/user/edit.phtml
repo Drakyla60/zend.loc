@@ -40,7 +40,7 @@ $form->prepare();
 <div class="col-md-9">
     <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">Please fill out the following form and click the <i>Update</i> button.</h3>
+            <h3 class="card-title">Будь ласка, заповніть наступну форму та натисніть кнопку <i> Оновити</i> .</h3>
         </div>
         <div class="card-body">
             <?= $this->form()->openTag($form); ?>
@@ -78,11 +78,11 @@ $form->prepare();
 <div class="col-md-3">
     <div class="card card-info">
         <div class="card-header">
-            <h3 class="card-title">Settings</h3>
+            <h3 class="card-title">Налаштування</h3>
         </div>
         <div class="card-body">
-            <img class="profile-admin-img img-fluid img-circle"
-                 src="<?= $this->basePath('img/avatar/' . $user->getAvatar()) ?>" alt="User profile picture">
+            <img class="profile-admin-img img-fluid "
+                 src="<?= $this->basePath('img/avatar/150x150/' . $user->getAvatar()) ?>" alt="User profile picture">
 
 
             <?= $this->formLabel($form->get('status')); ?>

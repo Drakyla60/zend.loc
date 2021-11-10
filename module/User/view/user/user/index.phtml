@@ -1,40 +1,27 @@
-<?php
-//$this->headTitle('Users');
-//
-//$this->mainMenu()->setActiveItemId('users');
-//
-//$this->pageBreadcrumbs()->setItems([
-//    'Home'=>$this->url('home'),
-//    'Manage Users'=>$this->url('users'),
-//]);
-//?>
-
 <div class="col-sm-6">
-    <h1>Manage Users</h1>
+    <h1>Керуйте користувачами</h1>
 </div>
 
 <div class="col-sm-6">
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active">Manage Users</li>
+        <li class="breadcrumb-item active">Керуйте користувачами</li>
     </ol>
 </div>
 <section class="content">
     <p>
         <a class="btn btn-success admin-form-btn admin-form-btn-create" href="<?= $this->url('users', ['action' => 'add']); ?>">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New User
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Додати нового користувача
         </a>
     </p>
-
-
-
-
+    
     <?php if ($users) { ?>
 
         <table class="table table-striped">
 
             <tr>
                 <th>ID</th>
+                <th>Avatar</th>
                 <th>E-mail</th>
                 <th>Full Name</th>
                 <th>Role(s)</th>
@@ -47,6 +34,10 @@
 
                 <tr>
                     <td><?= $this->escapeHtml($user->getId()); ?></td>
+                    <td>
+                        <img src="<?= $this->basePath('img/avatar/50x50/' . $user->getAvatar() )?>" alt="">
+
+                    </td> 
                     <td>
                         <a href="<?= $this->url('users', ['action' => 'view', 'id' => $user->getId()]); ?>">
                             <?= $this->escapeHtml($user->getEmail()); ?>

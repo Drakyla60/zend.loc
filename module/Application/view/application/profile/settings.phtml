@@ -25,17 +25,17 @@ $changeProfileSettingsForm->prepare();
 
 $changeProfileSecurityForm->get('old_password')->setAttributes([
     'class' => 'form-control',
-    'placeholder' => 'Enter old password'
+    'placeholder' => 'Введіть старий пароль'
 ]);
 
 $changeProfileSecurityForm->get('new_password')->setAttributes([
     'class' => 'form-control',
-    'placeholder' => 'Enter new password'
+    'placeholder' => 'Введіть новий пароль'
 ]);
 
 $changeProfileSecurityForm->get('confirm_new_password')->setAttributes([
     'class' => 'form-control',
-    'placeholder' => 'Re-enter new password'
+    'placeholder' => 'Підтвердіть новий пароль'
 ]);
 
 $changeProfileSecurityForm->get('submit')->setAttributes([
@@ -72,8 +72,8 @@ $changeProfileSecurityForm->prepare();
         <div id="nav" class="tab-content d-flex p-3">
             <!-- Edit Profile -->
             <div class="tab-pane fade col-sm-12 show active" id="nav-edit" role="tabpanel" data-parent="#nav">
-                <h2 class="h4">Manage your Name, ID and Email Addresses</h2>
-                <p>Below are name, email addresse, contacts and more on file for your account.</p>
+<!--                <h2 class="h4">Manage your Name, ID and Email Addresses</h2>-->
+                <p>Керуйте своїм іменем, адресою електронної пошти та аватаром на сайті</p>
 
                 <div class="col-md-12">
                     <div class="card-body">
@@ -136,8 +136,8 @@ $changeProfileSecurityForm->prepare();
 
             <!-- Security Settings -->
             <div class="tab-pane fade col-sm-12" id="nav-security" role="tabpanel" data-parent="#nav">
-                <h2 class="h4">Security Settings</h2>
-                <p>Reset your password, change verifications and so on.</p>
+<!--                <h2 class="h4">Налаштування безпеки</h2>-->
+                <p>Скиньте пароль, змініть підтвердження тощо.</p>
                 <div class="col-md-12">
                     <div class="card-body">
 
@@ -201,14 +201,15 @@ $changeProfileSecurityForm->prepare();
 
                 <!-- Notification Settings -->
                 <div class="tab-pane fade col-sm-12" id="nav-notification" role="tabpanel" data-parent="#nav">
-                    <h2 class="h4 g-font-weight-300">Manage your Notifications</h2>
-                    <p class="g-mb-25">Below are the notifications you may manage.</p>
+                    <p>Розділ не працює</p>
+                    <h2 class="h4 g-font-weight-300">Керуйте своїми сповіщеннями</h2>
+                    <p class="g-mb-25">Нижче наведено сповіщення, якими ви можете керувати.</p>
 
                     <form>
                         <!-- Email Notification -->
                         <div class="form-group">
                             <label class="d-flex align-items-center justify-content-between">
-                                <span>Email notification</span>
+                                <span>Повідомлення електронною поштою</span>
                                 <div class="u-check">
                                     <input class="g-hidden-xs-up g-pos-abs g-top-0 g-right-0" name="emailNotification"
                                            type="checkbox" checked="">
@@ -224,8 +225,7 @@ $changeProfileSecurityForm->prepare();
 
 
                         <div class="text-sm-right">
-                            <a class="btn btn-darkgray" href="#">Cancel</a>
-                            <a class="btn btn-primary" href="#">Save Changes</a>
+                            <a class="btn btn-primary" href="#">Зберегти зміни</a>
                         </div>
                     </form>
                 </div>
@@ -236,4 +236,4 @@ $changeProfileSecurityForm->prepare();
         <!-- End Profle Content -->
 
     </div>
-    <?php var_dump($user); ?>
+<!--    --><?php //var_dump($user); ?>

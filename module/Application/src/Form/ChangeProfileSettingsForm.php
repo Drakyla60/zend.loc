@@ -47,7 +47,7 @@ class ChangeProfileSettingsForm extends Form
             'type' => 'text',
             'name' => 'full_name',
             'options' => [
-                'label' => 'Full Name',
+                'label' => 'Логін',
             ],
         ]);
 
