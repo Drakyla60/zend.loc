@@ -43,6 +43,9 @@ USER root
 
 WORKDIR /code
 
+#RUN chmod -R 777 /code/public
+#RUN chmod -R 777 data
+
 #RUN chmod 777 data/cache
 
 ## PostgreSQL PDO support
