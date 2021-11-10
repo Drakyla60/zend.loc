@@ -6,6 +6,7 @@ use Application\Controller\ProfileController;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use User\Service\ImageManager;
 use User\Service\UserManager;
 
 class ProfileControllerFactory implements FactoryInterface
@@ -16,7 +17,8 @@ class ProfileControllerFactory implements FactoryInterface
         $authService = $container->get(AuthenticationService::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $userManager = $container->get(UserManager::class);
+        $imageManager = $container->get(ImageManager::class);
 
-        return new ProfileController($authService, $entityManager, $userManager);
+        return new ProfileController($authService, $entityManager, $userManager, $imageManager);
     }
 }

@@ -6,6 +6,7 @@ namespace Application\Controller;
 
 use Application\Entity\Post;
 use Application\Form\ContactForm;
+use Application\Service\ThumbsManager;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
@@ -45,6 +46,11 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+
+//        $image = new ThumbsManager('./public/img/test/123.png');
+//        $image->resize(250, 0);
+//        $img = $image->output();
+//
         $page = $this->params()->fromQuery('page', 1);
         $tagFilter = $this->params()->fromQuery('tag', null);
         $name = $this->authService->getIdentity();

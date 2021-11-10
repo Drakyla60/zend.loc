@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace User\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Exception;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Paginator\Paginator;
-use Laminas\ReCaptcha\ReCaptcha;
 use Laminas\View\Model\ViewModel;
 use User\Entity\Role;
 use User\Entity\User;
@@ -16,7 +14,6 @@ use User\Form\EditUserForm;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
 use User\Form\AddUserForm;
-use User\Service\UserManager;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 
@@ -67,9 +64,8 @@ class UserController extends AbstractActionController
     public function addAction()
     {
         $form = new AddUserForm($this->entityManager);
-        // Get the list of all available roles (sorted by name).
-        $allRoles = $this->entityManager->getRepository(Role::class)
-            ->findBy([], ['name'=>'ASC']);
+        $allRoles = $this->entityManager
+            ->getRepository(Role::class)->findBy([], ['name'=>'ASC']);
         $roleList = [];
         foreach ($allRoles as $role) {
             $roleList[$role->getId()] = $role->getName();
@@ -78,7 +74,7 @@ class UserController extends AbstractActionController
         $form->get('roles')->setValueOptions($roleList);
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->getDataggg();
+            $data = $this->getRequestData();
             $form->setData($data);
 
             if ($form->isValid()) {
@@ -99,15 +95,13 @@ class UserController extends AbstractActionController
 
     public function viewAction()
     {
-        $id = (int)$this->params()->fromRoute('id', -1);
+        $id = (int) $this->params()->fromRoute('id', -1);
         if ($id < 1) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
 
-        // Find a user with such ID.
-        $user = $this->entityManager->getRepository(User::class)
-            ->find($id);
+        $user = $this->entityManager->getRepository(User::class)->find($id);
 
         if ($user == null) {
             $this->getResponse()->setStatusCode(404);
@@ -127,10 +121,8 @@ class UserController extends AbstractActionController
             return false;
         }
 
-        $user = $this
-            ->entityManager
-            ->getRepository(User::class)
-            ->find($id);
+        $user = $this->entityManager
+            ->getRepository(User::class)->find($id);
 
         if ($user == null) {
             $this->getResponse()->setStatusCode(404);
@@ -150,11 +142,7 @@ class UserController extends AbstractActionController
 
 
         if ($this->getRequest()->isPost()) {
-            $request = $this->getRequest();
-            $data = array_merge_recursive(
-                $request->getPost()->toArray(),
-                $request->getFiles()->toArray()
-            );
+            $data = $this->getRequestData();
             $form->setData($data);
 
             if ($form->isValid()) {
@@ -216,32 +204,22 @@ class UserController extends AbstractActionController
             return false;
         }
 
-        $user = $this->entityManager->getRepository(User::class)
-            ->find($id);
+        $user = $this->entityManager
+            ->getRepository(User::class)->find($id);
 
         if ($user == null) {
             $this->getResponse()->setStatusCode(404);
             return false;
         }
 
-        // Create "change password" form
         $form = new PasswordChangeForm('change');
 
-        // Check if user has submitted the form
         if ($this->getRequest()->isPost()) {
-
-            // Fill in the form with POST data
             $data = $this->params()->fromPost();
-
             $form->setData($data);
 
-            // Validate form
             if($form->isValid()) {
-
-                // Get filtered and validated data
                 $data = $form->getData();
-
-                // Try to change password.
                 if (!$this->userManager->changePassword($user, $data)) {
                     $this->flashMessenger()->addErrorMessage(
                         'Sorry, the old password is incorrect. Could not set the new password.');
@@ -274,10 +252,8 @@ class UserController extends AbstractActionController
             $result = $this->reCaptchaManager->checkReCaptcha($data['g-recaptcha-response']);
 
             if ($form->isValid() && true == $result) {
-                $user = $this
-                    ->entityManager
-                    ->getRepository(User::class)
-                    ->findOneByEmail($data['email']);
+                $user = $this->entityManager
+                    ->getRepository(User::class)->findOneByEmail($data['email']);
 
                 if ($user != null && $user->getStatus() == User::STATUS_ACTIVE) {
                     $this->userManager->generatePasswordResetToken($user);
@@ -306,36 +282,24 @@ class UserController extends AbstractActionController
             throw new Exception('Invalid token type or length');
         }
 
-        if ($token === null ||
-            !$this->userManager->validatePasswordResetToken($email, $token)) {
+        if ($token === null || !$this->userManager->validatePasswordResetToken($email, $token)) {
             return $this->redirect()->toRoute('users',
                 ['action' => 'message', 'id' => 'failed']);
         }
 
-        // Create form
         $form = new PasswordChangeForm('reset');
 
-        // Check if user has submitted the form
         if ($this->getRequest()->isPost()) {
-
-            // Fill in the form with POST data
             $data = $this->params()->fromPost();
-
             $form->setData($data);
 
-            // Validate form
             if ($form->isValid()) {
-
                 $data = $form->getData();
 
-                // Set new password for the user.
                 if ($this->userManager->setNewPasswordByToken($email, $token, $data['new_password'])) {
-
-                    // Redirect to "message" page
                     return $this->redirect()->toRoute('users',
                         ['action' => 'message', 'id' => 'set']);
                 } else {
-                    // Redirect to "message" page
                     return $this->redirect()->toRoute('users',
                         ['action' => 'message', 'id' => 'failed']);
                 }
@@ -349,8 +313,7 @@ class UserController extends AbstractActionController
 
     public function messageAction(): ViewModel
     {
-        // Get message ID from route.
-        $id = (string)$this->params()->fromRoute('id');
+        $id = (string) $this->params()->fromRoute('id');
 
         // Validate input argument.
         if ($id != 'invalid-email' && $id != 'sent' && $id != 'set' && $id != 'failed') {
@@ -365,14 +328,13 @@ class UserController extends AbstractActionController
     /**
      * @return array
      */
-    private function getDataggg(): array
+    private function getRequestData(): array
     {
         $request = $this->getRequest();
-        $data = array_merge_recursive(
+        return array_merge_recursive(
             $request->getPost()->toArray(),
             $request->getFiles()->toArray()
         );
-        return $data;
     }
 
 }
