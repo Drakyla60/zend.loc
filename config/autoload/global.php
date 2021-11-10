@@ -25,9 +25,11 @@ return [
         'allLog' => './data/log/allLog.log'
     ],
     'images' => [
-        'userImagesCatalog'      => './public/img/avatar/',
-        'postImagesCatalog'      => './public/img/post/',
-        'contactUsImagesCatalog' => './public/img/contact-us/'
+        'userImagesCatalog'        => './public/img/avatar/original/',
+        'userImagesCatalog50x50'   => './public/img/avatar/50x50/',
+        'userImagesCatalog150x150' => './public/img/avatar/150x150/',
+        'postImagesCatalog'        => './public/img/post/',
+        'contactUsImagesCatalog'   => './public/img/contact-us/'
     ],
     // Налаштування сеcії.
     'session_config' => [

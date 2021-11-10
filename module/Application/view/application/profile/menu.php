@@ -1,8 +1,8 @@
 <!-- Profile Sidebar -->
 <div class="col-lg-3">
     <!-- Sidebar Navigation -->
-    <?php  $avatar = (null != $user->getAvatar()) ? $user->getAvatar() : 'no-avatar.png';?>
-    <img src="<?= $this->basePath('img/avatar/' . $avatar )?>" width="100%" alt="<?= $user->getFullName()?>" class="mb-2">
+<!--    --><?php // $avatar = (null != $user->getAvatar()) ? $user->getAvatar() : 'no-avatar.png';?>
+    <img src="<?= $this->basePath('img/avatar/original/' . $user->getAvatar() )?>" width="100%" alt="<?= $user->getFullName()?>" class="mb-2">
     <br>
     <ul class="list-group">
         <a href="<?=$this->url('profile') ?>" class="list-group-item  justify-content-between <?= $this->url() == '/profile' ? 'active' : '' ?>">
