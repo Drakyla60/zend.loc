@@ -2,61 +2,83 @@
 <?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
 <?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
 <?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
-<hr>
-<h1>Posts</h1>
 
-<div class="row">
-
-    <div class="col-md-8">
-
-        <?php foreach($posts as $post): ?>
-
-            <h3>
-                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()]); ?>">
-                    <?= $this->escapeHtml($post->getTitle()); ?>
-                </a>
-            </h3>
-
-            <p>
-                Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?>
-                | Tags: <?= $this->escapeHtml($postManager->convertTagsToString($post)); ?>
-            </p>
-
-            <p class="comments-header">
-                <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
-                <a href="<?= $this->url('posts', ['action'=>'view', 'id'=>$post->getId()],
-                    ['fragment'=>'comment']); ?>">
-                    Add new comment
-                </a>
-            </p>
-
-            <p>
-                <?= $this->escapeHtml($post->getContent()); ?>
-            </p>
-
-        <?php endforeach; ?>
-
-        <?= $this->paginationControl($posts, 'Sliding', 'user/partial/paginator', ['route' => 'posts']); ?>
-    </div>
-
-<!--    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Popular Tags</h3>
-            </div>
-            <div class="panel-body">
-                <?php //foreach($this->tagCloud as $tagName => $frequency): ?>
-
-                    <a href="<?php // $this->url('users', ['action'=>'index'], ['query'=>['tag'=>$tagName]]); ?>">
-
-                    <span style="font-size:<?php //$frequency * 5?>em">
-                        <?php // $this->escapeHtml($tagName); ?>
-                    </span>
-
-                    </a>
-
-                <?php //endforeach; ?>
-            </div>
-        </div>
-    </div>-->
+<div class="col-sm-6">
+    <h1>Керуйте Постами</h1>
 </div>
+
+<div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Керуйте Постами</li>
+    </ol>
+</div>
+<section class="content">
+    <p>
+        <a class="btn btn-success admin-form-btn admin-form-btn-create" href="<?= $this->url('posts', ['action' => 'add']); ?>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Додати новий Пост
+        </a>
+    </p>
+    <?php if ($posts) { ?>
+
+        <table class="table table-striped">
+
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Date Created</th>
+                <th>Date Updated</th>
+                <th>Date Deleted</th>
+                <th>CountViews</th>
+                <th>Author</th>
+                <th></th>
+            </tr>
+
+            <?php foreach ($posts as $post): ?>
+
+                <tr>
+                    <td><?= $this->escapeHtml($post->getId()); ?></td>
+                    <td>
+                        <?php $image =  $post->getImage() ?: 'post.png'?>
+                        <img src="<?= $this->basePath('img/post/100x100/' . $image )?>" style="width: 100px" alt="">
+
+                    </td>
+                    <td>
+                        <a href="<?= $this->url('posts', ['action' => 'view', 'id' => $post->getId()]); ?>">
+                            <?= $this->escapeHtml($post->getTitle()); ?>
+                        </a>
+                    </td>
+                    <td><?= $this->escapeHtml($postManager->getPostStatusAsString($post)); ?></a></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateCreated()); ?></nobr></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateUpdated()); ?></nobr></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateDeleted() ? 'DELETED' : $post->getDateDeleted()); ?></nobr></td>
+<!--                    @TODO Треба зровити відновлення акаунта з адмінки -->
+                    <td><?= $this->escapeHtml($post->getCountViews()); ?></td>
+                    <td>
+                        <a href="<?= $this->url('users', ['action' => 'view', 'id' => $post->getAuthor()->getId()]); ?>">
+                            <?= $this->escapeHtml($post->getAuthor()->getFullName()); ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn-sm btn-info admin-form-btn" href="<?= $this->url('posts',
+                            ['action' => 'edit', 'id' => $post->getId()]); ?>">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </a>
+                        <a class="btn-sm btn-danger admin-form-btn" href="<?= $this->url('posts',
+                            ['action' => 'delete', 'id' => $post->getId()]); ?>">
+                            <span class="glyphicon glyphicon-asterisk"></span> Delete
+                        </a>
+                    </td>
+                </tr>
+<!--                --><?php //var_dump($post);?>
+            <?php endforeach; ?>
+
+        </table>
+    <?php } else { ?>
+        <?php echo 'Користувачів поки що немає' ?>
+    <?php } ?>
+    <?= $this->paginationControl($posts, 'Sliding', 'user/partial/paginator', ['route' => 'posts']); ?>
+</section>
+
