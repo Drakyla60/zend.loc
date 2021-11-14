@@ -14,6 +14,7 @@ GRANT ALL PRIVILEGES ON blog.* TO blog@localhost IDENTIFIED BY 'password';
 
 FLUSH PRIVILEGES;
 
+mysqldump -ublog -pblog -h127.0.0.1 -P3306 laminas_blog > dump.sql;
 
 mysql -ublog -ppassword -h127.0.0.1 -P3306
 

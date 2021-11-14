@@ -168,8 +168,8 @@ class PostManager
     public function getPostStatusAsString($post): string
     {
         switch ($post->getStatus()) {
-            case Post::STATUS_DRAFT: return 'Draft';
-            case Post::STATUS_PUBLISHED: return 'Published';
+            case Post::STATUS_DRAFT: return 'Чорнивик';
+            case Post::STATUS_PUBLISHED: return 'Опубліковано';
         }
 
         return 'Unknown';
