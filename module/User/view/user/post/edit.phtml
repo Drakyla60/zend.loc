@@ -1,46 +1,136 @@
 <?php
+$this->headTitle('Edit User');
 
-use Application\Form\PostForm;
+$form->get('author_id')->setAttributes([
+    'class'=>'form-control',
+]);
 
+$form->get('title')->setAttributes([
+    'class'=>'form-control',
+]);
+
+$form->get('content')->setAttributes([
+    'class'=>'form-control'
+]);
+
+$form->get('description')->setAttributes([
+    'class'=>'form-control',
+]);
+
+$form->get('image')->setAttributes([
+    'class'=>'form-control',
+]);
+
+$form->get('tags')->setAttributes([
+    'class'=>'form-control'
+]);
+
+$form->get('submit')->setAttributes(['class'=>'btn btn-success form-control']);
+
+$form->prepare();
 ?>
-<h1>Edit Post</h1>
+<div class="col-md-12">
+    <h2>Add User</h2>
+</div>
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Please fill out the following form and click the <i>Create</i> button.</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
 
-<p>
-    Please fill out the following form and click the *Save* button.
-</p>
-
-<div class="row">
-    <div class="col-md-6">
-        <?= /** @var PostForm $form */
-        $this->form()->openTag($form); ?>
-
-        <div class="form-group">
             <?= $this->formLabel($form->get('title')); ?>
-            <?= $this->formElement($form->get('title')); ?>
-            <?= $this->formElementErrors($form->get('title')); ?>
-        </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-pen-fancy"></i></span>
+                </div>
+                <?= $this->formElement($form->get('title')); ?>
+                <?= $this->formElementErrors($form->get('title')); ?>
+            </div>
 
-        <div class="form-group">
             <?= $this->formLabel($form->get('content')); ?>
-            <?= $this->formElement($form->get('content')); ?>
-            <?= $this->formElementErrors($form->get('content')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-pen-fancy"></i></span>
+                </div>
+                <?= $this->formElement($form->get('content')); ?>
+                <?= $this->formElementErrors($form->get('content')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('description')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-pen-fancy"></i></span>
+                </div>
+                <?= $this->formElement($form->get('description')); ?>
+                <?= $this->formElementErrors($form->get('description')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('image')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                </div>
+                <?= $this->formElement($form->get('image')); ?>
+                <?= $this->formElementErrors($form->get('image')); ?>
+            </div>
+
+
         </div>
-
-        <div class="form-group">
-            <?= $this->formLabel($form->get('tags')); ?>
-            <?= $this->formElement($form->get('tags')); ?>
-            <?= $this->formElementErrors($form->get('tags')); ?>
-            <p class="help-block">Separate tags with comma.</p>
-        </div>
-
-        <div class="form-group">
-            <?= $this->formLabel($form->get('status')); ?>
-            <?= $this->formElement($form->get('status')); ?>
-            <?= $this->formElementErrors($form->get('status')); ?>
-        </div>
-
-        <?= $this->formElement($form->get('submit')); ?>
-
-        <?= $this->form()->closeTag(); ?>
+        <!-- /.card-body -->
     </div>
 </div>
+<div class="col-md-3">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Settings</h3>
+        </div>
+        <div class="card-body">
+
+
+
+            <div class="input-group mb-3 justify-content-center">
+                <img class="profile-admin-img img-fluid"
+                     src="<?= $this->basePath('img/posts/300x300/' . $post->getImage()) ?>" alt="User profile picture">
+
+            </div>
+
+            <?= $this->formLabel($form->get('author_id')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('author_id')); ?>
+                <?= $this->formElementErrors($form->get('author_id')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('status')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-eye-slash"></i></span>
+                </div>
+                <?= $this->formElement($form->get('status')); ?>
+                <?= $this->formElementErrors($form->get('status')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('tags')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                </div>
+                <?= $this->formElement($form->get('tags')); ?>
+                <?= $this->formElementErrors($form->get('tags')); ?>
+            </div>
+
+            <?= $this->formElement($form->get('csrf')); ?>
+            <?= $this->formElementErrors($form->get('csrf')); ?>
+
+            <?= $this->formElement($form->get('submit')); ?>
+
+            <?= $this->form()->closeTag(); ?>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<?php var_dump($post);?>
