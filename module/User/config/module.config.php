@@ -296,7 +296,7 @@ return [
                     'allow' => '+user.manage']
             ],
             PostController::class => [
-                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '+role.manage'],
+                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'restore'], 'allow' => '+role.manage'],
             ],
             IndexController::class => [
                 ['actions' => '*', 'allow' => '+role.manage']
