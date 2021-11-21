@@ -74,22 +74,26 @@ class PostManager
     }
 
     /**
+     * видаленння поста яке оприділяється по даті,
+     * якщо дата видалення стоїть то пост рахується видаленим
      * @throws OptimisticLockException
      * @throws ORMException
      */
     public function removePost($post)
     {
-        $comments = $post->getComments();
-        foreach ($comments as $comment) {
-            $this->entityManager->remove($comment);
-        }
+//        $comments = $post->getComments();
+//        foreach ($comments as $comment) {
+//            $this->entityManager->remove($comment);
+//        }
+//
+//        $tags = $post->getTags();
+//        foreach ($tags as $tag) {
+//            $post->removeTagAssociation($tag);
+//        }
 
-        $tags = $post->getTags();
-        foreach ($tags as $tag) {
-            $post->removeTagAssociation($tag);
-        }
+        $post->setDateDeleted(date('Y-m-d H:i:s'));
 
-        $this->entityManager->remove($post);
+        $this->entityManager->persist($post);
 
         $this->entityManager->flush();
     }

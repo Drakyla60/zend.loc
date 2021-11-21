@@ -196,10 +196,8 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $post = $this
-            ->entityManager
-            ->getRepository(Post::class)
-            ->findOneById($postId);
+        $post = $this->entityManager
+            ->getRepository(Post::class)->findOneById($postId);
 
         if ($post == null) {
             $this->getResponse()->setStatusCode(404);
@@ -207,8 +205,7 @@ class PostController extends AbstractActionController
         }
 
         $this->postManager->removePost($post);
-
-        return $this->redirect()->toRoute('posts', ['action' => 'admin']);
+        return $this->redirect()->toRoute('posts', ['action' => 'index']);
     }
 
 }
