@@ -30,19 +30,17 @@ class UserRepository extends EntityRepository
      * Метод вибирає користувачів які можуть бути авторами постів
      * @return Query
      */
-    public function findUsersWhoCanPost(): Query
+    public function findUsersWhoCanPost()
     {
         $entityManager = $this->getEntityManager();
-
         $queryBuilder = $entityManager->createQueryBuilder();
 
-        $data = $queryBuilder->select('u')
+        return $queryBuilder->select('u')
             ->from(User::class, 'u')
             ->join('u.roles', 'r')
             ->andWhere('r.id = ?2')
-            ->setParameter('2', 3);
-
-        return $queryBuilder->getQuery();
+            ->setParameter('2', 3)
+            ->getQuery()->getResult();
     }
 
 }
