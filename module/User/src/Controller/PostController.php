@@ -99,10 +99,8 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $post = $this
-            ->entityManager
-            ->getRepository(Post::class)
-            ->findOneById($postId);
+        $post = $this->entityManager
+            ->getRepository(Post::class)->findOneById($postId);
 
         if ($post == null) {
             $this->getResponse()->setStatusCode(404);
@@ -120,14 +118,11 @@ class PostController extends AbstractActionController
                 $data = $form->getData();
                 $this->postManager->addCommentToPost($post, $data);
                 $this->logger('info', 'Додано новий Коментар: '. $data['author'] . ' - '. $data['comment']);
-                return $this->redirect()->toRoute('posts',
-                    [
-                        'action' => 'view',
-                        'id'     => $postId
-                    ]);
+                return $this->redirect()->toRoute('posts', ['action' => 'view', 'id'     => $postId]);
             }
         }
         $this->logger('info', 'Переглянуто пост: '. $post->getTitle());
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'post'         => $post,
             'commentCount' => $commentCount,
