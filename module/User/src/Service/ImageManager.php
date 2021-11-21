@@ -40,6 +40,25 @@ class ImageManager
         return $data;
     }
 
+    public function uploadPostImage($data)
+    {
+        $pathCatalog = $this->config['images']['postImagesCatalog'];
+        //@TODO Треба ще зробити видалення старого зображення
+        if (null != $data['image']) {
+            $path = $data['image']['tmp_name'];
+            $fileName =  time() .'_'. $data['image']['name'];
+            $savePath = $pathCatalog . $fileName;
+
+            if (move_uploaded_file($path, $savePath)) {
+                $data['image'] = $fileName;
+            }
+        }
+        $this->resizePostUploadImage($data, 100);
+        $this->resizePostUploadImage($data, 300);
+
+        return $data;
+    }
+
     /**
      * @param $data
      * @return mixed
