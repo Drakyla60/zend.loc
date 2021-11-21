@@ -69,22 +69,29 @@ class PostController extends AbstractActionController
      */
     public function addAction()
     {
-        $form = new PostForm();
+        $users = $this->entityManager
+            ->getRepository(User::class)->findUsersWhoCanPost();
+
+        $writeUser = $this->userManager->getUsersWhoCanPostAsArray($users);
+
+        $form = new PostForm($writeUser);
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
+            $data = $this->getRequestData();
             $form->setData($data);
 
             if ($form->isValid()) {
                 $data = $form->getData();
+                $data = $this->imageManager->uploadPostImage($data);
                 $this->postManager->addNewPost($data);
                 $this->logger('info', 'Додано новий Пост: '. $data['title']);
                 return $this->redirect()->toRoute('posts');
             }
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
-            'form' => $form
+            'form' => $form,
+            'writeUser' => $writeUser
         ]);
     }
 

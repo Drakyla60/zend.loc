@@ -27,11 +27,19 @@ class PostManager
      */
     public function addNewPost($data)
     {
+        $user = $this->entityManager
+            ->getRepository(User::class)->findOneBy(['id' => $data['author_id']]);
+
         $post = new Post();
+        $post->setAuthor($user);
         $post->setTitle($data['title']);
         $post->setContent($data['content']);
+        $post->setDescription($data['description']);
         $post->setStatus($data['status']);
         $post->setDateCreated(date('Y-m-d H:i:s'));
+        $post->setDateUpdated(date('Y-m-d H:i:s'));
+        $post->setCountViews(0);
+        $post->setImage($data['image']);
 
         $this->entityManager->persist($post);
 
