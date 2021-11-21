@@ -2,6 +2,10 @@
 
 namespace User\Form;
 
+use Laminas\InputFilter\FileInput;
+use Laminas\Validator\File\ImageSize;
+use Laminas\Validator\File\IsImage;
+use Laminas\Validator\File\MimeType;
 use User\Entity\Post;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripNewlines;
@@ -20,14 +24,18 @@ use Laminas\Validator\StringLength;
  */
 class PostForm extends Form
 {
-    public function __construct()
+    private $writeUser;
+
+    public function __construct($writeUser)
     {
         parent::__construct('post-form');
-
+        $this->setAttribute('enctype', 'multipart/form-data');
         $this->setAttribute('method', 'post');
 
+        $this->writeUser = $writeUser;
         $this->addElements();
         $this->addInputFilter();
+
     }
 
     /**
@@ -36,6 +44,19 @@ class PostForm extends Form
     protected function addElements()
     {
 
+        $this->add([
+            'type'  => Select::class,
+            'name' => 'author_id',
+            'attributes' => [
+                'id' => 'author_id',
+                'class'=>'form-control',
+            ],
+            'options' => [
+                'label' => 'Виберіть Автора',
+                'value_options' => $this->writeUser
+            ],
+        ]);
+
         // Добавляем поле "title"
         $this->add([
             'type'  => Text::class,
@@ -43,9 +64,10 @@ class PostForm extends Form
             'attributes' => [
                 'id'    => 'title',
                 'class' =>'form-control',
+                'placeholder'=>'Введіть заголовок Поста',
             ],
             'options' => [
-                'label' => 'Enter post title here',
+                'label' => 'Введіть заголовок Поста',
             ],
         ]);
 
@@ -56,22 +78,37 @@ class PostForm extends Form
             'attributes' => [
                 'id' => 'content',
                 'class'=>'form-control',
+                'placeholder'=>'Введіть контент Поста',
             ],
             'options' => [
-                'label' => 'Type content here',
+                'label' => 'Введіть контент Поста',
             ],
         ]);
 
-        // Добавляем поле "tags"
+        $this->add([
+            'type'  => Textarea::class,
+            'name' => 'description',
+            'attributes' => [
+                'id'    => 'description',
+                'class' =>'form-control',
+                'placeholder'=>'Введіть опис Поста',
+            ],
+            'options' => [
+                'label' => 'Введіть опис Поста',
+            ],
+        ]);
+
+         //Добавляем поле "tags"
         $this->add([
             'type'  => Text::class,
             'name' => 'tags',
             'attributes' => [
                 'id' => 'tags',
                 'class'=>'form-control',
+                'placeholder'=>'тег1, тег2,',
             ],
             'options' => [
-                'label' => 'comma, separated, list, of, tags',
+                'label' => 'Напишіть, теги, через, ","',
             ],
         ]);
 
@@ -86,8 +123,29 @@ class PostForm extends Form
             'options' => [
                 'label' => 'Status',
                 'value_options' => [
-                    Post::STATUS_PUBLISHED => 'Published',
-                    Post::STATUS_DRAFT => 'Draft',
+                    Post::STATUS_PUBLISHED => 'Опубліковано',
+                    Post::STATUS_DRAFT => 'Чорнивик',
+                ]
+            ],
+        ]);
+
+        $this->add([
+            'type'       => 'file',
+            'name'       => 'image',
+            'attributes' => [
+                'id' => 'file'
+            ],
+            'options'    => [
+                'label' => 'Виберіть файл'
+            ]
+        ]);
+
+        $this->add([
+            'type' => 'csrf',
+            'name' => 'csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => 600
                 ]
             ],
         ]);
@@ -143,7 +201,24 @@ class PostForm extends Form
                     'name'    => StringLength::class,
                     'options' => [
                         'min' => 1,
-                        'max' => 4096
+                        'max' => 8192
+                    ],
+                ],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'name'     => 'description',
+            'required' => true,
+            'filters'  => [
+                ['name' => StripTags::class],
+            ],
+            'validators' => [
+                [
+                    'name'    => StringLength::class,
+                    'options' => [
+                        'min' => 1,
+                        'max' => 2048
                     ],
                 ],
             ],
@@ -179,6 +254,35 @@ class PostForm extends Form
                             Post::STATUS_PUBLISHED,
                             Post::STATUS_DRAFT
                         ],
+                    ]
+                ],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'type'       => FileInput::class,
+            'name'       => 'image',
+            'required'   => false,
+            'validators' => [
+//                [
+//                    'name'    => UploadFile::class
+//                ],
+                [
+                    'name'    => MimeType::class,
+                    'options' => [
+                        'mimeType'  => ['image/jpeg', 'image/png']
+                    ]
+                ],
+                [
+                    'name'    => IsImage::class
+                ],
+                [
+                    'name'    => ImageSize::class,
+                    'options' => [
+                        'minWidth'  => 128,
+                        'minHeight' => 128,
+                        'maxWidth'  => 4096,
+                        'maxHeight' => 4096
                     ]
                 ],
             ],
