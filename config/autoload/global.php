@@ -28,7 +28,9 @@ return [
         'userImagesCatalog'        => './public/img/avatar/original/',
         'userImagesCatalog50x50'   => './public/img/avatar/50x50/',
         'userImagesCatalog150x150' => './public/img/avatar/150x150/',
-        'postImagesCatalog'        => './public/img/post/',
+        'postImagesCatalog'        => './public/img/posts/original/',
+        'postImagesCatalog100x100' => './public/img/posts/100x100/',
+        'postImagesCatalog300x300' => './public/img/posts/300x300/',
         'contactUsImagesCatalog'   => './public/img/contact-us/'
     ],
     // Налаштування сеcії.
