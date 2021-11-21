@@ -3,6 +3,7 @@
 namespace User\Controller;
 
 use User\Entity\Post;
+use User\Entity\User;
 use User\Form\CommentForm;
 use User\Form\PostForm;
 use User\Service\PostManager;
@@ -15,31 +16,36 @@ use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Paginator\Paginator;
 use Laminas\View\Model\ViewModel;
+use User\Service\UserManager;
 
 class PostController extends AbstractActionController
 {
 
     private EntityManager $entityManager;
     private PostManager $postManager;
+    private UserManager $userManager;
+    private $imageManager;
 
-    public function __construct($entityManager, $postManager)
+    public function __construct($entityManager, $postManager, $userManager, $imageManager)
     {
         $this->entityManager = $entityManager;
         $this->postManager = $postManager;
+        $this->userManager = $userManager;
+        $this->imageManager = $imageManager;
     }
 
     public function indexAction()
     {
         $page = $this->params()->fromQuery('page', 1);
-        $tagFilter = $this->params()->fromQuery('tag', null);
+//        $tagFilter = $this->params()->fromQuery('tag', null);
 
-        if ($tagFilter) {
-            $query = $this->entityManager
-                ->getRepository(Post::class)->findPostsByTag($tagFilter);
-        } else {
-            $query = $this->entityManager
-                ->getRepository(Post::class)->findPublishedPosts();
-        }
+//        if ($tagFilter) {
+//            $query = $this->entityManager
+//                ->getRepository(Post::class)->findPostsByTag($tagFilter);
+//        } else {
+        $query = $this->entityManager
+            ->getRepository(Post::class)->findAllPosts();
+//        }
 
         $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
         $paginator = new Paginator($doctrinePaginator);
