@@ -50,9 +50,13 @@ class UserController extends AbstractActionController
             ->getRepository(User::class)
             ->findAllUsers();
 
+//        $query = $this->entityManager
+//            ->getRepository(User::class)
+//            ->findUsersWhoCanPost();
+
         $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
         $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(2);
+        $paginator->setDefaultItemCountPerPage(5);
         $paginator->setCurrentPageNumber($page);
 
         $this->layout()->setTemplate('layout/users_layout');

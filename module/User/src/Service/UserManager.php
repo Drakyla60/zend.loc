@@ -197,7 +197,7 @@ class UserManager
 
         $user->setPasswordResetToken($tokenHash);
         $currentDate = date('Y-m-d H:i:s');
-        $user->setPasswordResetTokenCreationDate($currentDate); //@TODO Створити поле для EmailConfirmation
+        $user->setPasswordResetTokenCreationDate($currentDate);
         $this->entityManager->flush();
 
         $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
@@ -424,4 +424,14 @@ class UserManager
 
         return true;
     }
+    public function getUsersWhoCanPostAsArray($users)
+    {
+        $data = [];
+        foreach ($users as $user) {
+            $data[$user->getId()] = $user->getFullName();
+        }
+
+        return $data;
+    }
+
 }
