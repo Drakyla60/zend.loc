@@ -80,6 +80,25 @@ class ImageManager
         return $data;
     }
 
+    public function resizePostUploadImage($data, $width = 0, $height = 0)
+    {
+//        var_dump($data);
+        if ($width == 100) {
+            $pathCatalog = $this->config['images']['postImagesCatalog100x100'];
+        } else {
+            $pathCatalog = $this->config['images']['postImagesCatalog300x300'];
+        }
+
+        $image = new SimpleImage();
+        $name = $this->config['images']['postImagesCatalog'] . $data['image'];
+        $image
+            ->fromFile($this->config['images']['postImagesCatalog'] . $data['image'])
+            ->autoOrient()
+            ->resize($width, $height)
+            ->toFile($pathCatalog . $data['image'], 'image/jpeg');
+
+        return $data;
+    }
     public function resizeUploadImage($data, $width = 0, $height = 0) {
 //        $pathCatalog = $this->config['images'];
         if ($width == 50) {
