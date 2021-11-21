@@ -1,70 +1,134 @@
 
+<?php
+$this->headTitle('View Post');
 
-<a href="
-    <?= $this->url('posts', ['action'=>'index']); ?>">
-    &lt;&lt; Back to list of posts
-</a>
+$form->get('author')->setAttributes([
+    'class' => 'form-control',
+    'value' => $this->identity(),
+//    'disabled' => true,
+]);
+?>
+<!---->
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+<div class="col-md-12">
+    <h3>Перегляд поста <b><?= $this->escapeHtml(substr($post->getTitle(), 0, 40) . ' ...') ?></b></h3>
+</div>
+<div class="col-md-5">
+    <div class="card card-primary card-outline">
+        <div class="card-body box-profile">
+            <div class="text-center">
+                <img class="profile-admin-img img-fluid "
+                     src="<?= $this->basePath('img/posts/300x300/' . $post->getImage()) ?>" alt="Post picture">
+                <h3 class="profile-username"> ID <?= $this->escapeHtml($post->getId()) ?></h3>
+                <p class="text-muted"><?= $this->escapeHtml($post->getTitle()) ?></p>
+            </div>
 
-<h1>
-    <?= $this->escapeHtml($post->getTitle()); ?>
-</h1>
+            <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                    <b>дата Створення</b> <a class="float-right"><?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Дата Оновлення</b> <a class="float-right"><?= $this->escapeHtml($post->getDateUpdated()) ?></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Теги</b> <div class="float-right"><?= $this->escapeHtml($postManager->convertTagsToString($post)); ?></div>
+                </li>
+                <li class="list-group-item">
+                    <b>Переглядів</b> <div class="float-right"><?= $this->escapeHtml($post->getCountViews()); ?></div>
+                </li>
+            </ul>
+            <a href="<?= $this->url('posts', ['action' => 'edit', 'id' => $post->getId()]); ?>"
+               class="btn btn-primary btn-block"><b>Редагувати Пост</b></a>
 
-<p class="comments-header">
-    <?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?> |
-    <a href="#comment">
-        Add new comment
-    </a>
-</p>
-
-<p>
-    Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?>
-    | Tags: <?= $this->escapeHtml($postManager->convertTagsToString($post)); ?>
-</p>
-
-<p>
-    <?= $this->escapeHtml($post->getContent()); ?>
-</p>
-
-<h3><?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?></h3>
-
-<?php foreach ($post->getComments() as $comment): ?>
-
-    <hr>
-
-    <p>
-        <?= $this->escapeHtml($comment->getAuthor()) ?> on
-        <?= $this->escapeHtml($comment->getDateCreated()); ?>
-    </p>
-
-    <p>
-        <?= $this->escapeHtml($comment->getContent()); ?>
-    </p>
-
-<?php endforeach; ?>
-
-<hr>
-
-<a name="comment"></a>
-<h3>Leave Reply</h3>
-
-<div class="row">
-    <div class="col-md-8">
-        <?= $this->form()->openTag($form); ?>
-
-        <div class="form-group">
-            <?= $this->formLabel($form->get('author')); ?>
-            <?= $this->formElement($form->get('author')); ?>
-            <?= $this->formElementErrors($form->get('author')); ?>
+            <a href="#comment" class="btn btn-success btn-block"><b>Написати Коментар (<?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?>)</b></a>
         </div>
-
-        <div class="form-group">
-            <?= $this->formLabel($form->get('comment')); ?>
-            <?= $this->formElement($form->get('comment')); ?>
-            <?= $this->formElementErrors($form->get('comment')); ?>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<div class="col-md-7">
+    <!-- About Me Box -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title"></h3>
         </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <strong><i class="fas fa-book mr-1"></i> Текст Поста</strong>
+            <p class="text-muted">
+                <?= $this->escapeHtml($post->getContent()); ?>
+            </p>
+            <hr>
+            <strong><i class="fas fa-book mr-1"></i> Опис Поста</strong>
+            <p class="text-muted">
+                <?= $this->escapeHtml($post->getDescription()); ?>
+            </p>
+            <hr>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 
-        <?= $this->formElement($form->get('submit')); ?>
+</div>
+<div class="col-md-12">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Horizontal Form</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
 
+            <div class="form-group">
+                <?= $this->formLabel($form->get('author')); ?>
+                <?= $this->formElement($form->get('author')); ?>
+                <?= $this->formElementErrors($form->get('author')); ?>
+            </div>
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('comment')); ?>
+                <?= $this->formElement($form->get('comment')); ?>
+                <?= $this->formElementErrors($form->get('comment')); ?>
+            </div>
+        </div>
+        <div class="card-footer">
+            <?= $this->formElement($form->get('submit')); ?>
+        </div>
         <?= $this->form()->closeTag(); ?>
     </div>
+</div>
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?></h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Автор Коментаря</th>
+                    <th>Текст Коментаря</th>
+                    <th>Дата Написання Коментаря</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <?php foreach ($post->getComments() as $comment): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($comment->getId()) ?> </td>
+                    <td><?= $this->escapeHtml($comment->getAuthor()) ?> </td>
+                    <td><?= $this->escapeHtml($comment->getContent()); ?></td>
+                    <td><?= $this->escapeHtml($comment->getDateCreated()); ?></td>
+                    <td><a href="#" class="badge bg-danger">Видалити Коментар</a></td> <?php //@TODO Ще не реалізовано ?>
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 </div>
