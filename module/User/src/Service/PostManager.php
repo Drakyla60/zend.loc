@@ -10,14 +10,14 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Laminas\Filter\StaticFilter;
 use Laminas\Filter\StringTrim;
+use User\Entity\User;
 
 class PostManager
 {
-    private EntityManager $entityManager;
+    private $entityManager;
 
     public function __construct($entityManager)
     {
-
         $this->entityManager = $entityManager;
     }
 
@@ -54,10 +54,20 @@ class PostManager
      */
     public function updatePost($post, $data)
     {
+        $user = $this->entityManager
+            ->getRepository(User::class)->findOneBy(['id' => $data['author_id']]);
+
+        $post->setAuthor($user);
         $post->setTitle($data['title']);
         $post->setContent($data['content']);
+        $post->setDescription($data['description']);
         $post->setStatus($data['status']);
-
+        $post->setDateUpdated(date('Y-m-d H:i:s'));
+        $post->setCountViews($post->getCountViews() + 1);
+        if  (is_string($data['image'])) {
+            $post->setImage($data['image']);
+        }
+        $this->entityManager->persist($post);
         $this->addTagsToPost($data['tags'], $post);
 
         $this->entityManager->flush();

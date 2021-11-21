@@ -138,13 +138,17 @@ class PostController extends AbstractActionController
      */
     public function editAction()
     {
-        $form = new PostForm();
+        $users = $this->entityManager
+            ->getRepository(User::class)->findUsersWhoCanPost();
+
+        $writeUser = $this->userManager->getUsersWhoCanPostAsArray($users);
+
+        $form = new PostForm($writeUser);
+
         $postId = $this->params()->fromRoute('id', -1);
 
-        $post = $this
-            ->entityManager
-            ->getRepository(Post::class)
-            ->findOneById($postId);
+        $post = $this->entityManager
+            ->getRepository(Post::class)->findOneById($postId);
 
         if ($post == null) {
             $this->getResponse()->setStatusCode(404);
@@ -152,26 +156,32 @@ class PostController extends AbstractActionController
         }
 
         if ($this->getRequest()->isPost()) {
-            $data = $this->params()->fromPost();
+            $data = $this->getRequestData();
             $form->setData($data);
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $this->postManager->updatePost($post, $data);
 
+                if ($data['image']['size'] !== 0) {
+                    $data = $this->imageManager->uploadPostImage($data);
+                }
+                $this->postManager->updatePost($post, $data);
+                $this->logger('info', 'Оновлено новий Пост: '. $data['title']);
                 return $this->redirect()->toRoute('posts');
             }
         } else {
             $data = [
+                'author_id'   => $post->getAuthor(),
                 'title'   => $post->getTitle(),
                 'content' => $post->getContent(),
+                'description' => $post->getDescription(),
                 'tags'    => $this->postManager->convertTagsToString($post),
                 'status'  => $post->getStatus()
             ];
 
             $form->setData($data);
         }
-
+        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'form' => $form,
             'post' => $post
