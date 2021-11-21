@@ -99,6 +99,18 @@ class PostManager
     }
 
     /**
+     * @param $post
+     */
+    public function restorePost($post)
+    {
+        $post->setDateDeleted(null);
+
+        $this->entityManager->persist($post);
+
+        $this->entityManager->flush();
+    }
+
+    /**
      * @throws ORMException
      */
     private function addTagsToPost(string $tagsStr, Post $post)

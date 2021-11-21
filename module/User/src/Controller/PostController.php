@@ -208,4 +208,28 @@ class PostController extends AbstractActionController
         return $this->redirect()->toRoute('posts', ['action' => 'index']);
     }
 
+    public function restoreAction()
+    {
+        $postId = $this->params()->fromRoute('id', -1);
+
+        $post = $this->entityManager
+            ->getRepository(Post::class)->findOneById($postId);
+
+        if ($post == null) {
+            $this->getResponse()->setStatusCode(404);
+            return false;
+        }
+
+        $this->postManager->restorePost($post);
+        return $this->redirect()->toRoute('posts', ['action' => 'index']);
+    }
+
+    private function getRequestData(): array
+    {
+        $request = $this->getRequest();
+        return array_merge_recursive(
+            $request->getPost()->toArray(),
+            $request->getFiles()->toArray()
+        );
+    }
 }
