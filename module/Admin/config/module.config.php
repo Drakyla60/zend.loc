@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Admin;
 
 use Admin\Controller\Factory\IndexControllerFactory;
+use Admin\Controller\IndexController;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
@@ -15,17 +16,7 @@ return [
             'home_admin' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/admin',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-            'admin' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/admin[/:action]',
+                    'route'    => '/admin/parse',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
@@ -72,15 +63,24 @@ return [
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
-                'class' => AnnotationDriver::class,
-                'cache' => 'array',
+                'class' => \Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver::class,
                 'paths' => [__DIR__ . '/../src/Entity']
             ],
-            'orm_default' => [
+            'odm_default' => [
                 'drivers' => [
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 ]
             ]
         ]
-    ]
+    ],
+    'access_filter' => [
+        'options' => [
+            'mode' => 'restrictive' // restrictive  !!  permissive
+        ],
+        'controllers' => [
+            IndexController::class => [
+                ['actions' => '*', 'allow' => '+role.manage']
+            ],
+        ]
+    ],
 ];
