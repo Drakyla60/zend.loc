@@ -19,11 +19,12 @@ return [
     'Laminas\Filter',
     'Laminas\Router',
     'Laminas\Validator',
-//    'Admin',
+    'Admin',
     'User',
     'Application',
     'Laminas\DeveloperTools',
     'Laminas\Mvc\Plugin\FlashMessenger',
     'DoctrineModule',
-    'DoctrineORMModule'
+    'DoctrineORMModule',
+    'DoctrineMongoODMModule',
 ];
