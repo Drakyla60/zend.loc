@@ -2,14 +2,35 @@
 
 use Doctrine\DBAL\Tools\Console;
 use Doctrine\Laminas\Hydrator\DoctrineObject;
+use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ORM\Tools\Console\Command;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use DoctrineModule\Form\Element;
 use DoctrineORMModule\CliConfigurator;
 use DoctrineORMModule\Service;
 use DoctrineORMModule\Yuml;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository as DefaultDocumentRepository;
 
 return [
+    'mailer' => [
+        'phpMailer' => [
+            'host'      => 'smtp.gmail.com',
+            'smtpAuth'  => true,
+            'username'  => '',
+            'password'  => '',
+            'port'      => 465,
+
+            'adminName' => 'System',
+            'adminEmail' => '', //кому відправляється з контакної сторінки
+            'isHTML'    => true,
+        ],
+    ],
+    'captcha' => [
+        'reCaptcha' => [
+            'publicKey' => '',
+            'privateKey' => '',
+        ],
+    ],
     'doctrine' => [
         'connection' => [
             // Configuration for service `doctrine.connection.orm_default` service
@@ -25,15 +46,24 @@ return [
                 // connection parameters, see
                 // http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
                 'params' => [
-                    'host' => 'db',
-                    'port' => '3306',
-                    'user' => '',
-                    'password' => '',
-                    'dbname' => '',
+                    'host'          => 'db',
+                    'port'          => '3306',
+                    'user'          => '',
+                    'password'      => '',
+                    'dbname'        => '',
                     'driverOptions' => [
                         1002   => 'SET NAMES utf8',
                     ],
                 ],
+            ],
+            'odm_default' => [
+                'server'           => 'mongodb',
+                'port'             => '27017',
+                'connectionString' => null,
+                'user'             => null,
+                'password'         => null,
+                'dbname'           => '',
+                'options'          => [],
             ],
         ],
 
@@ -86,6 +116,37 @@ return [
                 // Second level cache configuration (see doc to learn about configuration)
                 'second_level_cache' => [],
             ],
+
+            'odm_default' => [
+//                'metadata_cache'     => 'array',
+//
+//                'driver'             => 'odm_default',
+//
+//                'generate_proxies'   => Configuration::AUTOGENERATE_EVAL,
+//                'proxy_dir'          => 'data/DoctrineMongoODMModule/Proxy',
+//                'proxy_namespace'    => 'DoctrineMongoODMModule\Proxy',
+//
+//                'generate_hydrators' => Configuration::AUTOGENERATE_ALWAYS,
+//                'hydrator_dir'       => 'data/DoctrineMongoODMModule/Hydrator',
+//                'hydrator_namespace' => 'DoctrineMongoODMModule\Hydrator',
+//
+//                'generate_persistent_collections' => Configuration::AUTOGENERATE_ALWAYS,
+//                'persistent_collection_dir' => 'data/DoctrineMongoODMModule/PersistentCollection',
+//                'persistent_collection_namespace' => 'DoctrineMongoODMModule\PersistentCollection',
+//                'persistent_collection_factory' => null,
+//                'persistent_collection_generator' => null,
+//
+//                'default_db'         => 'food', //null,
+
+                //'filters'            => [],  // ['filterName' => 'BSON\Filter\Class'],
+
+                // custom types
+                //'types'              => [],
+
+                //'logger'             =>  'DoctrineMongoODMModule\Logging\DebugStack',
+
+//                'default_document_repository_class_name' => DefaultDocumentRepository::class,
+            ],
         ],
 
         // Metadata Mapping driver configuration
@@ -99,6 +160,10 @@ return [
                 // Map of driver names to be used within this driver chain, indexed by
                 // entity namespace
                 'drivers' => [],
+            ],
+
+            'odm_default' => [
+//                'drivers' => [],
             ],
         ],
 
@@ -114,11 +179,20 @@ return [
                 // be `doctrine.configuration.$thisSetting`
                 'configuration' => 'orm_default',
             ],
+            'odm_default' => [
+                'connection'    => 'odm_default',
+                'configuration' => 'odm_default',
+                'eventmanager' => 'odm_default',
+            ],
         ],
 
         'eventmanager' => [
             // configuration for the `doctrine.eventmanager.orm_default` service
             'orm_default' => [],
+
+            'odm_default' => [
+                'subscribers' => [],
+            ],
         ],
 
         // SQL logger collector, used when Laminas\DeveloperTools and its toolbar are active
@@ -297,23 +371,3 @@ return [
         ],
     ],
 ];
-
-//return [
-//    'doctrine' => [
-//        'connection' => [
-//            'orm_default' => [
-//                'params' => [
-//                    'driver'   => 'mysql',
-//                    'host'     => 'db',
-//                    'port'     => '3306',
-//                    'user'     => 'root',
-//                    'password' => 'root',
-//                    'dbname'   => 'laminas_blog',
-//                    'driverOptions' => [
-//                        1002   => 'SET NAMES utf8',
-//                    ],
-//                ],
-//            ],
-//        ],
-//    ],
-//];

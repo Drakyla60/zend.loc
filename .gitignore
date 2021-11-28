@@ -16,3 +16,6 @@ public/img/captcha/
 /mysql-files/
 /data/DoctrineORMModule/
 /public/img/posts/
+/mongodb/
+/composer.phar
+/data/DoctrineMongoODMModule/
