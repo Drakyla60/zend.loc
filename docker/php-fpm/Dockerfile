@@ -37,6 +37,9 @@ RUN apt-get update \
  && apt-get install -y git zlib1g-dev \
  && docker-php-ext-install pdo pdo_mysql mysqli zip
 
+# MongoDB
+ RUN pecl install mongodb \
+     && docker-php-ext-enable mongodb
 
 ADD ./php.ini /usr/local/etc/php/php.ini
 USER root
@@ -65,9 +68,6 @@ WORKDIR /code
 #     && pecl install memcached \
 #     && docker-php-ext-enable memcached
 
-## MongoDB
-# RUN pecl install mongodb \
-#     && docker-php-ext-enable mongodb
 
 ## Redis support.  igbinary and libzstd-dev are only needed based on 
 ## redis pecl options

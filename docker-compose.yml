@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   php-fpm:
+    container_name: php
     build:
       context: docker/php-fpm
     volumes:
@@ -11,6 +12,7 @@ services:
 #    networks:
 #      - internal
   nginx:
+    container_name: nginx
     build:
       context: docker/nginx
     volumes:
@@ -23,6 +25,7 @@ services:
 #      - internal
   db:
     image: mysql:5.7
+    container_name: mysql
     volumes:
       - ./mysql/etc/mysql:/etc/mysql
       - ./mysql/logs/mysql:/var/log/mysql
