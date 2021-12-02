@@ -43,7 +43,13 @@
         "laminas/laminas-recaptcha": "^3.3",
         "claviska/simpleimage": "^3.6",
         "doctrine/doctrine-mongo-odm-module": "^3.1",
-        "ext-mongo": "*"
+        "ext-mongo": "*",
+        "symfony/dom-crawler": "^5.4",
+        "symfony/css-selector": "^5.4",
+        "ext-pcntl": "*",
+        "ext-shmop": "*",
+        "ext-posix": "*",
+      "ext-iconv": "*"
     },
     "autoload": {
         "psr-4": {
