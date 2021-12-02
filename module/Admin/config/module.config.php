@@ -6,6 +6,8 @@ namespace Admin;
 
 use Admin\Controller\Factory\IndexControllerFactory;
 use Admin\Controller\IndexController;
+use Admin\Service\Factory\Parser\ParserFactory;
+use Admin\Service\Parser\Parser;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
@@ -32,7 +34,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-//            Service\MailSender::class   => InvokableFactory::class,
+            Parser::class   => ParserFactory::class,
 //            Service\ImageManager::class => InvokableFactory::class,
 //            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
         ],
