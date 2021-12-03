@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User;
 
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use User\Controller\Factory\IndexControllerFactory;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Router\Http\Segment;
@@ -12,7 +13,9 @@ use Laminas\Router\Http\Literal;
 use User\Controller\AuthController;
 use User\Controller\Factory\AuthControllerFactory;
 use User\Controller\Factory\PermissionControllerFactory;
+use User\Controller\Factory\PostCategoryControllerFactory;
 use User\Controller\Factory\PostControllerFactory;
+use User\Controller\Factory\PostTagControllerFactory;
 use User\Controller\Factory\RoleControllerFactory;
 use User\Controller\Factory\UserControllerFactory;
 use User\Controller\IndexController;
@@ -21,7 +24,9 @@ use User\Controller\Plugin\AccessPlugin;
 use User\Controller\Plugin\Factory\AccessPluginFactory;
 use User\Controller\Plugin\Factory\LoggerPluginFactory;
 use User\Controller\Plugin\LoggerPlugin;
+use User\Controller\PostCategoryController;
 use User\Controller\PostController;
+use User\Controller\PostTagController;
 use User\Controller\RoleController;
 use User\Controller\UserController;
 use User\Service\Factory\AuthAdapterFactory;
@@ -148,6 +153,35 @@ return [
                     ],
                 ],
             ],
+            'posts-tags' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/admin/posts-tags[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => PostTagController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'posts-category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/admin/posts-category[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]*'
+                    ],
+                    'defaults' => [
+                        'controller'    => PostCategoryController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+
             'user' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -207,12 +241,14 @@ return [
     ],
     'controllers'        => [
         'factories' => [
-            UserController::class       => UserControllerFactory::class,
-            AuthController::class       => AuthControllerFactory::class,
-            RoleController::class       => RoleControllerFactory::class,
-            IndexController::class      => IndexControllerFactory::class,
-            PermissionController::class => PermissionControllerFactory::class,
-            PostController::class       => PostControllerFactory::class,
+            UserController::class         => UserControllerFactory::class,
+            AuthController::class         => AuthControllerFactory::class,
+            RoleController::class         => RoleControllerFactory::class,
+            IndexController::class        => IndexControllerFactory::class,
+            PermissionController::class   => PermissionControllerFactory::class,
+            PostController::class         => PostControllerFactory::class,
+            PostTagController::class      => PostTagControllerFactory::class,
+            PostCategoryController::class => PostCategoryControllerFactory::class,
         ],
     ],
     'service_manager'    => [
@@ -305,6 +341,12 @@ return [
                 ['actions' => '*', 'allow' => '+role.manage']
             ],
             PermissionController::class => [
+                ['actions' => '*', 'allow' => '+permission.manage']
+            ],
+            PostCategoryController::class => [
+                ['actions' => '*', 'allow' => '+permission.manage']
+            ],
+            PostTagController::class => [
                 ['actions' => '*', 'allow' => '+permission.manage']
             ],
         ]
