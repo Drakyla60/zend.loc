@@ -134,6 +134,58 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-pencil-alt"></i>
+                        <p>
+                            Posts Categories
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= $this->url('posts-category') ?>" class="nav-link">
+                                <i class="far fa-circle fa-pencil-alt"></i>
+                                <p> Posts Categories</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= $this->url('posts-category', ['action' => 'add']) ?>" class="nav-link">
+                                <i class="far fa-circle fa-pencil-alt"></i>
+                                <p> Posts Category Add</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-pencil-alt"></i>
+                        <p>
+                            Posts Tags
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= $this->url('posts-tags') ?>" class="nav-link">
+                                <i class="far fa-circle fa-pencil-alt"></i>
+                                <p> Posts Tags</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= $this->url('posts-tags', ['action' => 'add']) ?>" class="nav-link">
+                                <i class="far fa-circle fa-pencil-alt"></i>
+                                <p> Posts Tags Add</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">

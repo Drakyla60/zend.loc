@@ -58,6 +58,16 @@ use User\View\Helper\Factory\AccessFactory;
 return [
     'router'             => [
         'routes' => [
+            'home_s' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/admin',
+                    'defaults' => [
+                        'controller' => IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'home_user_admin' => [
                 'type'    => Literal::class,
                 'options' => [
