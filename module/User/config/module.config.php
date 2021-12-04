@@ -35,7 +35,9 @@ use User\Service\Factory\ImageManagerFactory;
 use User\Service\Factory\LoggerManagerFactory;
 use User\Service\Factory\MailManagerFactory;
 use User\Service\Factory\PermissionManagerFactory;
+use User\Service\Factory\PostCategoryManagerFactory;
 use User\Service\Factory\PostManagerFactory;
+use User\Service\Factory\PostTagManagerFactory;
 use User\Service\Factory\RbacManagerFactory;
 use User\Service\Factory\ReCaptchaManagerFactory;
 use User\Service\Factory\RoleManagerFactory;
@@ -47,7 +49,9 @@ use User\Service\ImageManager;
 use User\Service\LoggerManager;
 use User\Service\MailManager;
 use User\Service\PermissionManager;
+use User\Service\PostCategoryManager;
 use User\Service\PostManager;
+use User\Service\PostTagManager;
 use User\Service\RbacManager;
 use User\Service\ReCaptchaManager;
 use User\Service\RoleManager;
@@ -275,6 +279,8 @@ return [
             ReCaptchaManager::class      => ReCaptchaManagerFactory::class,
             PermissionManager::class     => PermissionManagerFactory::class,
             PostManager::class           => PostManagerFactory::class,
+            PostCategoryManager::class   => PostCategoryManagerFactory::class,
+            PostTagManager::class        => PostTagManagerFactory::class,
         ],
     ],
     'controller_plugins' => [

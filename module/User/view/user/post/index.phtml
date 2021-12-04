@@ -50,7 +50,7 @@
                             <?= $this->escapeHtml(substr($post->getTitle(), 0,100) . '...'); ?>
                         </a>
                     </td>
-                    <td><?= $this->escapeHtml($postManager->getPostStatusAsString($post)); ?></a></td>
+                    <td><?= $this->escapeHtml($postManager->getPostStatusAsString($post)); //@TODO Винести то звідси?></a></td>
                     <td><nobr><?= $this->escapeHtml($post->getDateCreated()); ?></nobr></td>
                     <td><nobr><?= $this->escapeHtml($post->getDateUpdated()); ?></nobr></td>
                     <td><nobr><?= $this->escapeHtml($post->getDateDeleted() ? 'DELETED' : $post->getDateDeleted()); ?></nobr></td>
