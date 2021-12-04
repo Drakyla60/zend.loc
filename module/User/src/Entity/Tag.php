@@ -25,6 +25,46 @@ class Tag
     protected $name;
 
     /**
+     * @return mixed
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param mixed $dateCreated
+     */
+    public function setDateCreated($dateCreated): void
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateDeleted()
+    {
+        return $this->dateDeleted;
+    }
+
+    /**
+     * @param mixed $dateDeleted
+     */
+    public function setDateDeleted($dateDeleted): void
+    {
+        $this->dateDeleted = $dateDeleted;
+    }
+    /**
+     * @ORM\Column(name="date_created")
+     */
+    protected $dateCreated;
+    /**
+     * @ORM\Column(name="date_deleted")
+     */
+    protected $dateDeleted;
+
+    /**
      * @ORM\ManyToMany(targetEntity="\User\Entity\Post", mappedBy="tags")
      */
     protected $posts;
