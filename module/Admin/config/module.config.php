@@ -16,12 +16,15 @@ return [
     'router' => [
         'routes' => [
             'home_admin' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/admin/parse',
+                    'route'    => '/admin/parsing[/:action]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'controller'    => IndexController::class,
+                        'action'        => 'index',
                     ],
                 ],
             ],

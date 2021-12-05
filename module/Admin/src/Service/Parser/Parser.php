@@ -1,11 +1,20 @@
 <?php
 
 namespace Admin\Service\Parser;
-use Admin\Service\ParseInterface;
+use Admin\Entity\Post;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Parser implements ParseInterface
 {
+
+    private $mongoManager;
+    private $entityManager;
+
+    public function __construct($mongoManager, $entityManager)
+    {
+        $this->mongoManager = $mongoManager;
+        $this->entityManager = $entityManager;
+    }
 
     const PARSE_URL = 'https://laravel.ru/posts';
 
@@ -70,16 +79,37 @@ class Parser implements ParseInterface
             $array = array_merge($array, $post);
         }
 
-        return $array;
+        foreach ($array as $item) {
+            $post = new Post();
+            $post->setTitle($item['postTitle']);
+            $post->setAuthor($item['postAuthor']);
+            $post->setDescription(iconv("UTF-8","UTF-8//IGNORE",substr($item['postContent'], 0, 200)));
+            $post->setContent(iconv("UTF-8","UTF-8//IGNORE",$item['postContent']));
+            $post->setTags(serialize($item['postTags']));
+            $post->setRating($item['postRating']);
+            $post->setViews($item['postViews']);
+
+            $this->mongoManager->persist($post);
+
+            $this->mongoManager->flush();
+        }
     }
 
+
+    /**
+     * @return mixed|void
+     */
+    public function import()
+    {
+        // TODO: Implement import() method.
+    }
 
     /**
      * Нормалізація адреси $url
      * @param $baseUrl
      * @return string
      */
-    public function createNormalizeUrl($baseUrl)
+    private function createNormalizeUrl($baseUrl)
     {
         return  ltrim($baseUrl, './');
     }
@@ -89,45 +119,45 @@ class Parser implements ParseInterface
      * @param $url
      * @return false|string
      */
-    public function getHtml($url)
+    private function getHtml($url)
     {
         return file_get_contents($url);
     }
 
     //Паралельний парсинг
-    public function parallel_map(callable $func, array $items)
-    {
-        $childPids = [];
-        $result = [];
-        foreach ($items as $i => $item) {
-            $newPid = pcntl_fork();
-            if ($newPid == -1) {
-                die('Can\'t fork process');
-            } elseif ($newPid) {
-                $childPids[] = $newPid;
-                if ($i == count($items) - 1) {
-
-                    foreach ($childPids as $childPid) {
-                        pcntl_waitpid($childPid, $status);
-                        $sharedId = shmop_open($childPid, 'a', 0, 0);
-                        $shareData = shmop_read($sharedId, 0, shmop_size($sharedId));
-                        $result[] = unserialize($shareData);
-                        shmop_delete($sharedId);
-                        shmop_close($sharedId);
-                    }
-                }
-            } else {
-                $myPid = getmypid();
-                echo 'Start ' . $myPid . PHP_EOL;
-                $funcResult = $func($item);
-                $shareData = serialize($funcResult);
-                $sharedId = shmop_open($myPid, 'c', 0644, strlen($shareData));
-                shmop_write($sharedId, $shareData, 0);
-                echo 'Done ' . $myPid . ' ' . memory_get_peak_usage() . PHP_EOL;
-//            exit(0);
-                posix_kill(getmypid(), SIGKILL);
-            }
-        }
-        return $result;
-    }
+//    private function parallel_map(callable $func, array $items)
+//    {
+//        $childPids = [];
+//        $result = [];
+//        foreach ($items as $i => $item) {
+//            $newPid = pcntl_fork();
+//            if ($newPid == -1) {
+//                die('Can\'t fork process');
+//            } elseif ($newPid) {
+//                $childPids[] = $newPid;
+//                if ($i == count($items) - 1) {
+//
+//                    foreach ($childPids as $childPid) {
+//                        pcntl_waitpid($childPid, $status);
+//                        $sharedId = shmop_open($childPid, 'a', 0, 0);
+//                        $shareData = shmop_read($sharedId, 0, shmop_size($sharedId));
+//                        $result[] = unserialize($shareData);
+//                        shmop_delete($sharedId);
+//                        shmop_close($sharedId);
+//                    }
+//                }
+//            } else {
+//                $myPid = getmypid();
+//                echo 'Start ' . $myPid . PHP_EOL;
+//                $funcResult = $func($item);
+//                $shareData = serialize($funcResult);
+//                $sharedId = shmop_open($myPid, 'c', 0644, strlen($shareData));
+//                shmop_write($sharedId, $shareData, 0);
+//                echo 'Done ' . $myPid . ' ' . memory_get_peak_usage() . PHP_EOL;
+////            exit(0);
+//                posix_kill(getmypid(), SIGKILL);
+//            }
+//        }
+//        return $result;
+//    }
 }
