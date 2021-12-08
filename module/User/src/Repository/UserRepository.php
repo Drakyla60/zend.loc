@@ -43,4 +43,14 @@ class UserRepository extends EntityRepository
             ->getQuery()->getResult();
     }
 
+    public function findCountUsers()
+    {
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        return $queryBuilder->select('count(u.id)')
+            ->from(User::class, 'u')
+            ->getQuery()->getSingleScalarResult();
+    }
+
 }

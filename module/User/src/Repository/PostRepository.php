@@ -82,4 +82,14 @@ class PostRepository extends EntityRepository
 
         return $queryBuilder->getQuery();
     }
+
+    public function findCountPosts()
+    {
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        return $queryBuilder->select('count(p.id)')
+            ->from(Post::class, 'p')
+            ->getQuery()->getSingleScalarResult();
+    }
 }

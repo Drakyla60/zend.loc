@@ -79,7 +79,7 @@ class IndexController extends AbstractActionController
                 $post->setDateCreated($dateCreated);
                 $post->setDateUpdated(date('Y-m-d H:i:s'));
                 $post->setCountViews($item->getViews());
-                $post->setImage('no-image.png');
+                $post->setImage('no-avatar.png');
 
                 $this->entityManager->persist($post);
 

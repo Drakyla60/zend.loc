@@ -5,7 +5,10 @@ composer install --ignore-platform-reqs
 docker exec -it zend_db_1 bash   // mySql
 docker exec -it zend_app_1 bash  //php
 
-mysql -uroot -proot -h127.0.0.1 -P3306
+mysql -uroot -proot -h127.0.0.1 -P3306 - вхід в mysql  по порту
+
+mysqldump -uroot -p laminas_blog > /var/lib/mysql-files/dump_file.sql --дамп
+
 
 CREATE DATABASE laminas_blog;
 
@@ -13,10 +16,6 @@ CREATE USER 'blog'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON blog.* TO blog@localhost IDENTIFIED BY 'password';
 
 FLUSH PRIVILEGES;
-
-mysqldump -ublog -pblog -h127.0.0.1 -P3306 laminas_blog > dump.sql;
-
-mysql -ublog -ppassword -h127.0.0.1 -P3306
 
 chmod -R 777 public
 chmod -R 777 data
