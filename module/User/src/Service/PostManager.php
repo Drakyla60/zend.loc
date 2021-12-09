@@ -64,7 +64,7 @@ class PostManager
         $post->setStatus($data['status']);
         $post->setDateUpdated(date('Y-m-d H:i:s'));
         $post->setCountViews($post->getCountViews() + 1);
-        if  (is_string($data['image'])) {
+        if  (!empty($data['image'])) {
             $post->setImage($data['image']);
         }
         $this->entityManager->persist($post);
@@ -81,16 +81,6 @@ class PostManager
      */
     public function removePost($post)
     {
-//        $comments = $post->getComments();
-//        foreach ($comments as $comment) {
-//            $this->entityManager->remove($comment);
-//        }
-//
-//        $tags = $post->getTags();
-//        foreach ($tags as $tag) {
-//            $post->removeTagAssociation($tag);
-//        }
-
         $post->setDateDeleted(date('Y-m-d H:i:s'));
 
         $this->entityManager->persist($post);

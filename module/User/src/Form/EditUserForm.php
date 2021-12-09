@@ -88,16 +88,15 @@ class EditUserForm extends Form
             ],
         ]);
 
-        //@TODO Не генерує csrf токен
-//        $this->add([
-//            'type' => 'csrf',
-//            'name' => 'csrf',
-//            'options' => [
-//                'csrf_options' => [
-//                    'timeout' => 600
-//                ]
-//            ],
-//        ]);
+        $this->add([
+            'type' => 'csrf',
+            'name' => 'csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => 600
+                ]
+            ],
+        ]);
 
         $this->add([
             'type' => 'submit',

@@ -118,7 +118,6 @@ class Role
         return $this->childRoles;
     }
 
-    //@TODO треба перевірити то всьо
     public function setParentRole($parentRole)
     {
         $this->parentRoles = $parentRole;

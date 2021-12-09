@@ -33,7 +33,7 @@ $form->get('author')->setAttributes([
                     <b>Дата Оновлення</b> <a class="float-right"><?= $this->escapeHtml($post->getDateUpdated()) ?></a>
                 </li>
                 <li class="list-group-item">
-                    <b>Теги</b> <div class="float-right"><?= $this->escapeHtml($postManager->convertTagsToString($post)); ?></div>
+                    <b>Теги</b> <div class="float-right"><?= $this->escapeHtml($tagsString); ?></div>
                 </li>
                 <li class="list-group-item">
                     <b>Переглядів</b> <div class="float-right"><?= $this->escapeHtml($post->getCountViews()); ?></div>
@@ -42,7 +42,7 @@ $form->get('author')->setAttributes([
             <a href="<?= $this->url('posts', ['action' => 'edit', 'id' => $post->getId()]); ?>"
                class="btn btn-primary btn-block"><b>Редагувати Пост</b></a>
 
-            <a href="#comment" class="btn btn-success btn-block"><b>Написати Коментар (<?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?>)</b></a>
+            <a href="#comment" class="btn btn-success btn-block"><b>Написати Коментар (<?= $this->escapeHtml($commentCount); ?>)</b></a>
         </div>
         <!-- /.card-body -->
     </div>
@@ -101,7 +101,7 @@ $form->get('author')->setAttributes([
 <div class="col-12">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><?= $this->escapeHtml($postManager->getCommentCountStr($post)); ?></h3>
+            <h3 class="card-title"><?= $this->escapeHtml($commentCount); ?></h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">

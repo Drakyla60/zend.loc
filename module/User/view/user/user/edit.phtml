@@ -102,8 +102,8 @@ $form->prepare();
                 <?= $this->formElement($form->get('roles')); ?>
                 <?= $this->formElementErrors($form->get('roles')); ?>
             </div>
-<!--            --><?//= $this->formElement($form->get('csrf')); ?>
-<!--            --><?//= $this->formElementErrors($form->get('csrf')); ?>
+            <?= $this->formElement($form->get('csrf')); ?>
+            <?= $this->formElementErrors($form->get('csrf')); ?>
 
             <?= $this->formElement($form->get('submit')); ?>
 

@@ -201,7 +201,7 @@ class PostForm extends Form
                     'name'    => StringLength::class,
                     'options' => [
                         'min' => 1,
-                        'max' => 8192
+                        'max' => 16384
                     ],
                 ],
             ],

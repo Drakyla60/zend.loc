@@ -40,8 +40,7 @@ class PostController extends AbstractActionController
 
         $query = $this->entityManager
             ->getRepository(Post::class)->findAllPosts();
-//        }
-//        $this->postManager->getPostStatusAsString($post);
+
         $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
         $paginator = new Paginator($doctrinePaginator);
 
@@ -106,6 +105,7 @@ class PostController extends AbstractActionController
         }
 
         $commentCount = $this->postManager->getCommentCountStr($post);
+        $tagsString = $this->postManager->convertTagsToString($post);
         $form = new CommentForm();
 
         if ($this->getRequest()->isPost()) {
@@ -124,8 +124,8 @@ class PostController extends AbstractActionController
         return new ViewModel([
             'post'         => $post,
             'commentCount' => $commentCount,
+            'tagsString'   => $tagsString,
             'form'         => $form,
-            'postManager'  => $this->postManager
         ]);
     }
 
@@ -160,9 +160,9 @@ class PostController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                if ($data['image']['size'] !== 0) {
-                    $data = $this->imageManager->uploadPostImage($data);
-                }
+
+                $data = $this->imageManager->uploadPostImage($data);
+
                 $this->postManager->updatePost($post, $data);
                 $this->logger('info', 'Оновлено новий Пост: '. $data['title']);
                 return $this->redirect()->toRoute('posts');

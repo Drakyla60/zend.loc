@@ -54,7 +54,6 @@
                     <td><nobr><?= $this->escapeHtml($post->getDateCreated()); ?></nobr></td>
                     <td><nobr><?= $this->escapeHtml($post->getDateUpdated()); ?></nobr></td>
                     <td><nobr><?= $this->escapeHtml($post->getDateDeleted() ? 'DELETED' : $post->getDateDeleted()); ?></nobr></td>
-<!--                    @TODO Треба зровити відновлення акаунта з адмінки -->
                     <td><?= $this->escapeHtml($post->getCountViews()); ?></td>
                     <td>
                         <a href="<?= $this->url('users', ['action' => 'view', 'id' => $post->getAuthor()->getId()]); ?>">

@@ -90,7 +90,6 @@ class UserManager
     public function updateUser(User $user, $data): User
     {
 
-        // Do not allow to change user email if another user with such email already exits.
         if($user->getEmail()!=$data['email'] && $this->checkUserExists($data['email'])) {
             throw new \Exception("Another user with email address " . $data['email'] . " already exists");
         }
@@ -99,9 +98,10 @@ class UserManager
         $user->setFullName($data['full_name']);
         $user->setStatus($data['status']);
 
-        $user->setAvatar($data['avatar']);
-//        $currentDate = date('Y-m-d H:i:s');
-//        $user->setDateUpdated($currentDate);
+        if (!empty($data['avatar'])){
+            $user->setAvatar($data['avatar']);
+        }
+
         $this->assignRoles($user, $data['roles']);
 
         $this->entityManager->persist($user);

@@ -25,7 +25,8 @@ class ImageManager
     {
         $pathCatalog = $this->config['images']['userImagesCatalog'];
         //@TODO Треба ще зробити видалення старого зображення
-        if (null != $data['avatar']) {
+
+        if (!isset($data['avatar']['tmp_name'])) {
             $path = $data['avatar']['tmp_name'];
             $fileName =  time() .'_'. $data['avatar']['name'];
             $savePath = $pathCatalog . $fileName;
@@ -33,10 +34,13 @@ class ImageManager
             if (move_uploaded_file($path, $savePath)) {
                 $data['avatar'] = $fileName;
             }
-        }
-        $this->resizeUploadImage($data, 50);
-        $this->resizeUploadImage($data, 150);
 
+            $this->resizeUploadImage($data, 50);
+            $this->resizeUploadImage($data, 150);
+            return $data;
+        }
+
+        $data['avatar'] = null;
         return $data;
     }
 
@@ -44,7 +48,8 @@ class ImageManager
     {
         $pathCatalog = $this->config['images']['postImagesCatalog'];
         //@TODO Треба ще зробити видалення старого зображення
-        if (null != $data['image']) {
+
+        if (!isset($data['image']['tmp_name'])) { //@TODO  Повинно працювати але не заходить в if
             $path = $data['image']['tmp_name'];
             $fileName =  time() .'_'. $data['image']['name'];
             $savePath = $pathCatalog . $fileName;
@@ -52,10 +57,12 @@ class ImageManager
             if (move_uploaded_file($path, $savePath)) {
                 $data['image'] = $fileName;
             }
-        }
-        $this->resizePostUploadImage($data, 100);
-        $this->resizePostUploadImage($data, 300);
 
+            $this->resizePostUploadImage($data, 100);
+            $this->resizePostUploadImage($data, 300);
+            return $data;
+        }
+        $data['image'] = null;
         return $data;
     }
 
