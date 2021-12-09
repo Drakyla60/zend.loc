@@ -37,16 +37,11 @@ class PostController extends AbstractActionController
     public function indexAction()
     {
         $page = $this->params()->fromQuery('page', 1);
-//        $tagFilter = $this->params()->fromQuery('tag', null);
 
-//        if ($tagFilter) {
-//            $query = $this->entityManager
-//                ->getRepository(Post::class)->findPostsByTag($tagFilter);
-//        } else {
         $query = $this->entityManager
             ->getRepository(Post::class)->findAllPosts();
 //        }
-
+//        $this->postManager->getPostStatusAsString($post);
         $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
         $paginator = new Paginator($doctrinePaginator);
 
@@ -55,10 +50,13 @@ class PostController extends AbstractActionController
 
         $tagCloud = $this->postManager->getTagCloud();
 
+        foreach ($paginator as $item) {
+            $item->setStatus($this->postManager->getPostStatusAsString($item->getStatus()));
+        }
+
         $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'posts'       => $paginator,
-            'postManager' => $this->postManager,
             'tagCloud'    => $tagCloud,
         ]);
     }

@@ -62,7 +62,6 @@ class ChangeProfileSettingsForm extends Form
             ]
         ]);
 
-        //@TODO Не генерує csrf токен
         $this->add([
             'type' => 'csrf',
             'name' => 'csrf',
