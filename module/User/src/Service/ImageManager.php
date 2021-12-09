@@ -26,7 +26,7 @@ class ImageManager
         $pathCatalog = $this->config['images']['userImagesCatalog'];
         //@TODO Треба ще зробити видалення старого зображення
 
-        if (!isset($data['avatar']['tmp_name'])) {
+        if (!empty($data['avatar']['tmp_name'])) {
             $path = $data['avatar']['tmp_name'];
             $fileName =  time() .'_'. $data['avatar']['name'];
             $savePath = $pathCatalog . $fileName;
@@ -49,7 +49,8 @@ class ImageManager
         $pathCatalog = $this->config['images']['postImagesCatalog'];
         //@TODO Треба ще зробити видалення старого зображення
 
-        if (!isset($data['image']['tmp_name'])) { //@TODO  Повинно працювати але не заходить в if
+//        unlink($file_name);
+        if (!empty($data['image']['tmp_name'])) { //@TODO  Повинно працювати але не заходить в if
             $path = $data['image']['tmp_name'];
             $fileName =  time() .'_'. $data['image']['name'];
             $savePath = $pathCatalog . $fileName;

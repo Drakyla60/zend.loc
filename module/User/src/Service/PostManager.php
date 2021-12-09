@@ -4,6 +4,7 @@ namespace User\Service;
 
 use User\Entity\Comment;
 use User\Entity\Post;
+use User\Entity\PostCategory;
 use User\Entity\Tag;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
@@ -28,10 +29,16 @@ class PostManager
     public function addNewPost($data)
     {
         $user = $this->entityManager
-            ->getRepository(User::class)->findOneBy(['id' => $data['author_id']]);
+            ->getRepository(User::class)
+            ->findOneBy(['id' => $data['author_id']]);
+
+        $category = $this->entityManager
+            ->getRepository(PostCategory::class)
+            ->findOneBy(['category_id' => $data['category_id']]);
 
         $post = new Post();
         $post->setAuthor($user);
+        $post->setCategory($category);
         $post->setTitle($data['title']);
         $post->setContent($data['content']);
         $post->setDescription($data['description']);
@@ -56,8 +63,11 @@ class PostManager
     {
         $user = $this->entityManager
             ->getRepository(User::class)->findOneBy(['id' => $data['author_id']]);
+        $category = $this->entityManager
+            ->getRepository(PostCategory::class)->findOneBy(['category_id' => $data['category_id']]);
 
         $post->setAuthor($user);
+        $post->setCategory($category);
         $post->setTitle($data['title']);
         $post->setContent($data['content']);
         $post->setDescription($data['description']);
