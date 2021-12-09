@@ -25,14 +25,16 @@ use Laminas\Validator\StringLength;
 class PostForm extends Form
 {
     private $writeUser;
+    private $categories;
 
-    public function __construct($writeUser)
+    public function __construct($writeUser, $categories)
     {
         parent::__construct('post-form');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setAttribute('method', 'post');
 
-        $this->writeUser = $writeUser;
+        $this->writeUser  = $writeUser;
+        $this->categories = $categories;
         $this->addElements();
         $this->addInputFilter();
 
@@ -54,6 +56,19 @@ class PostForm extends Form
             'options' => [
                 'label' => 'Виберіть Автора',
                 'value_options' => $this->writeUser
+            ],
+        ]);
+        $this->add([
+            'type'  => Select::class,
+            'name' => 'category_id',
+            'attributes' => [
+                'id' => 'category_id',
+                'class'=>'form-control',
+            ],
+            'options' => [
+                'label' => 'Виберіть Категорію',
+                'value_options' => $this->categories,
+                'default' => 3
             ],
         ]);
 

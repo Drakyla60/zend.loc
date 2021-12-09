@@ -3,6 +3,7 @@
 namespace User\Controller;
 
 use User\Entity\Post;
+use User\Entity\PostCategory;
 use User\Entity\User;
 use User\Form\CommentForm;
 use User\Form\PostForm;
@@ -71,7 +72,9 @@ class PostController extends AbstractActionController
 
         $writeUser = $this->userManager->getUsersWhoCanPostAsArray($users);
 
-        $form = new PostForm($writeUser);
+        $categories = $this->entityManager
+            ->getRepository(PostCategory::class)->findAllCategoryAsArray();
+        $form = new PostForm($writeUser, $categories);
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequestData();
@@ -141,7 +144,10 @@ class PostController extends AbstractActionController
 
         $writeUser = $this->userManager->getUsersWhoCanPostAsArray($users);
 
-        $form = new PostForm($writeUser);
+        $categories = $this->entityManager
+            ->getRepository(PostCategory::class)->findAllCategoryAsArray();
+
+        $form = new PostForm($writeUser, $categories);
 
         $postId = $this->params()->fromRoute('id', -1);
 
@@ -169,12 +175,13 @@ class PostController extends AbstractActionController
             }
         } else {
             $data = [
-                'author_id'   => $post->getAuthor(),
+                'author_id'   => $post->getAuthor()->getId(),
                 'title'   => $post->getTitle(),
                 'content' => $post->getContent(),
                 'description' => $post->getDescription(),
                 'tags'    => $this->postManager->convertTagsToString($post),
-                'status'  => $post->getStatus()
+                'status'  => $post->getStatus(),
+                'category_id' => $post->getCategory()->getCategoryId(),
             ];
 
             $form->setData($data);

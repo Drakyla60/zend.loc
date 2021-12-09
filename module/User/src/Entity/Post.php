@@ -75,6 +75,12 @@ class Post
     protected $author;
 
     /**
+     * @ORM\OneToOne(targetEntity="\User\Entity\PostCategory")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="category_id")
+     */
+    protected $category;
+
+    /**
      * @ORM\OneToMany(targetEntity="\User\Entity\Comment", mappedBy="post")
      * @ORM\JoinColumn(name="id", referencedColumnName="post_id")
      */
@@ -206,6 +212,23 @@ class Post
     {
         $this->author = $author;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category): void
+    {
+        $this->category = $category;
+    }
+
 
     public function getComments(): object
     {

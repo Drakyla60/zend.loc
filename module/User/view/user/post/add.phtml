@@ -5,6 +5,10 @@ $form->get('author_id')->setAttributes([
     'class'=>'form-control',
 ]);
 
+$form->get('category_id')->setAttributes([
+    'class'=>'form-control',
+]);
+
 $form->get('title')->setAttributes([
     'class'=>'form-control',
 ]);
@@ -30,7 +34,7 @@ $form->get('submit')->setAttributes(['class'=>'btn btn-success form-control']);
 $form->prepare();
 ?>
 <div class="col-md-12">
-    <h2>Add User</h2>
+    <h2>Add New Post</h2>
 </div>
 <div class="col-md-9">
     <div class="card card-info">
@@ -95,6 +99,15 @@ $form->prepare();
                 </div>
                 <?= $this->formElement($form->get('author_id')); ?>
                 <?= $this->formElementErrors($form->get('author_id')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('category_id')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('category_id')); ?>
+                <?= $this->formElementErrors($form->get('category_id')); ?>
             </div>
 
             <?= $this->formLabel($form->get('status')); ?>

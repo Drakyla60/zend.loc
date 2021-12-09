@@ -5,13 +5,9 @@ $this->headTitle('View Post');
 $form->get('author')->setAttributes([
     'class' => 'form-control',
     'value' => $this->identity(),
-//    'disabled' => true,
 ]);
 ?>
-<!---->
-<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
-<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
-<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+
 <div class="col-md-12">
     <h3>Перегляд поста <b><?= $this->escapeHtml(substr($post->getTitle(), 0, 40) . ' ...') ?></b></h3>
 </div>
@@ -27,7 +23,13 @@ $form->get('author')->setAttributes([
 
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                    <b>дата Створення</b> <a class="float-right"><?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?></a>
+                    <b>Дата Створення</b> <a class="float-right"><?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getDateCreated()))); ?></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Автор</b> <a class="float-right" href="<?= $this->url('users', ['action' => 'view', 'id' => $this->escapeHtml($post->getAuthor()->getId())]); ?>"><?= $this->escapeHtml($post->getAuthor()->getFullName()); ?></a></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Категорія</b> <a class="float-right" href="<?= $this->url('posts-category', ['action' => 'view', 'id' => $this->escapeHtml($post->getCategory()->getCategoryId())]); ?>"><?= $this->escapeHtml($post->getCategory()->getCategoryName()); ?></a>
                 </li>
                 <li class="list-group-item">
                     <b>Дата Оновлення</b> <a class="float-right"><?= $this->escapeHtml($post->getDateUpdated()) ?></a>

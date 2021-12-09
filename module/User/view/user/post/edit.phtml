@@ -4,6 +4,9 @@ $this->headTitle('Edit User');
 $form->get('author_id')->setAttributes([
     'class'=>'form-control',
 ]);
+$form->get('category_id')->setAttributes([
+    'class'=>'form-control',
+]);
 
 $form->get('title')->setAttributes([
     'class'=>'form-control',
@@ -28,6 +31,7 @@ $form->get('tags')->setAttributes([
 $form->get('submit')->setAttributes(['class'=>'btn btn-success form-control']);
 
 $form->prepare();
+//var_dump($form);
 ?>
 <div class="col-md-12">
     <h2>Add User</h2>
@@ -103,6 +107,15 @@ $form->prepare();
                 </div>
                 <?= $this->formElement($form->get('author_id')); ?>
                 <?= $this->formElementErrors($form->get('author_id')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('category_id')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('category_id')); ?>
+                <?= $this->formElementErrors($form->get('category_id')); ?>
             </div>
 
             <?= $this->formLabel($form->get('status')); ?>
