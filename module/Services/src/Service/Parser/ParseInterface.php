@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Service\Parser;
+namespace Services\Service\Parser;
 
 /**
  *

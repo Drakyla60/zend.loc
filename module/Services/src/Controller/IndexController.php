@@ -2,21 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Admin\Controller;
+namespace Services\Controller;
 
 
-use Admin\Entity\Post;
-use Admin\Service\Parser\ParseInterface;
+use Services\Entity\Post;
+use Services\Service\Parser\ParseInterface;
 use Exception;
-use Laminas\Crypt\Password\Bcrypt;
-use Laminas\Filter\StaticFilter;
-use Laminas\Filter\StringTrim;
-use Laminas\Form\Element\Email;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use User\Entity\Role;
-use User\Entity\Tag;
-use User\Entity\User;
 
 /**
  *

@@ -1,10 +1,10 @@
 <?php
 
-namespace Admin\Controller\Factory;
+namespace Services\Controller\Factory;
 
-use Admin\Controller\IndexController;
-use Admin\Service\Parser\Parser;
-use Admin\Service\Parser\TrelloParser;
+use Services\Controller\IndexController;
+use Services\Service\Parser\Parser;
+use Services\Service\Parser\TrelloParser;
 use Interop\Container\ContainerInterface;
 
 class IndexControllerFactory

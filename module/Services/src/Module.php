@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Admin;
+namespace Services;
 
 use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;

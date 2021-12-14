@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Entity;
+namespace Services\Entity;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 

@@ -1,14 +1,10 @@
 <?php
 
-namespace Admin\Service\Factory\Parser;
+namespace Services\Service\Factory\Parser;
 
-use Admin\Service\Parser\TrelloParser;
-use Composer\Config;
+use Services\Service\Parser\TrelloParser;
 use GuzzleHttp\Client;
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class TrelloParserFactory implements FactoryInterface

@@ -1,7 +1,7 @@
 <?php
 
-namespace Admin\Service\Parser;
-use Admin\Entity\Post;
+namespace Services\Service\Parser;
+use Services\Entity\Post;
 use Laminas\Crypt\Password\Bcrypt;
 use Laminas\Filter\StaticFilter;
 use Laminas\Filter\StringTrim;

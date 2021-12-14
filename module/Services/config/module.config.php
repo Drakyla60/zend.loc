@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Admin;
+namespace Services;
 
-use Admin\Controller\Factory\IndexControllerFactory;
-use Admin\Controller\IndexController;
-use Admin\Service\Factory\Parser\ParserFactory;
-use Admin\Service\Factory\Parser\TrelloParserFactory;
-use Admin\Service\Parser\Parser;
-use Admin\Service\Parser\TrelloParser;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Laminas\Router\Http\Literal;
+use Services\Controller\Factory\IndexControllerFactory;
+use Services\Controller\IndexController;
+use Services\Service\Factory\Parser\ParserFactory;
+use Services\Service\Factory\Parser\TrelloParserFactory;
+use Services\Service\Parser\Parser;
+use Services\Service\Parser\TrelloParser;
 use Laminas\Router\Http\Segment;
 
 return [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Service\Parser;
+namespace Services\Service\Parser;
 
 use Exception;
 use Laminas\Filter\Word\UnderscoreToCamelCase;
@@ -47,7 +47,7 @@ class TrelloParser implements ParseInterface
         $dataBoardCustomFields = $this->getBoardCustomFields(self::ID_BOARD);
         $dataOrganization      = $this->getOrganization($dataBoard['idOrganization']);
 
-        $dataCards             = $this->getCards($dataBoardCards[2]['id']);
+        $dataCards             = $this->getCards($dataBoardCards[1]['id']);
         $dataCardsComments     = $this->getCardsComments($dataCards['id']);
         $dataCardsMembers      = $this->getCardsMembers($dataCards['id']);
         $dataCardsAttachments  = $this->getCardsAttachments($dataCards['id']);

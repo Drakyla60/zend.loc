@@ -1,12 +1,9 @@
 <?php
 
-namespace Admin\Service\Factory\Parser;
+namespace Services\Service\Factory\Parser;
 
-use Admin\Service\Parser\Parser;
+use Services\Service\Parser\Parser;
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ParserFactory implements FactoryInterface
