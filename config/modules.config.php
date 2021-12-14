@@ -20,7 +20,7 @@ return [
     'Laminas\Router',
     'Laminas\Validator',
     'Services',
-    'User',
+    'Admin',
     'Application',
     'Laminas\DeveloperTools',
     'Laminas\Mvc\Plugin\FlashMessenger',

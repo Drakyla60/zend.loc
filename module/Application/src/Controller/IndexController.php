@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
-use Application\Entity\Post;
+use Admin\Entity\Post;
 use Application\Form\ContactForm;
 use Application\Service\ThumbsManager;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
-use Laminas\Log\Logger;
-use Laminas\Log\Writer\Stream;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\Paginator\Paginator;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -46,36 +41,11 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-
-//        $image = new ThumbsManager('./public/img/test/123.png');
-//        $image->resize(250, 0);
-//        $img = $image->output();
-//
-//        $page = $this->params()->fromQuery('page', 1);
-//        $tagFilter = $this->params()->fromQuery('tag', null);
         $name = $this->authService->getIdentity();
-
-//        if ($tagFilter) {
-//            $query = $this->entityManager
-//                ->getRepository(Post::class)->findPostsByTag($tagFilter);
-//        } else {
-//            $query = $this->entityManager
-//                ->getRepository(Post::class)->findPublishedPosts();
-//        }
-
-//        $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
-//        $paginator = new Paginator($doctrinePaginator);
-//
-//        $paginator->setDefaultItemCountPerPage(2);
-//        $paginator->setCurrentPageNumber($page);
-//
-//        $tagCloud = $this->postManager->getTagCloud();
 
         $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
 //            'posts'       => $paginator,
-//            'postManager' => $this->postManager,
-//            'tagCloud'    => $tagCloud,
             'loginName' => $name,
         ]);
     }

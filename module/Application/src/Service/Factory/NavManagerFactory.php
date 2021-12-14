@@ -5,7 +5,7 @@ namespace Application\Service\Factory;
 use Application\Service\NavManager;
 use Laminas\Authentication\AuthenticationService;
 use Psr\Container\ContainerInterface;
-use User\Service\RbacManager;
+use Admin\Service\RbacManager;
 
 class NavManagerFactory
 {

@@ -9,7 +9,7 @@ use Application\Form\ChangeProfileSettingsForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
-use User\Entity\User;
+use Admin\Entity\User;
 
 class ProfileController extends AbstractActionController
 {

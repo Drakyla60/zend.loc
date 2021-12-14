@@ -36,7 +36,8 @@ class IndexController extends AbstractActionController
             ->getRepository(Post::class)->findAll();
 
         var_dump($posts);
-        $this->layout()->setTemplate('layout/users_layout');
+        die();
+//        $this->layout()->setTemplate('layout/services_layout');
         return new ViewModel([]);
     }
 

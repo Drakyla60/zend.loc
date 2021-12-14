@@ -6,8 +6,8 @@ use Application\Controller\ProfileController;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use User\Service\ImageManager;
-use User\Service\UserManager;
+use Admin\Service\ImageManager;
+use Admin\Service\UserManager;
 
 class ProfileControllerFactory implements FactoryInterface
 {

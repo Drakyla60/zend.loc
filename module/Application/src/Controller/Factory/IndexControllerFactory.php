@@ -7,9 +7,9 @@ use Application\Service\MailSender;
 use Application\Service\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
-use User\Service\ImageManager;
-use User\Service\MailManager;
-use User\Service\ReCaptchaManager;
+use Admin\Service\ImageManager;
+use Admin\Service\MailManager;
+use Admin\Service\ReCaptchaManager;
 
 class IndexControllerFactory
 {
