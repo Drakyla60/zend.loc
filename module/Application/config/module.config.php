@@ -41,20 +41,6 @@ return [
                     ],
                 ],
             ],
-//            'posts' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/posts[/:action[/:id]]',
-//                    'constraints' => [
-//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                        'id' => '[0-9]*'
-//                    ],
-//                    'defaults' => [
-//                        'controller'    => PostController::class,
-//                        'action'        => 'index',
-//                    ],
-//                ],
-//            ],
             'about' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -115,16 +101,6 @@ return [
                     ],
                 ],
             ],
-//            'profile' => [
-//                'type'    => Literal::class,
-//                'options' => [
-//                    'route'    => '/profile',
-//                    'defaults' => [
-//                        'controller' => ProfileController::class,
-//                        'action'     => 'index',
-//                    ],
-//                ],
-//            ],
             'profile_settings' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -135,26 +111,6 @@ return [
                     ],
                 ],
             ],
-//            'profile_security' => [
-//                'type'    => Literal::class,
-//                'options' => [
-//                    'route'    => '/profile/security',
-//                    'defaults' => [
-//                        'controller' => ProfileController::class,
-//                        'action'     => 'security',
-//                    ],
-//                ],
-//            ],
-//            'profile_notifications' => [
-//                'type'    => Literal::class,
-//                'options' => [
-//                    'route'    => '/profile/notifications',
-//                    'defaults' => [
-//                        'controller' => ProfileController::class,
-//                        'action'     => 'notifications',
-//                    ],
-//                ],
-//            ],
             'myGetJson' => [
                 'type'    => Literal::class,
                 'options' => [

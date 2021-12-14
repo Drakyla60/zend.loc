@@ -4,6 +4,7 @@ namespace Admin\Controller\Factory;
 
 use Admin\Controller\IndexController;
 use Admin\Service\Parser\Parser;
+use Admin\Service\Parser\TrelloParser;
 use Interop\Container\ContainerInterface;
 
 class IndexControllerFactory
@@ -14,6 +15,12 @@ class IndexControllerFactory
         $mongoManager     = $container->get('doctrine.documentmanager.odm_default');
         $entityManager    = $container->get('doctrine.entitymanager.orm_default');
         $parser           = $container->get(Parser::class);
-        return new IndexController($sessionContainer, $mongoManager, $entityManager, $parser);
+        $trelloParser     = $container->get(TrelloParser::class);
+        return new IndexController(
+            $sessionContainer,
+            $mongoManager,
+            $entityManager,
+            $parser,
+            $trelloParser);
     }
 }

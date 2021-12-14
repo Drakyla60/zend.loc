@@ -7,7 +7,9 @@ namespace Admin;
 use Admin\Controller\Factory\IndexControllerFactory;
 use Admin\Controller\IndexController;
 use Admin\Service\Factory\Parser\ParserFactory;
+use Admin\Service\Factory\Parser\TrelloParserFactory;
 use Admin\Service\Parser\Parser;
+use Admin\Service\Parser\TrelloParser;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
@@ -38,8 +40,8 @@ return [
     'service_manager' => [
         'factories' => [
             Parser::class   => ParserFactory::class,
+            TrelloParser::class   => TrelloParserFactory::class,
 //            Service\ImageManager::class => InvokableFactory::class,
-//            Service\PostManager::class  => Service\Factory\PostManagerFactory::class,
         ],
     ],
     'view_manager' => [
