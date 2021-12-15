@@ -40,11 +40,4 @@ The next step is to load the dump base `dump.sql`
 
 **Note:** It was not possible to connect migrations therefore it is necessary to load a dump *manually*.
 
-
-
 You can then visit the site at http://localhost:8080/
-
-
-> You may also want to combine the various `apt-get` and `docker-php-ext-*`
-> statements later to reduce the number of layers created by your image.
-
