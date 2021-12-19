@@ -14,13 +14,13 @@ class IndexControllerFactory
         $sessionContainer = $container->get('ContainerNamespace');
         $mongoManager     = $container->get('doctrine.documentmanager.odm_default');
         $entityManager    = $container->get('doctrine.entitymanager.orm_default');
-        $parser           = $container->get(Parser::class);
-        $trelloParser     = $container->get(TrelloParser::class);
+        $parser           = $container->get(TrelloParser::class);
+//        $parser           = $container->get(Parser::class);
         return new IndexController(
             $sessionContainer,
             $mongoManager,
             $entityManager,
             $parser,
-            $trelloParser);
+        );
     }
 }

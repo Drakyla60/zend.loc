@@ -74,7 +74,7 @@ class MailManager
         $mail->isHTML($config['isHTML']);                            //Set email format to HTML
         $mail->Subject = $option['subjectEmail'];
         $mail->Body    = $option['bodyHtml'];
-        if ($option['file']){
+        if ($option['file']['name']){
             $mail->addAttachment($option['file']);
         }
 
