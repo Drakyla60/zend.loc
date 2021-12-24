@@ -7,7 +7,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('Laminas MVC Skeleton')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headTitle('Services')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?= $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -43,7 +43,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <a class="navbar-brand" href="<?= $this->url('home_admin') ?>">
-                        <img src="<?= $this->basePath('img/laminas-logo.svg') ?>" alt="Laminas">ADMIN Skeleton
+                        <img src="<?= $this->basePath('img/laminas-logo.svg') ?>" alt="Laminas">Services Skeleton
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -66,12 +66,6 @@
         <div class="container">
             <?= $this->content ?>
             <hr>
-            <footer>
-                <p>
-                    &copy; <?= date('Y') ?>
-                    <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
-                </p>
-            </footer>
         </div>
         <?= $this->inlineScript()
             ->prependFile($this->basePath('js/bootstrap.min.js'))

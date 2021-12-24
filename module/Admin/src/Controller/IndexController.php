@@ -24,7 +24,7 @@ class IndexController extends AbstractActionController
         $postsCount = $this->entityManager
             ->getRepository(Post::class)->findCountPosts();
 //var_dump($postsCount);
-        $this->layout()->setTemplate('layout/users_layout');
+//        $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([
             'usersCount' => $usersCount,
             'postsCount' => $postsCount,

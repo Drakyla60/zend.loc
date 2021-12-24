@@ -38,12 +38,14 @@ class IndexController extends AbstractActionController
     public function parseAction()
     {
 
+
         try {
             $this->parser->parse();
         } catch (Exception $e) {
             $this->logger('err', 'Error : '. $e->getMessage());
             echo $e->getMessage();
         }
+
         $this->layout()->setTemplate('layout/services_layout');
         return new ViewModel([]);
     }
@@ -56,8 +58,5 @@ class IndexController extends AbstractActionController
         $this->layout()->setTemplate('layout/users_layout');
         return new ViewModel([]);
     }
-
-
-
 
 }
