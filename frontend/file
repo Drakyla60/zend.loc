@@ -1,0 +1,5 @@
+npm run serve
+
+json-server --watch db.json
+
+vue-devtools
