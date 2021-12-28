@@ -22,9 +22,10 @@
           v-for="(data, index) in info" :key="index"
           class="currency"
       >
-        {{ data.id }} --
-        {{ data.title }} --
-        {{ data.author | capitalize }} --
+        {{ data.category_id }}
+        {{ data.category_name }}
+        {{ data.category_description }}
+        {{ data.category_parent_id }}
 
       </div>
 
@@ -36,7 +37,6 @@
 
 <script>
 import axios from "axios";
-const data1 = { a: 1 };
 export default {
   name: 'HelloWorld',
   props: {
@@ -46,7 +46,6 @@ export default {
     return {
       count: 0,
       message: 'Привет',
-      data1: data1,
       info: null,
       loading: true,
       errored: false
@@ -72,7 +71,7 @@ export default {
     mountedApi: function () {
       console.log('Hello')
       return axios
-          .get('http://localhost:3000/posts')
+          .get('http://localhost:8080/')
           .then(response => (this.info = response.data))
           .catch(
               error => {
@@ -80,11 +79,7 @@ export default {
                 this.errored = true;
               })
           .finally(() => (this.loading = false));
-      // return data;
     },
-    testFunction: function () {
-      return console.log('Hello')
-    }
   },
   mounted: function () {
     this.mountedApi();

@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Admin\Entity\Post;
+use Admin\Entity\PostCategory;
 use Application\Form\ContactForm;
 use Application\Service\ThumbsManager;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
+use Laminas\Json\Json;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Paginator\Paginator;
+use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -43,11 +49,51 @@ class IndexController extends AbstractActionController
     {
         $name = $this->authService->getIdentity();
 
-        $this->layout()->setTemplate('layout/application_layout');
-        return new ViewModel([
-//            'posts'       => $paginator,
-            'loginName' => $name,
-        ]);
+        $page = $this->params()->fromQuery('page', 1);
+
+//        $query = $this->entityManager
+//            ->getRepository(Post::class)->findAllPosts();
+        $query2 = $this->entityManager
+            ->getRepository(PostCategory::class)->findAll();
+
+
+        $data = [];
+        foreach ($query2 as $item ) {
+
+//            var_dump($item);
+            $data[] = [
+                'category_id' => $item->getCAtegoryId(),
+                'category_name' => $item->getCategoryName(),
+                'category_description' => $item->getCategoryDescription(),
+                'category_parent_id' => $item->getCategoryParentId(),
+            ];
+//            var_dump($data);
+        }
+//        $doctrinePaginator = new DoctrinePaginator(new ORMPaginator($query, false));
+//        $paginator = new Paginator($doctrinePaginator);
+//
+//        $paginator->setDefaultItemCountPerPage(5);
+//        $paginator->setCurrentPageNumber($page);
+
+//        $tagCloud = $this->postManager->getTagCloud();
+//
+//        foreach ($paginator as $item) {
+//            $item->setStatus($this->postManager->getPostStatusAsString($item->getStatus()));
+//        }
+
+////        $this->layout()->setTemplate('layout/users_layout');
+//        return new ViewModel([
+////            'posts'       => $paginator,
+////            'tagCloud'    => $tagCloud,
+//        ]);
+
+//        $this->layout()->setTemplate('layout/application_layout');
+//        return new ViewModel([
+////            'posts'       => $paginator,
+//            'loginName' => $name,
+//        ]);
+        header('Access-Control-Allow-Origin: *');
+        return new JsonModel($data);
     }
 
     /**
