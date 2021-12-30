@@ -7,7 +7,6 @@ namespace Application\Controller;
 use Admin\Entity\Post;
 use Admin\Entity\PostCategory;
 use Application\Form\ContactForm;
-use Application\Service\ThumbsManager;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\Barcode\Barcode;
@@ -16,6 +15,8 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Paginator\Paginator;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
+use Predis\Autoloader;
+use Predis\Client;
 
 /**
  *
@@ -93,7 +94,19 @@ class IndexController extends AbstractActionController
 //            'loginName' => $name,
 //        ]);
         header('Access-Control-Allow-Origin: *');
-        return new JsonModel($data);
+
+        $client = new Client('tcp://redis:6379');
+
+        $jsonData = new JsonModel($data);
+        $jsonData = serialize($jsonData);
+
+        if ($client->get('API_INDEX')) {
+            $jsonData = unserialize($client->get('API_INDEX'));
+        } else {
+            $client->set('API_INDEX', $jsonData);
+        }
+
+        return $jsonData;
     }
 
     /**
