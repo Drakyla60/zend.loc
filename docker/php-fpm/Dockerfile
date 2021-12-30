@@ -41,6 +41,14 @@ RUN apt-get update \
  RUN pecl install mongodb \
      && docker-php-ext-enable mongodb
 
+## Redis support.  igbinary and libzstd-dev are only needed based on
+## redis pecl options
+ RUN pecl install igbinary \
+     && docker-php-ext-enable igbinary \
+     && apt-get install --yes libzstd-dev \
+     && pecl install redis \
+     && docker-php-ext-enable redis
+
 ADD ./php.ini /usr/local/etc/php/php.ini
 USER root
 
@@ -68,11 +76,3 @@ WORKDIR /code
 #     && pecl install memcached \
 #     && docker-php-ext-enable memcached
 
-
-## Redis support.  igbinary and libzstd-dev are only needed based on 
-## redis pecl options
-# RUN pecl install igbinary \
-#     && docker-php-ext-enable igbinary \
-#     && apt-get install --yes libzstd-dev \
-#     && pecl install redis \
-#     && docker-php-ext-enable redis
