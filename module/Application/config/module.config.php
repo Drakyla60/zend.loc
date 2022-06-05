@@ -74,19 +74,6 @@ return [
                     ],
                 ],
             ],
-            'reg' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/reg[/:action]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
-                    ],
-                    'defaults' => [
-                        'controller'    => RegistrationController::class,
-                        'action'        => 'index',
-                    ],
-                ],
-            ],
             'profile' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -163,7 +150,6 @@ return [
             ProfileController::class      => ProfileControllerFactory::class,
             IndexController::class        => IndexControllerFactory::class,
             ImageController::class        => ImageControllerFactory::class,
-            RegistrationController::class => RegistrationControllerFactory::class,
 //            PostController::class         => PostControllerFactory::class,
         ],
     ],
@@ -190,8 +176,8 @@ return [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'not_found_template'       => 'application/error/404',
+        'exception_template'       => 'application/error/index',
 //        'template_map' => [
 //            'layout/layout'           => __DIR__ . '/../view/layout/application_layout.phtml',
 //            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
@@ -234,15 +220,11 @@ return [
 //                ['actions' => ['index', 'add', 'view', 'edit', 'delete', 'admin'], 'allow' => '*'],
 //            ],
             ProfileController::class => [
-                ['actions' => ['index', 'edit', 'settings','profile', 'security', 'notifications'], 'allow' => '@'],
+                ['actions' => ['index', 'edit', 'settings','profile', 'security', 'notifications', 'getJson'], 'allow' => '@'],
             ],
             ImageController::class => [
                 ['actions' => ['index','upload', 'file'], 'allow' => '*'],
             ],
-            RegistrationController::class => [
-                ['actions' => ['index', 'review'], 'allow' => '*'],
-            ],
-
         ]
     ],
 ];
