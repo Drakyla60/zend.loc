@@ -93,6 +93,7 @@ class IndexController extends AbstractActionController
 ////            'posts'       => $paginator,
 //            'loginName' => $name,
 //        ]);
+        //TODO Винести треба то звідси
         header('Access-Control-Allow-Origin: *');
 
         $client = new Client('tcp://redis:6379');
