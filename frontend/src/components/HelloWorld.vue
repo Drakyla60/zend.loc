@@ -71,7 +71,7 @@ export default {
     mountedApi: function () {
       console.log('Hello')
       return axios
-          .get('http://localhost:8080/')
+          .get('http://localhost:8180/')
           .then(response => (this.info = response.data))
           .catch(
               error => {
