@@ -44,7 +44,7 @@ $changeProfileSecurityForm->get('submit')->setAttributes([
 
 $changeProfileSecurityForm->prepare();
 ?>
-
+<br>
 <?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
 <?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
 <?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
@@ -63,7 +63,7 @@ $changeProfileSecurityForm->prepare();
                     <a class="nav-link" data-toggle="tab" href="#nav-security" role="tab">Налаштування Безпеки</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#nav-notification" role="tab">Налаштування Сповіщень</a>
+                    <a class="nav-link disabled" data-toggle="tab" href="#nav-notification" role="tab">Налаштування Сповіщень</a>
                 </li>
             </ul>
         </div>
