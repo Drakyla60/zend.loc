@@ -1,4 +1,4 @@
-version: '3.9'
+version: '2.3'
 services:
   php-fpm:
     container_name: php
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./:/code
     ports:
-      - "8080:80"
+      - "8180:8180"
     depends_on:
       - php-fpm
 #    networks:
@@ -39,7 +39,7 @@ services:
       MYSQL_USER: blog
       MYSQL_PASSWORD: blog
     ports:
-      - "3306:3306"
+      - "3206:3306"
   mongodb:
     image : mongo
     container_name: mongodb
