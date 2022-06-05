@@ -38,6 +38,7 @@ class ProfileController extends AbstractActionController
         $user = $this->entityManager
             ->getRepository(User::class)->findOneBy(['email' => $email]);
 
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
             'user' => $user,
         ]);
@@ -75,6 +76,7 @@ class ProfileController extends AbstractActionController
 //                return $this->redirect()->toRoute('profile_settings');
 //            }
 //        }
+        $this->layout()->setTemplate('layout/application_layout');
         return new ViewModel([
             'user' => $user,
             'changeProfileSecurityForm' => $changeProfileSecurityForm,
