@@ -4,6 +4,7 @@ services:
     container_name: php
     build:
       context: docker/php-fpm
+    restart: always
     volumes:
       - ./:/code
     environment:
@@ -15,6 +16,7 @@ services:
     container_name: nginx
     build:
       context: docker/nginx
+    restart: always
     volumes:
       - ./:/code
     ports:
@@ -50,7 +52,7 @@ services:
       - /home/web/mongodb/database:/data/db
     ports:
       - 27017:27017
-    restart: unless-stopped
+    restart: always
   redis:
     build:
       context: docker/redis
