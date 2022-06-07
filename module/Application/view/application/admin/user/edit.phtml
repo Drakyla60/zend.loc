@@ -1,0 +1,114 @@
+<?php
+$this->headTitle('Edit User');
+//
+//$this->mainMenu()->setActiveItemId('users');
+//
+//$this->pageBreadcrumbs()->setItems([
+//    'Home'=>$this->url('home'),
+//    'Manage Users'=>$this->url('users'),
+//    'Edit User'=>$this->url('users', ['action'=>'edit', 'id'=>$user->getId()])
+//]);
+
+$form->get('email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'name@example.com'
+]);
+
+$form->get('full_name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'John Doe'
+]);
+
+$form->get('status')->setAttributes([
+    'class'=>'form-control'
+]);
+
+$form->get('roles')->setAttributes([
+    'class'=>'form-control'
+]);
+
+$form->get('submit')
+    ->setAttributes(['class'=>'btn btn-primary form-control'])
+    ->setValue('Update');
+
+$form->prepare();
+?>
+
+<div class="col-md-12">
+    <h2>Edit User <?= $this->escapeHtml($user->getFullName()) ?></h2>
+</div>
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Будь ласка, заповніть наступну форму та натисніть кнопку <i> Оновити</i> .</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
+
+            <?= $this->formLabel($form->get('full_name')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('full_name')); ?>
+                <?= $this->formElementErrors($form->get('full_name')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('email')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('email')); ?>
+                <?= $this->formElementErrors($form->get('email')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('avatar')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <?= $this->formElement($form->get('avatar')); ?>
+                <?= $this->formElementErrors($form->get('avatar')); ?>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Налаштування</h3>
+        </div>
+        <div class="card-body">
+            <img class="profile-admin-img img-fluid "
+                 src="<?= $this->basePath('img/avatar/150x150/' . $user->getAvatar()) ?>" alt="User profile picture">
+
+
+            <?= $this->formLabel($form->get('status')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-question"></i></span>
+                </div>
+                <?= $this->formElement($form->get('status')); ?>
+                <?= $this->formElementErrors($form->get('status')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('roles')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
+                </div>
+                <?= $this->formElement($form->get('roles')); ?>
+                <?= $this->formElementErrors($form->get('roles')); ?>
+            </div>
+            <?= $this->formElement($form->get('csrf')); ?>
+            <?= $this->formElementErrors($form->get('csrf')); ?>
+
+            <?= $this->formElement($form->get('submit')); ?>
+
+            <?= $this->form()->closeTag(); ?>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>

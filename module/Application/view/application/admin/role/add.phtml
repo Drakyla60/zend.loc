@@ -1,0 +1,89 @@
+<?php
+$this->headTitle('Add Role');
+
+//$this->mainMenu()->setActiveItemId('roles');
+//
+//$this->pageBreadcrumbs()->setItems([
+//            'Home'=>$this->url('home'),
+//            'Manage Roles'=>$this->url('roles'),
+//            'Add Role'=>$this->url('roles', ['action'=>'add'])
+//            ]);
+
+$form->get('name')->setAttributes([
+    'class'=>'form-control', 
+    'placeholder'=>'Enter name'
+    ]);
+
+$form->get('description')->setAttributes([
+    'class'=>'form-control', 
+    'placeholder'=>'Enter description'
+    ]);
+
+$form->get('inherit_roles')->setAttributes([
+    'class'=>'form-control', 
+    ]);
+
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary form-control']);
+
+$form->prepare();
+?>
+
+<div class="col-md-12">
+    <h2>Add Role</h2>
+</div>
+<div class="col-md-9">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Please fill out the following form and click the <i>Create</i> button.</h3>
+        </div>
+        <div class="card-body">
+            <?= $this->form()->openTag($form); ?>
+
+            <?= $this->formLabel($form->get('name')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
+                </div>
+                <?= $this->formElement($form->get('name')); ?>
+                <?= $this->formElementErrors($form->get('name')); ?>
+            </div>
+
+            <?= $this->formLabel($form->get('description')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
+                </div>
+                <?= $this->formElement($form->get('description')); ?>
+                <?= $this->formElementErrors($form->get('description')); ?>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Settings</h3>
+        </div>
+        <div class="card-body">
+
+            <?= $this->formLabel($form->get('inherit_roles')); ?>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user-secret"></i></span>
+                </div>
+                <?= $this->formElement($form->get('inherit_roles')); ?>
+                <?= $this->formElementErrors($form->get('inherit_roles')); ?>
+            </div>
+
+            <?= $this->formElement($form->get('csrf')); ?>
+            <?= $this->formElementErrors($form->get('csrf')); ?>
+
+            <?= $this->formElement($form->get('submit')); ?>
+
+            <?= $this->form()->closeTag(); ?>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
