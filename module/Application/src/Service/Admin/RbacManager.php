@@ -32,7 +32,7 @@ class RbacManager
             return;
         }
         if ($forceCreated) {
-            $this->cache->removeItem('rbacContainer');
+            $this->cache->deleteItem('rbacContainer');
         }
 
         $this->rbac = $this->cache->getItem('rbacContainer');
