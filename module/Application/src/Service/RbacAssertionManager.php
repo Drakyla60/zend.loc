@@ -5,7 +5,7 @@ namespace Application\Service;
 use Doctrine\ORM\EntityManager;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Permissions\Rbac\Rbac;
-use Admin\Entity\User;
+use Application\Entity\User;
 
 class RbacAssertionManager
 {

@@ -1,0 +1,93 @@
+
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+
+<div class="col-sm-6">
+    <h1>Керуйте Постами</h1>
+</div>
+
+<div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Керуйте Постами</li>
+    </ol>
+</div>
+<section class="content">
+    <p>
+        <a class="btn btn-success admin-form-btn admin-form-btn-create" href="<?= $this->url('posts', ['action' => 'add']); ?>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Додати новий Пост
+        </a>
+    </p>
+    <?php if ($posts) { ?>
+
+        <table class="table table-striped">
+
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Date Created</th>
+                <th>Date Updated</th>
+                <th>Date Deleted</th>
+                <th>CountViews</th>
+                <th>Author</th>
+                <th></th>
+            </tr>
+
+            <?php foreach ($posts as $post): ?>
+
+                <tr>
+                    <td><?= $this->escapeHtml($post->getId()); ?></td>
+                    <td>
+                        <?php $image =  $post->getImage() ?: 'post.png'?>
+                        <img src="<?= $this->basePath('img/posts/100x100/' . $image )?>" style="width: 100px" alt="">
+
+                    </td>
+                    <td>
+                        <a href="<?= $this->url('posts', ['action' => 'view', 'id' => $post->getId()]); ?>">
+                            <?= $this->escapeHtml(substr($post->getTitle(), 0,100) . '...'); ?>
+                        </a>
+                    </td>
+                    <td><?= $this->escapeHtml($post->getStatus());?></a></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateCreated()); ?></nobr></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateUpdated()); ?></nobr></td>
+                    <td><nobr><?= $this->escapeHtml($post->getDateDeleted() ? 'DELETED' : $post->getDateDeleted()); ?></nobr></td>
+                    <td><?= $this->escapeHtml($post->getCountViews()); ?></td>
+                    <td>
+                        <a href="<?= $this->url('users', ['action' => 'view', 'id' => $post->getAuthor()->getId()]); ?>">
+                            <?= $this->escapeHtml($post->getAuthor()->getFullName()); ?>
+                        </a>
+                    </td>
+                    <td>
+                   <div class="row">
+                       <a class="btn-sm btn-info admin-form-btn" href="<?= $this->url('posts',
+                           ['action' => 'edit', 'id' => $post->getId()]); ?>">
+                           <span class="glyphicon glyphicon-pencil"></span> Редагувати
+                       </a>
+
+                       <?php if($post->getDateDeleted() == null):?>
+                           <a class="btn-sm btn-danger admin-form-btn" href="<?= $this->url('posts',
+                               ['action' => 'delete', 'id' => $post->getId()]); ?>">
+                               <span class="glyphicon glyphicon-asterisk"></span> Видалити
+                           </a>
+                       <?php else:?>
+                           <a class="btn-sm btn-secondary admin-form-btn" href="<?= $this->url('posts',
+                               ['action' => 'restore', 'id' => $post->getId()]); ?>">
+                               <span class="glyphicon glyphicon-asterisk"></span> Відновити
+                           </a>
+                       <?php endif; ?>
+                   </div>
+                    </td>
+                </tr>
+<!--                --><?php //var_dump($post);?>
+            <?php endforeach; ?>
+
+        </table>
+    <?php } else { ?>
+        <?php echo 'Користувачів поки що немає' ?>
+    <?php } ?>
+    <?= $this->paginationControl($posts, 'Sliding', 'application/admin/partial/paginator', ['route' => 'posts']); ?>
+</section>
+

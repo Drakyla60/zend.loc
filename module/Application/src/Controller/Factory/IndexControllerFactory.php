@@ -4,16 +4,17 @@ namespace Application\Controller\Factory;
 
 use Application\Controller\IndexController;
 use Application\Service\MailSender;
-use Application\Service\PostManager;
+use Application\Service\Admin\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
-use Admin\Service\ImageManager;
-use Admin\Service\MailManager;
-use Admin\Service\ReCaptchaManager;
+use Application\Service\Admin\ImageManager;
+use Application\Service\Admin\MailManager;
+use Application\Service\Admin\ReCaptchaManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class IndexControllerFactory
+class IndexControllerFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): IndexController
+    public function __invoke(ContainerInterface|\Psr\Container\ContainerInterface $container, $requestedName, array $options = null): IndexController
     {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
 //        $postManager = $container->get(PostManager::class);
