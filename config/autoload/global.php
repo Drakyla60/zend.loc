@@ -51,26 +51,27 @@ return [
     'session_storage' => [
         'type' => SessionArrayStorage::class
     ],
+//@TODO треба переписати кеш, були проблеми перейшов на symfony/cache php8.1
 
-    'caches' => [
-        'FilesystemCache' => [
-            'adapter' => [
-                'name'    => Filesystem::class,
-                'options' => [
-                    // Store cached data in this directory.
-                    'cache_dir' => './data/cache',
-                    // Store cached data for 1 hour.
-                    'ttl' => 60*60*1
-                ],
-            ],
-            'plugins' => [
-                [
-                    'name'    => 'serializer',
-                    'options' => [],
-                ],
-            ],
-        ],
-    ],
+//    'caches' => [
+//        'FilesystemCache' => [
+//            'adapter' => [
+//                'name'    => Filesystem::class,
+//                'options' => [
+//                    // Store cached data in this directory.
+//                    'cache_dir' => './data/cache',
+//                    // Store cached data for 1 hour.
+//                    'ttl' => 60*60*1
+//                ],
+//            ],
+//            'plugins' => [
+//                [
+//                    'name'    => 'serializer',
+//                    'options' => [],
+//                ],
+//            ],
+//        ],
+//    ],
     'rbac_manager' => [
         'assertions' => [RbacAssertionManager::class],
     ],
