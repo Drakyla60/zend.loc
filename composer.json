@@ -10,23 +10,21 @@
     "framework"
   ],
   "require": {
-    "php": "^7.4 || ~8.0.0",
-    "laminas/laminas-component-installer": "^2.4",
+    "php": "~8.0.0",
     "laminas/laminas-development-mode": "^3.2",
-    "laminas/laminas-mvc": "^3.1.1",
-    "laminas/laminas-barcode": "^2.9",
-    "laminas/laminas-form": "^2.11",
-    "laminas/laminas-mail": "^2.14",
-    "laminas/laminas-servicemanager": "^3.10",
-    "laminas/laminas-i18n": "^2.11",
+    "laminas/laminas-barcode": "^2.11.0",
+    "laminas/laminas-form": "^3.0.2",
+    "laminas/laminas-mail": "^2.16.0",
+    "laminas/laminas-servicemanager": "^3.11.2",
+    "laminas/laminas-i18n": "^2.15",
     "ext-fileinfo": "*",
     "ext-gd": "*",
     "ext-intl": "*",
     "ext-mongodb": "*",
     "laminas/laminas-captcha": "^2.10",
-    "laminas/laminas-session": "^2.12",
+    "laminas/laminas-session": "^2.12.1",
     "laminas/laminas-text": "^2.9",
-    "doctrine/doctrine-orm-module": "^4.0",
+    "doctrine/doctrine-orm-module": "^4.2.1",
     "laminas/laminas-paginator": "^2.11",
     "doctrine/migrations": "^3.3",
     "psr/log": "^1.1.4",
@@ -34,15 +32,15 @@
     "laminas/laminas-authentication": "^2.8",
     "phpmailer/phpmailer": "^6.5",
     "laminas/laminas-permissions-rbac": "^3.2",
-    "laminas/laminas-cache": "^2.13",
+    "laminas/laminas-cache": "^3.1.3",
     "laminas/laminas-serializer": "^2.11",
-    "almasaeed2010/adminlte": "~3.1",
+    "almasaeed2010/adminlte": "^3.2.0",
     "laminas/laminas-view": "^2.14",
     "laminas/laminas-mvc-plugin-flashmessenger": "^1.3",
     "laminas/laminas-log": "^2.13",
     "laminas/laminas-recaptcha": "^3.3",
     "claviska/simpleimage": "^3.6",
-    "doctrine/doctrine-mongo-odm-module": "^3.1",
+    "doctrine/doctrine-mongo-odm-module": "^3.2.0",
     "ext-mongo": "*",
     "symfony/dom-crawler": "^5.4",
     "symfony/css-selector": "^5.4",
@@ -52,7 +50,9 @@
     "ext-iconv": "*",
     "guzzlehttp/guzzle": "^7.4",
     "ext-json": "*",
-    "predis/predis": "^1.1"
+    "predis/predis": "^2.0.0",
+    "laminas/laminas-cache-storage-adapter-filesystem": "^2.0",
+    "symfony/cache": "^5.4"
   },
   "autoload": {
     "psr-4": {
@@ -92,5 +92,7 @@
   },
   "require-dev": {
     "laminas/laminas-developer-tools": "^2.1"
+  },
+  "config": {
   }
 }
