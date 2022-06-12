@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
-use Admin\Entity\Post;
-use Admin\Entity\PostCategory;
+use Application\Entity\Post;
+use Application\Entity\PostCategory;
 use Application\Form\ContactForm;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;

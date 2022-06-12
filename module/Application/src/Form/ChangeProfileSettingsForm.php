@@ -8,7 +8,7 @@ use Laminas\Validator\File\ImageSize;
 use Laminas\Validator\File\IsImage;
 use Laminas\Validator\File\MimeType;
 use Laminas\Validator\Hostname;
-use Admin\Validator\UserExistsValidator;
+use Application\Validator\Admin\UserExistsValidator;
 
 class ChangeProfileSettingsForm extends Form
 {
