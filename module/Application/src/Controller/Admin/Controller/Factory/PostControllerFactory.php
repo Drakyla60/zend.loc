@@ -3,7 +3,7 @@
 namespace Application\Controller\Admin\Controller\Factory;
 
 use Application\Controller\Admin\Controller\PostController;
-use Application\Service\ImageManager;
+use Application\Service\Admin\ImageManager;
 use Application\Service\Admin\PostManager;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
